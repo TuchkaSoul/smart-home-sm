@@ -69,8 +69,7 @@ class SmartHomeApp:
         self.selected_type = tk.IntVar(value=HEATER)
         
         # Инициализация матриц
-        type_matrix = np.full((GRID_ROWS, GRID_COLS), OUTSIDE, dtype=int)  # Весь мир - улица
-        temp_matrix = np.full((GRID_ROWS, GRID_COLS), OUTSIDE_TEMP, dtype=float)  # Улица холодная
+        
         self.load_json("defult.json")
         # Рисуем сетку и обновляем температуру
         self.draw_grid()
@@ -356,8 +355,10 @@ class SmartHomeApp:
 
     def load_json(self,file_path=None):
         """Загружает конфигурацию из JSON файла."""
+        is_mess=False
         if file_path is None:
             file_path = filedialog.askopenfilename(filetypes=[("JSON files", "*.json")])
+            is_mess=True
         if file_path:
             try:
                 with open(file_path, 'r') as file:
@@ -365,7 +366,8 @@ class SmartHomeApp:
                     self.type_matrix = np.array(data['type_matrix'])
                     self.temp_matrix = np.array(data['temp_matrix'])
                 self.draw_grid()
-                messagebox.showinfo("Успех", "Конфигурация загружена из JSON файла.")
+                if is_mess:
+                    messagebox.showinfo("Успех", "Конфигурация загружена из JSON файла.")
             except Exception as e:
                 messagebox.showerror("Ошибка", f"Не удалось загрузить файл: {e}")
 
