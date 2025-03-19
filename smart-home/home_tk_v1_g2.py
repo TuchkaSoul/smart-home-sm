@@ -68,7 +68,7 @@ class SmartHomeApp:
         self.selected_type = tk.IntVar(value=HEATER)
         
         # Инициализация матриц
-        self.type_matrix, self.temp_matrix = initialize_matrices()
+        
         type_matrix = np.full((GRID_ROWS, GRID_COLS), OUTSIDE, dtype=int)  # Весь мир - улица
         temp_matrix = np.full((GRID_ROWS, GRID_COLS), OUTSIDE_TEMP, dtype=float)  # Улица холодная
         self.load_json("defult.json")
@@ -224,9 +224,42 @@ class SmartHomeApp:
         self.draw_grid()
         
     def curs(self, event):
+        """Отображает информацию о температуре и типе клетки рядом с курсором."""
         x, y = event.x // CELL_SIZE, event.y // CELL_SIZE
-        print(f"{self.temp_matrix[y, x]}")
-        self.draw_grid()
+
+        # Проверяем, что координаты находятся в пределах сетки
+        if 0 <= x < GRID_COLS and 0 <= y < GRID_ROWS:
+            # Получаем температуру и тип клетки
+            temp = self.temp_matrix[y, x]
+            cell_type = self.type_matrix[y, x]
+
+            # Определяем текстовое описание типа клетки
+            cell_types = {
+                EMPTY: "Воздух",
+                WALL: "Стена",
+                DOOR: "Дверь",
+                WINDOW: "Окно",
+                HEATER: "Батарея",
+                AC: "Кондиционер",
+                OUTSIDE: "Улица"
+            }
+            cell_type_name = cell_types.get(cell_type, "Неизвестно")
+
+            # Создаем текст для отображения
+            info_text = f"Температура: {temp:.2f}°C\nТип: {cell_type_name}"
+
+            # Удаляем предыдущий label, если он существует
+            if hasattr(self, "info_label"):
+                self.info_label.destroy()
+
+            # Создаем новый label с информацией
+            self.info_label = tk.Label(self.canvas, text=info_text, bg="white", fg="black", font=("Arial", 10))
+            
+            # Позиционируем label рядом с курсором
+            self.info_label.place(x=event.x + 10, y=event.y + 10)
+
+            # Удаляем label через 2 секунды
+            self.info_label.after(2000, self.info_label.destroy)
         
     def set_heater(self, event):
         x, y = event.x // CELL_SIZE, event.y // CELL_SIZE
