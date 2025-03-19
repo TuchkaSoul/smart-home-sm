@@ -1,0 +1,520 @@
+[
+    {
+        "label": "time",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "time",
+        "description": "time",
+        "detail": "time",
+        "documentation": {}
+    },
+    {
+        "label": "random",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "random",
+        "description": "random",
+        "detail": "random",
+        "documentation": {}
+    },
+    {
+        "label": "numpy",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "numpy",
+        "description": "numpy",
+        "detail": "numpy",
+        "documentation": {}
+    },
+    {
+        "label": "math",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "math",
+        "description": "math",
+        "detail": "math",
+        "documentation": {}
+    },
+    {
+        "label": "sympy",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "sympy",
+        "description": "sympy",
+        "detail": "sympy",
+        "documentation": {}
+    },
+    {
+        "label": "matplotlib.pyplot",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "matplotlib.pyplot",
+        "description": "matplotlib.pyplot",
+        "detail": "matplotlib.pyplot",
+        "documentation": {}
+    },
+    {
+        "label": "pygame",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "pygame",
+        "description": "pygame",
+        "detail": "pygame",
+        "documentation": {}
+    },
+    {
+        "label": "tkinter",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "tkinter",
+        "description": "tkinter",
+        "detail": "tkinter",
+        "documentation": {}
+    },
+    {
+        "label": "ttk",
+        "importPath": "tkinter",
+        "description": "tkinter",
+        "isExtraImport": true,
+        "detail": "tkinter",
+        "documentation": {}
+    },
+    {
+        "label": "ttk",
+        "importPath": "tkinter",
+        "description": "tkinter",
+        "isExtraImport": true,
+        "detail": "tkinter",
+        "documentation": {}
+    },
+    {
+        "label": "filedialog",
+        "importPath": "tkinter",
+        "description": "tkinter",
+        "isExtraImport": true,
+        "detail": "tkinter",
+        "documentation": {}
+    },
+    {
+        "label": "messagebox",
+        "importPath": "tkinter",
+        "description": "tkinter",
+        "isExtraImport": true,
+        "detail": "tkinter",
+        "documentation": {}
+    },
+    {
+        "label": "json",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "json",
+        "description": "json",
+        "detail": "json",
+        "documentation": {}
+    },
+    {
+        "label": "xml.etree.ElementTree",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "xml.etree.ElementTree",
+        "description": "xml.etree.ElementTree",
+        "detail": "xml.etree.ElementTree",
+        "documentation": {}
+    },
+    {
+        "label": "one",
+        "kind": 2,
+        "importPath": "com",
+        "description": "com",
+        "peekOfCode": "def one(x):\n    if x>0:\n        return 1\n    return 0\ndef equ(x,y):\n    return (1-one(x-y))*(1-one(y-x))    \ndef Сom(x):\n    for t in range(x):\n        com=\"П\"*(1-one((t%3)))+\"К\"*(1-one(2-(t%3)))+\"T\"*one(1-(1-one((t%3)))-(1-one(2-(t%3))))\n        print(com,end=\"\\r\")",
+        "detail": "com",
+        "documentation": {}
+    },
+    {
+        "label": "equ",
+        "kind": 2,
+        "importPath": "com",
+        "description": "com",
+        "peekOfCode": "def equ(x,y):\n    return (1-one(x-y))*(1-one(y-x))    \ndef Сom(x):\n    for t in range(x):\n        com=\"П\"*(1-one((t%3)))+\"К\"*(1-one(2-(t%3)))+\"T\"*one(1-(1-one((t%3)))-(1-one(2-(t%3))))\n        print(com,end=\"\\r\")\n        time.sleep(1)\ndef train(g1,g2,g3,m1,m2,m3,x=65,v=10):\n    M=[m1,m2,m3]\n    G=[g1,g2,g3]",
+        "detail": "com",
+        "documentation": {}
+    },
+    {
+        "label": "Сom",
+        "kind": 2,
+        "importPath": "com",
+        "description": "com",
+        "peekOfCode": "def Сom(x):\n    for t in range(x):\n        com=\"П\"*(1-one((t%3)))+\"К\"*(1-one(2-(t%3)))+\"T\"*one(1-(1-one((t%3)))-(1-one(2-(t%3))))\n        print(com,end=\"\\r\")\n        time.sleep(1)\ndef train(g1,g2,g3,m1,m2,m3,x=65,v=10):\n    M=[m1,m2,m3]\n    G=[g1,g2,g3]\n    i=0\n    m=M[i]",
+        "detail": "com",
+        "documentation": {}
+    },
+    {
+        "label": "train",
+        "kind": 2,
+        "importPath": "com",
+        "description": "com",
+        "peekOfCode": "def train(g1,g2,g3,m1,m2,m3,x=65,v=10):\n    M=[m1,m2,m3]\n    G=[g1,g2,g3]\n    i=0\n    m=M[i]\n    for t in range(x):\n        semofor=1*(1-one((G[i]-m+M[i])))+0*(1-(1-one((m-M[i])))*(1-one((M[i]-m))))*one((G[i]-m+M[i]))\n        semofor_text=\"Закрыт\"*semofor+\"Открыт\"*(1-semofor)\n        vagon_text=\"Cтоять\"*(1-semofor)+\"Ехать\"*(semofor)\n        print(m,semofor_text,\"\\t\",vagon_text)",
+        "detail": "com",
+        "documentation": {}
+    },
+    {
+        "label": "rand",
+        "kind": 2,
+        "importPath": "com",
+        "description": "com",
+        "peekOfCode": "def rand(number):\n    digits = list(str(number))\n    sdvig=int(len(digits)/4)\n    a=digits[:sdvig]\n    a=a+(digits[len(digits)-sdvig:])\n    b=digits[sdvig:len(digits)-sdvig]\n    s=a+b\n    s1=b+a\n    print(int(''.join(s))*int(''.join(s1))/10**(2*len(digits)-1))\ndef romantic():",
+        "detail": "com",
+        "documentation": {}
+    },
+    {
+        "label": "romantic",
+        "kind": 2,
+        "importPath": "com",
+        "description": "com",
+        "peekOfCode": "def romantic():\n    Np=[]\n    for i in range(0,100):\n        is_life=0\n        N=0\n        while(is_life<5):\n            r=random.randint(-1,1)\n            if r==0:\n                r=1\n            is_life+=r",
+        "detail": "com",
+        "documentation": {}
+    },
+    {
+        "label": "generator_gap",
+        "kind": 2,
+        "importPath": "com",
+        "description": "com",
+        "peekOfCode": "def generator_gap(x):\n    return (-1/x)*math.log(random.uniform(0,1))\ndef service(requests,number_queue):\n    table={\n        \"запросы\": requests,\n        \"канал 1\": [],\n        \"канал 2\": [],\n        \"обслуженно\": [],\n        \"отказ\": []\n    }",
+        "detail": "com",
+        "documentation": {}
+    },
+    {
+        "label": "service",
+        "kind": 2,
+        "importPath": "com",
+        "description": "com",
+        "peekOfCode": "def service(requests,number_queue):\n    table={\n        \"запросы\": requests,\n        \"канал 1\": [],\n        \"канал 2\": [],\n        \"обслуженно\": [],\n        \"отказ\": []\n    }\n    for i in range(number_queue):\n        table[f\"очередь {i+1}\"] = []",
+        "detail": "com",
+        "documentation": {}
+    },
+    {
+        "label": "initialize_matrices",
+        "kind": 2,
+        "importPath": "home",
+        "description": "home",
+        "peekOfCode": "def initialize_matrices():\n    \"\"\"Создает и инициализирует основные матрицы.\"\"\"\n    type_matrix = np.full((GRID_ROWS, GRID_COLS), EMPTY, dtype=int)\n    temp_matrix = np.full((GRID_ROWS, GRID_COLS), INITIAL_ROOM_TEMP, dtype=float)\n    # Устанавливаем стены по краям\n    type_matrix[0, :] = WALL\n    type_matrix[-1, :] = WALL\n    type_matrix[:, 0] = WALL\n    type_matrix[:, -1] = WALL\n    # Внутренние перегородки",
+        "detail": "home",
+        "documentation": {}
+    },
+    {
+        "label": "update_temperature",
+        "kind": 2,
+        "importPath": "home",
+        "description": "home",
+        "peekOfCode": "def update_temperature(self,type_matrix, temp_matrix):\n    \"\"\"Обновляет температуры в сетке, учитывая теплообмен между ячейками.\"\"\"\n    delta_matrix = np.zeros_like(temp_matrix, dtype=float)\n    for y in range(GRID_ROWS):\n        for x in range(GRID_COLS):\n            if type_matrix[y, x] in {HEATER, AC}:  # Батареи и кондиционеры имеют фиксированную температуру\n                continue\n            current_temp = temp_matrix[y, x]\n            total_delta = 0\n            neighbor_count = 0  # Количество соседей, участвующих в теплообмене",
+        "detail": "home",
+        "documentation": {}
+    },
+    {
+        "label": "print_matrix",
+        "kind": 2,
+        "importPath": "home",
+        "description": "home",
+        "peekOfCode": "def print_matrix(matrix):\n    I,J=matrix.shape\n    for i in range(I):\n        for j in range(J):\n            print(matrix[i,j],end=\" \")\n        print(\"\\n\")\ndef draw_grid(screen, type_matrix, temp_matrix):\n    \"\"\"Отображает температурное поле на экране.\"\"\"\n    for y in range(GRID_ROWS):\n        for x in range(GRID_COLS):",
+        "detail": "home",
+        "documentation": {}
+    },
+    {
+        "label": "draw_grid",
+        "kind": 2,
+        "importPath": "home",
+        "description": "home",
+        "peekOfCode": "def draw_grid(screen, type_matrix, temp_matrix):\n    \"\"\"Отображает температурное поле на экране.\"\"\"\n    for y in range(GRID_ROWS):\n        for x in range(GRID_COLS):\n            temp = temp_matrix[y, x]\n            if type_matrix[y, x] == WALL:\n                color = (100, 100, 100)  # Серый цвет для стен\n            elif type_matrix[y, x] == DOOR:\n                color = (200, 150, 50)  # Оранжевый цвет для двери\n            elif type_matrix[y, x] == WINDOW:",
+        "detail": "home",
+        "documentation": {}
+    },
+    {
+        "label": "main",
+        "kind": 2,
+        "importPath": "home",
+        "description": "home",
+        "peekOfCode": "def main():\n    pygame.init()\n    screen = pygame.display.set_mode((WIDTH, HEIGHT))\n    pygame.display.set_caption(\"Модель умного дома\")\n    type_matrix, temp_matrix = initialize_matrices()\n    clock = pygame.time.Clock()\n    running = True\n    def pos_cell(event,value):\n        pos=event.pos\n        x,y=int(pos[0]//CELL_SIZE),int(pos[1]//CELL_SIZE)",
+        "detail": "home",
+        "documentation": {}
+    },
+    {
+        "label": "CELL_SIZE",
+        "kind": 5,
+        "importPath": "home",
+        "description": "home",
+        "peekOfCode": "CELL_SIZE = WIDTH // GRID_COLS  # Размер ячейки\n# Температурные параметры\nOUTSIDE_TEMP = -25    # Температура на улице\nHEATER_TEMP = 60    # Температура батарей\nAC_TEMP = 18        # Температура кондиционера\nINITIAL_ROOM_TEMP = -10  # Начальная температура в доме\n# Коэффициенты теплообмена\nWALL_RESISTANCE = 0.01  # Стены почти не пропускают тепло\nAIR_FLOW = 0.2         # Свободный теплообмен между соседними ячейками\nOPEN_DOOR_FLOW = 0.8   # Быстрый теплообмен через открытые двери",
+        "detail": "home",
+        "documentation": {}
+    },
+    {
+        "label": "OUTSIDE_TEMP",
+        "kind": 5,
+        "importPath": "home",
+        "description": "home",
+        "peekOfCode": "OUTSIDE_TEMP = -25    # Температура на улице\nHEATER_TEMP = 60    # Температура батарей\nAC_TEMP = 18        # Температура кондиционера\nINITIAL_ROOM_TEMP = -10  # Начальная температура в доме\n# Коэффициенты теплообмена\nWALL_RESISTANCE = 0.01  # Стены почти не пропускают тепло\nAIR_FLOW = 0.2         # Свободный теплообмен между соседними ячейками\nOPEN_DOOR_FLOW = 0.8   # Быстрый теплообмен через открытые двери\nWINDOW_FLOW = 0.7      # Теплообмен через окна\n# Определение типов клеток",
+        "detail": "home",
+        "documentation": {}
+    },
+    {
+        "label": "HEATER_TEMP",
+        "kind": 5,
+        "importPath": "home",
+        "description": "home",
+        "peekOfCode": "HEATER_TEMP = 60    # Температура батарей\nAC_TEMP = 18        # Температура кондиционера\nINITIAL_ROOM_TEMP = -10  # Начальная температура в доме\n# Коэффициенты теплообмена\nWALL_RESISTANCE = 0.01  # Стены почти не пропускают тепло\nAIR_FLOW = 0.2         # Свободный теплообмен между соседними ячейками\nOPEN_DOOR_FLOW = 0.8   # Быстрый теплообмен через открытые двери\nWINDOW_FLOW = 0.7      # Теплообмен через окна\n# Определение типов клеток\nEMPTY, WALL, DOOR, WINDOW, HEATER, AC, OUTSIDE = range(7)",
+        "detail": "home",
+        "documentation": {}
+    },
+    {
+        "label": "AC_TEMP",
+        "kind": 5,
+        "importPath": "home",
+        "description": "home",
+        "peekOfCode": "AC_TEMP = 18        # Температура кондиционера\nINITIAL_ROOM_TEMP = -10  # Начальная температура в доме\n# Коэффициенты теплообмена\nWALL_RESISTANCE = 0.01  # Стены почти не пропускают тепло\nAIR_FLOW = 0.2         # Свободный теплообмен между соседними ячейками\nOPEN_DOOR_FLOW = 0.8   # Быстрый теплообмен через открытые двери\nWINDOW_FLOW = 0.7      # Теплообмен через окна\n# Определение типов клеток\nEMPTY, WALL, DOOR, WINDOW, HEATER, AC, OUTSIDE = range(7)\ndef initialize_matrices():",
+        "detail": "home",
+        "documentation": {}
+    },
+    {
+        "label": "INITIAL_ROOM_TEMP",
+        "kind": 5,
+        "importPath": "home",
+        "description": "home",
+        "peekOfCode": "INITIAL_ROOM_TEMP = -10  # Начальная температура в доме\n# Коэффициенты теплообмена\nWALL_RESISTANCE = 0.01  # Стены почти не пропускают тепло\nAIR_FLOW = 0.2         # Свободный теплообмен между соседними ячейками\nOPEN_DOOR_FLOW = 0.8   # Быстрый теплообмен через открытые двери\nWINDOW_FLOW = 0.7      # Теплообмен через окна\n# Определение типов клеток\nEMPTY, WALL, DOOR, WINDOW, HEATER, AC, OUTSIDE = range(7)\ndef initialize_matrices():\n    \"\"\"Создает и инициализирует основные матрицы.\"\"\"",
+        "detail": "home",
+        "documentation": {}
+    },
+    {
+        "label": "WALL_RESISTANCE",
+        "kind": 5,
+        "importPath": "home",
+        "description": "home",
+        "peekOfCode": "WALL_RESISTANCE = 0.01  # Стены почти не пропускают тепло\nAIR_FLOW = 0.2         # Свободный теплообмен между соседними ячейками\nOPEN_DOOR_FLOW = 0.8   # Быстрый теплообмен через открытые двери\nWINDOW_FLOW = 0.7      # Теплообмен через окна\n# Определение типов клеток\nEMPTY, WALL, DOOR, WINDOW, HEATER, AC, OUTSIDE = range(7)\ndef initialize_matrices():\n    \"\"\"Создает и инициализирует основные матрицы.\"\"\"\n    type_matrix = np.full((GRID_ROWS, GRID_COLS), EMPTY, dtype=int)\n    temp_matrix = np.full((GRID_ROWS, GRID_COLS), INITIAL_ROOM_TEMP, dtype=float)",
+        "detail": "home",
+        "documentation": {}
+    },
+    {
+        "label": "AIR_FLOW",
+        "kind": 5,
+        "importPath": "home",
+        "description": "home",
+        "peekOfCode": "AIR_FLOW = 0.2         # Свободный теплообмен между соседними ячейками\nOPEN_DOOR_FLOW = 0.8   # Быстрый теплообмен через открытые двери\nWINDOW_FLOW = 0.7      # Теплообмен через окна\n# Определение типов клеток\nEMPTY, WALL, DOOR, WINDOW, HEATER, AC, OUTSIDE = range(7)\ndef initialize_matrices():\n    \"\"\"Создает и инициализирует основные матрицы.\"\"\"\n    type_matrix = np.full((GRID_ROWS, GRID_COLS), EMPTY, dtype=int)\n    temp_matrix = np.full((GRID_ROWS, GRID_COLS), INITIAL_ROOM_TEMP, dtype=float)\n    # Устанавливаем стены по краям",
+        "detail": "home",
+        "documentation": {}
+    },
+    {
+        "label": "OPEN_DOOR_FLOW",
+        "kind": 5,
+        "importPath": "home",
+        "description": "home",
+        "peekOfCode": "OPEN_DOOR_FLOW = 0.8   # Быстрый теплообмен через открытые двери\nWINDOW_FLOW = 0.7      # Теплообмен через окна\n# Определение типов клеток\nEMPTY, WALL, DOOR, WINDOW, HEATER, AC, OUTSIDE = range(7)\ndef initialize_matrices():\n    \"\"\"Создает и инициализирует основные матрицы.\"\"\"\n    type_matrix = np.full((GRID_ROWS, GRID_COLS), EMPTY, dtype=int)\n    temp_matrix = np.full((GRID_ROWS, GRID_COLS), INITIAL_ROOM_TEMP, dtype=float)\n    # Устанавливаем стены по краям\n    type_matrix[0, :] = WALL",
+        "detail": "home",
+        "documentation": {}
+    },
+    {
+        "label": "WINDOW_FLOW",
+        "kind": 5,
+        "importPath": "home",
+        "description": "home",
+        "peekOfCode": "WINDOW_FLOW = 0.7      # Теплообмен через окна\n# Определение типов клеток\nEMPTY, WALL, DOOR, WINDOW, HEATER, AC, OUTSIDE = range(7)\ndef initialize_matrices():\n    \"\"\"Создает и инициализирует основные матрицы.\"\"\"\n    type_matrix = np.full((GRID_ROWS, GRID_COLS), EMPTY, dtype=int)\n    temp_matrix = np.full((GRID_ROWS, GRID_COLS), INITIAL_ROOM_TEMP, dtype=float)\n    # Устанавливаем стены по краям\n    type_matrix[0, :] = WALL\n    type_matrix[-1, :] = WALL",
+        "detail": "home",
+        "documentation": {}
+    },
+    {
+        "label": "SmartHomeApp",
+        "kind": 6,
+        "importPath": "home_tk",
+        "description": "home_tk",
+        "peekOfCode": "class SmartHomeApp:\n    def __init__(self, root):\n        self.root = root\n        self.root.title(\"Умный дом — Симуляция и Управление\")\n        # Основной фрейм\n        main_frame = ttk.Frame(root)\n        main_frame.pack(fill=\"both\", expand=True)\n        # Левая часть (Симуляция)\n        sim_frame = ttk.Frame(main_frame)\n        sim_frame.grid(row=0, column=0, padx=10, pady=10)",
+        "detail": "home_tk",
+        "documentation": {}
+    },
+    {
+        "label": "initialize_matrices",
+        "kind": 2,
+        "importPath": "home_tk",
+        "description": "home_tk",
+        "peekOfCode": "def initialize_matrices():\n    \"\"\"Создает и инициализирует основные матрицы.\"\"\"\n    type_matrix = np.full((GRID_ROWS, GRID_COLS), OUTSIDE, dtype=int)  # Весь мир - улица\n    temp_matrix = np.full((GRID_ROWS, GRID_COLS), OUTSIDE_TEMP, dtype=float)  # Улица холодная\n    # Устанавливаем стены дома (на одну клетку меньше, чем границы системы)\n    type_matrix[1:-1, 1:-1] = EMPTY  # Внутри дома пустые клетки\n    type_matrix[2:-2, 2:-2] = EMPTY  # Гарантируем, что внутри дома пусто\n    # Стены дома\n    type_matrix[2, 2:-2] = WALL\n    type_matrix[-3, 2:-2] = WALL",
+        "detail": "home_tk",
+        "documentation": {}
+    },
+    {
+        "label": "CELL_SIZE",
+        "kind": 5,
+        "importPath": "home_tk",
+        "description": "home_tk",
+        "peekOfCode": "CELL_SIZE = WIDTH // GRID_COLS  # Размер ячейки\n# Температурные параметры\nOUTSIDE_TEMP = -25    # Температура на улице\nHEATER_TEMP = 60      # Температура батарей\nAC_TEMP = 18          # Температура кондиционера\nINITIAL_ROOM_TEMP = -10  # Начальная температура в доме\n# Коэффициенты теплообмена\nWALL_RESISTANCE = 0.01  # Стены почти не пропускают тепло\nAIR_FLOW = 0.2\nOPEN_DOOR_FLOW = 0.8",
+        "detail": "home_tk",
+        "documentation": {}
+    },
+    {
+        "label": "OUTSIDE_TEMP",
+        "kind": 5,
+        "importPath": "home_tk",
+        "description": "home_tk",
+        "peekOfCode": "OUTSIDE_TEMP = -25    # Температура на улице\nHEATER_TEMP = 60      # Температура батарей\nAC_TEMP = 18          # Температура кондиционера\nINITIAL_ROOM_TEMP = -10  # Начальная температура в доме\n# Коэффициенты теплообмена\nWALL_RESISTANCE = 0.01  # Стены почти не пропускают тепло\nAIR_FLOW = 0.2\nOPEN_DOOR_FLOW = 0.8\nWINDOW_FLOW = 0.7\n# Определение типов клеток",
+        "detail": "home_tk",
+        "documentation": {}
+    },
+    {
+        "label": "HEATER_TEMP",
+        "kind": 5,
+        "importPath": "home_tk",
+        "description": "home_tk",
+        "peekOfCode": "HEATER_TEMP = 60      # Температура батарей\nAC_TEMP = 18          # Температура кондиционера\nINITIAL_ROOM_TEMP = -10  # Начальная температура в доме\n# Коэффициенты теплообмена\nWALL_RESISTANCE = 0.01  # Стены почти не пропускают тепло\nAIR_FLOW = 0.2\nOPEN_DOOR_FLOW = 0.8\nWINDOW_FLOW = 0.7\n# Определение типов клеток\nEMPTY, WALL, DOOR, WINDOW, HEATER, AC, OUTSIDE = range(7)",
+        "detail": "home_tk",
+        "documentation": {}
+    },
+    {
+        "label": "AC_TEMP",
+        "kind": 5,
+        "importPath": "home_tk",
+        "description": "home_tk",
+        "peekOfCode": "AC_TEMP = 18          # Температура кондиционера\nINITIAL_ROOM_TEMP = -10  # Начальная температура в доме\n# Коэффициенты теплообмена\nWALL_RESISTANCE = 0.01  # Стены почти не пропускают тепло\nAIR_FLOW = 0.2\nOPEN_DOOR_FLOW = 0.8\nWINDOW_FLOW = 0.7\n# Определение типов клеток\nEMPTY, WALL, DOOR, WINDOW, HEATER, AC, OUTSIDE = range(7)\ndef initialize_matrices():",
+        "detail": "home_tk",
+        "documentation": {}
+    },
+    {
+        "label": "INITIAL_ROOM_TEMP",
+        "kind": 5,
+        "importPath": "home_tk",
+        "description": "home_tk",
+        "peekOfCode": "INITIAL_ROOM_TEMP = -10  # Начальная температура в доме\n# Коэффициенты теплообмена\nWALL_RESISTANCE = 0.01  # Стены почти не пропускают тепло\nAIR_FLOW = 0.2\nOPEN_DOOR_FLOW = 0.8\nWINDOW_FLOW = 0.7\n# Определение типов клеток\nEMPTY, WALL, DOOR, WINDOW, HEATER, AC, OUTSIDE = range(7)\ndef initialize_matrices():\n    \"\"\"Создает и инициализирует основные матрицы.\"\"\"",
+        "detail": "home_tk",
+        "documentation": {}
+    },
+    {
+        "label": "WALL_RESISTANCE",
+        "kind": 5,
+        "importPath": "home_tk",
+        "description": "home_tk",
+        "peekOfCode": "WALL_RESISTANCE = 0.01  # Стены почти не пропускают тепло\nAIR_FLOW = 0.2\nOPEN_DOOR_FLOW = 0.8\nWINDOW_FLOW = 0.7\n# Определение типов клеток\nEMPTY, WALL, DOOR, WINDOW, HEATER, AC, OUTSIDE = range(7)\ndef initialize_matrices():\n    \"\"\"Создает и инициализирует основные матрицы.\"\"\"\n    type_matrix = np.full((GRID_ROWS, GRID_COLS), OUTSIDE, dtype=int)  # Весь мир - улица\n    temp_matrix = np.full((GRID_ROWS, GRID_COLS), OUTSIDE_TEMP, dtype=float)  # Улица холодная",
+        "detail": "home_tk",
+        "documentation": {}
+    },
+    {
+        "label": "AIR_FLOW",
+        "kind": 5,
+        "importPath": "home_tk",
+        "description": "home_tk",
+        "peekOfCode": "AIR_FLOW = 0.2\nOPEN_DOOR_FLOW = 0.8\nWINDOW_FLOW = 0.7\n# Определение типов клеток\nEMPTY, WALL, DOOR, WINDOW, HEATER, AC, OUTSIDE = range(7)\ndef initialize_matrices():\n    \"\"\"Создает и инициализирует основные матрицы.\"\"\"\n    type_matrix = np.full((GRID_ROWS, GRID_COLS), OUTSIDE, dtype=int)  # Весь мир - улица\n    temp_matrix = np.full((GRID_ROWS, GRID_COLS), OUTSIDE_TEMP, dtype=float)  # Улица холодная\n    # Устанавливаем стены дома (на одну клетку меньше, чем границы системы)",
+        "detail": "home_tk",
+        "documentation": {}
+    },
+    {
+        "label": "OPEN_DOOR_FLOW",
+        "kind": 5,
+        "importPath": "home_tk",
+        "description": "home_tk",
+        "peekOfCode": "OPEN_DOOR_FLOW = 0.8\nWINDOW_FLOW = 0.7\n# Определение типов клеток\nEMPTY, WALL, DOOR, WINDOW, HEATER, AC, OUTSIDE = range(7)\ndef initialize_matrices():\n    \"\"\"Создает и инициализирует основные матрицы.\"\"\"\n    type_matrix = np.full((GRID_ROWS, GRID_COLS), OUTSIDE, dtype=int)  # Весь мир - улица\n    temp_matrix = np.full((GRID_ROWS, GRID_COLS), OUTSIDE_TEMP, dtype=float)  # Улица холодная\n    # Устанавливаем стены дома (на одну клетку меньше, чем границы системы)\n    type_matrix[1:-1, 1:-1] = EMPTY  # Внутри дома пустые клетки",
+        "detail": "home_tk",
+        "documentation": {}
+    },
+    {
+        "label": "WINDOW_FLOW",
+        "kind": 5,
+        "importPath": "home_tk",
+        "description": "home_tk",
+        "peekOfCode": "WINDOW_FLOW = 0.7\n# Определение типов клеток\nEMPTY, WALL, DOOR, WINDOW, HEATER, AC, OUTSIDE = range(7)\ndef initialize_matrices():\n    \"\"\"Создает и инициализирует основные матрицы.\"\"\"\n    type_matrix = np.full((GRID_ROWS, GRID_COLS), OUTSIDE, dtype=int)  # Весь мир - улица\n    temp_matrix = np.full((GRID_ROWS, GRID_COLS), OUTSIDE_TEMP, dtype=float)  # Улица холодная\n    # Устанавливаем стены дома (на одну клетку меньше, чем границы системы)\n    type_matrix[1:-1, 1:-1] = EMPTY  # Внутри дома пустые клетки\n    type_matrix[2:-2, 2:-2] = EMPTY  # Гарантируем, что внутри дома пусто",
+        "detail": "home_tk",
+        "documentation": {}
+    },
+    {
+        "label": "SmartHomeApp",
+        "kind": 6,
+        "importPath": "home_tk_v1_g2",
+        "description": "home_tk_v1_g2",
+        "peekOfCode": "class SmartHomeApp:\n    def __init__(self, root):\n        self.root = root\n        self.root.title(\"Умный дом — Симуляция и Управление\")\n        # Основной фрейм\n        main_frame = ttk.Frame(root)\n        main_frame.pack(fill=\"both\", expand=True)\n        # Левая часть (Симуляция)\n        sim_frame = ttk.Frame(main_frame)\n        sim_frame.grid(row=0, column=0, padx=10, pady=10)",
+        "detail": "home_tk_v1_g2",
+        "documentation": {}
+    },
+    {
+        "label": "initialize_matrices",
+        "kind": 2,
+        "importPath": "home_tk_v1_g2",
+        "description": "home_tk_v1_g2",
+        "peekOfCode": "def initialize_matrices():\n    \"\"\"Создает и инициализирует основные матрицы.\"\"\"\n    type_matrix = np.full((GRID_ROWS, GRID_COLS), OUTSIDE, dtype=int)  # Весь мир - улица\n    temp_matrix = np.full((GRID_ROWS, GRID_COLS), OUTSIDE_TEMP, dtype=float)  # Улица холодная\n    # Устанавливаем стены дома (на одну клетку меньше, чем границы системы)\n    type_matrix[1:-1, 1:-1] = EMPTY  # Внутри дома пустые клетки\n    type_matrix[2:-2, 2:-2] = EMPTY  # Гарантируем, что внутри дома пусто\n    # Стены дома\n    type_matrix[2, 2:-2] = WALL\n    type_matrix[-3, 2:-2] = WALL",
+        "detail": "home_tk_v1_g2",
+        "documentation": {}
+    },
+    {
+        "label": "CELL_SIZE",
+        "kind": 5,
+        "importPath": "home_tk_v1_g2",
+        "description": "home_tk_v1_g2",
+        "peekOfCode": "CELL_SIZE = WIDTH // GRID_COLS  # Размер ячейки\n# Температурные параметры\nOUTSIDE_TEMP = -25    # Температура на улице\nHEATER_TEMP = 60      # Температура батарей\nAC_TEMP = 18          # Температура кондиционера\nINITIAL_ROOM_TEMP = -10  # Начальная температура в доме\n# Коэффициенты теплообмена\nWALL_RESISTANCE = 0.01  # Стены почти не пропускают тепло\nAIR_FLOW = 0.2\nOPEN_DOOR_FLOW = 0.8",
+        "detail": "home_tk_v1_g2",
+        "documentation": {}
+    },
+    {
+        "label": "OUTSIDE_TEMP",
+        "kind": 5,
+        "importPath": "home_tk_v1_g2",
+        "description": "home_tk_v1_g2",
+        "peekOfCode": "OUTSIDE_TEMP = -25    # Температура на улице\nHEATER_TEMP = 60      # Температура батарей\nAC_TEMP = 18          # Температура кондиционера\nINITIAL_ROOM_TEMP = -10  # Начальная температура в доме\n# Коэффициенты теплообмена\nWALL_RESISTANCE = 0.01  # Стены почти не пропускают тепло\nAIR_FLOW = 0.2\nOPEN_DOOR_FLOW = 0.8\nWINDOW_FLOW = 0.7\n# Определение типов клеток",
+        "detail": "home_tk_v1_g2",
+        "documentation": {}
+    },
+    {
+        "label": "HEATER_TEMP",
+        "kind": 5,
+        "importPath": "home_tk_v1_g2",
+        "description": "home_tk_v1_g2",
+        "peekOfCode": "HEATER_TEMP = 60      # Температура батарей\nAC_TEMP = 18          # Температура кондиционера\nINITIAL_ROOM_TEMP = -10  # Начальная температура в доме\n# Коэффициенты теплообмена\nWALL_RESISTANCE = 0.01  # Стены почти не пропускают тепло\nAIR_FLOW = 0.2\nOPEN_DOOR_FLOW = 0.8\nWINDOW_FLOW = 0.7\n# Определение типов клеток\nEMPTY, WALL, DOOR, WINDOW, HEATER, AC, OUTSIDE = range(7)",
+        "detail": "home_tk_v1_g2",
+        "documentation": {}
+    },
+    {
+        "label": "AC_TEMP",
+        "kind": 5,
+        "importPath": "home_tk_v1_g2",
+        "description": "home_tk_v1_g2",
+        "peekOfCode": "AC_TEMP = 18          # Температура кондиционера\nINITIAL_ROOM_TEMP = -10  # Начальная температура в доме\n# Коэффициенты теплообмена\nWALL_RESISTANCE = 0.01  # Стены почти не пропускают тепло\nAIR_FLOW = 0.2\nOPEN_DOOR_FLOW = 0.8\nWINDOW_FLOW = 0.7\n# Определение типов клеток\nEMPTY, WALL, DOOR, WINDOW, HEATER, AC, OUTSIDE = range(7)\ndef initialize_matrices():",
+        "detail": "home_tk_v1_g2",
+        "documentation": {}
+    },
+    {
+        "label": "INITIAL_ROOM_TEMP",
+        "kind": 5,
+        "importPath": "home_tk_v1_g2",
+        "description": "home_tk_v1_g2",
+        "peekOfCode": "INITIAL_ROOM_TEMP = -10  # Начальная температура в доме\n# Коэффициенты теплообмена\nWALL_RESISTANCE = 0.01  # Стены почти не пропускают тепло\nAIR_FLOW = 0.2\nOPEN_DOOR_FLOW = 0.8\nWINDOW_FLOW = 0.7\n# Определение типов клеток\nEMPTY, WALL, DOOR, WINDOW, HEATER, AC, OUTSIDE = range(7)\ndef initialize_matrices():\n    \"\"\"Создает и инициализирует основные матрицы.\"\"\"",
+        "detail": "home_tk_v1_g2",
+        "documentation": {}
+    },
+    {
+        "label": "WALL_RESISTANCE",
+        "kind": 5,
+        "importPath": "home_tk_v1_g2",
+        "description": "home_tk_v1_g2",
+        "peekOfCode": "WALL_RESISTANCE = 0.01  # Стены почти не пропускают тепло\nAIR_FLOW = 0.2\nOPEN_DOOR_FLOW = 0.8\nWINDOW_FLOW = 0.7\n# Определение типов клеток\nEMPTY, WALL, DOOR, WINDOW, HEATER, AC, OUTSIDE = range(7)\ndef initialize_matrices():\n    \"\"\"Создает и инициализирует основные матрицы.\"\"\"\n    type_matrix = np.full((GRID_ROWS, GRID_COLS), OUTSIDE, dtype=int)  # Весь мир - улица\n    temp_matrix = np.full((GRID_ROWS, GRID_COLS), OUTSIDE_TEMP, dtype=float)  # Улица холодная",
+        "detail": "home_tk_v1_g2",
+        "documentation": {}
+    },
+    {
+        "label": "AIR_FLOW",
+        "kind": 5,
+        "importPath": "home_tk_v1_g2",
+        "description": "home_tk_v1_g2",
+        "peekOfCode": "AIR_FLOW = 0.2\nOPEN_DOOR_FLOW = 0.8\nWINDOW_FLOW = 0.7\n# Определение типов клеток\nEMPTY, WALL, DOOR, WINDOW, HEATER, AC, OUTSIDE = range(7)\ndef initialize_matrices():\n    \"\"\"Создает и инициализирует основные матрицы.\"\"\"\n    type_matrix = np.full((GRID_ROWS, GRID_COLS), OUTSIDE, dtype=int)  # Весь мир - улица\n    temp_matrix = np.full((GRID_ROWS, GRID_COLS), OUTSIDE_TEMP, dtype=float)  # Улица холодная\n    # Устанавливаем стены дома (на одну клетку меньше, чем границы системы)",
+        "detail": "home_tk_v1_g2",
+        "documentation": {}
+    },
+    {
+        "label": "OPEN_DOOR_FLOW",
+        "kind": 5,
+        "importPath": "home_tk_v1_g2",
+        "description": "home_tk_v1_g2",
+        "peekOfCode": "OPEN_DOOR_FLOW = 0.8\nWINDOW_FLOW = 0.7\n# Определение типов клеток\nEMPTY, WALL, DOOR, WINDOW, HEATER, AC, OUTSIDE = range(7)\ndef initialize_matrices():\n    \"\"\"Создает и инициализирует основные матрицы.\"\"\"\n    type_matrix = np.full((GRID_ROWS, GRID_COLS), OUTSIDE, dtype=int)  # Весь мир - улица\n    temp_matrix = np.full((GRID_ROWS, GRID_COLS), OUTSIDE_TEMP, dtype=float)  # Улица холодная\n    # Устанавливаем стены дома (на одну клетку меньше, чем границы системы)\n    type_matrix[1:-1, 1:-1] = EMPTY  # Внутри дома пустые клетки",
+        "detail": "home_tk_v1_g2",
+        "documentation": {}
+    },
+    {
+        "label": "WINDOW_FLOW",
+        "kind": 5,
+        "importPath": "home_tk_v1_g2",
+        "description": "home_tk_v1_g2",
+        "peekOfCode": "WINDOW_FLOW = 0.7\n# Определение типов клеток\nEMPTY, WALL, DOOR, WINDOW, HEATER, AC, OUTSIDE = range(7)\ndef initialize_matrices():\n    \"\"\"Создает и инициализирует основные матрицы.\"\"\"\n    type_matrix = np.full((GRID_ROWS, GRID_COLS), OUTSIDE, dtype=int)  # Весь мир - улица\n    temp_matrix = np.full((GRID_ROWS, GRID_COLS), OUTSIDE_TEMP, dtype=float)  # Улица холодная\n    # Устанавливаем стены дома (на одну клетку меньше, чем границы системы)\n    type_matrix[1:-1, 1:-1] = EMPTY  # Внутри дома пустые клетки\n    type_matrix[2:-2, 2:-2] = EMPTY  # Гарантируем, что внутри дома пусто",
+        "detail": "home_tk_v1_g2",
+        "documentation": {}
+    }
+]

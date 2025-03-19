@@ -69,7 +69,9 @@ class SmartHomeApp:
         
         # Инициализация матриц
         self.type_matrix, self.temp_matrix = initialize_matrices()
-
+        type_matrix = np.full((GRID_ROWS, GRID_COLS), OUTSIDE, dtype=int)  # Весь мир - улица
+        temp_matrix = np.full((GRID_ROWS, GRID_COLS), OUTSIDE_TEMP, dtype=float)  # Улица холодная
+        self.load_json("defult.json")
         # Рисуем сетку и обновляем температуру
         self.draw_grid()
         self.root.after(1000, self.simulation_step)
@@ -319,9 +321,10 @@ class SmartHomeApp:
         ttk.Button(parent, text="Загрузить XML", command=self.load_xml).grid(row=16, column=0, pady=10)
         ttk.Button(parent, text="Сохранить XML", command=self.save_xml).grid(row=16, column=1, pady=10)
 
-    def load_json(self):
+    def load_json(self,file_path=None):
         """Загружает конфигурацию из JSON файла."""
-        file_path = filedialog.askopenfilename(filetypes=[("JSON files", "*.json")])
+        if file_path is None:
+            file_path = filedialog.askopenfilename(filetypes=[("JSON files", "*.json")])
         if file_path:
             try:
                 with open(file_path, 'r') as file:
@@ -333,9 +336,10 @@ class SmartHomeApp:
             except Exception as e:
                 messagebox.showerror("Ошибка", f"Не удалось загрузить файл: {e}")
 
-    def save_json(self):
+    def save_json(self,file_path=None):
         """Сохраняет конфигурацию в JSON файл."""
-        file_path = filedialog.asksaveasfilename(defaultextension=".json", filetypes=[("JSON files", "*.json")])
+        if file_path is None:
+            file_path = filedialog.asksaveasfilename(defaultextension=".json", filetypes=[("JSON files", "*.json")])
         if file_path:
             try:
                 data = {
