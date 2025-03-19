@@ -3,6 +3,7 @@ from tkinter import ttk, filedialog, messagebox
 import numpy as np
 import json
 import xml.etree.ElementTree as ET
+from functools import lru_cache
 
 # Константы
 WIDTH, HEIGHT = 600, 600  # Размеры окна для симуляции
@@ -68,7 +69,6 @@ class SmartHomeApp:
         self.selected_type = tk.IntVar(value=HEATER)
         
         # Инициализация матриц
-        
         type_matrix = np.full((GRID_ROWS, GRID_COLS), OUTSIDE, dtype=int)  # Весь мир - улица
         temp_matrix = np.full((GRID_ROWS, GRID_COLS), OUTSIDE_TEMP, dtype=float)  # Улица холодная
         self.load_json("defult.json")
