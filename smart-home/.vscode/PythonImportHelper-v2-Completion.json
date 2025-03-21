@@ -445,6 +445,15 @@
         "documentation": {}
     },
     {
+        "label": "get_color_for_temp",
+        "kind": 2,
+        "importPath": "home_tk_v1_g2",
+        "description": "home_tk_v1_g2",
+        "peekOfCode": "def get_color_for_temp(temp):\n    \"\"\"Возвращает цвет в зависимости от температуры.\"\"\"\n    if temp < 0:\n        blue = 255\n        green = max(0, min(255, int(255 * (temp + 30) / 30)))\n        red = 0\n    elif 0 <= temp <= 35:\n        blue = max(0, min(255, int(255 * (1 - temp / 35))))\n        green = 255\n        red = 0",
+        "detail": "home_tk_v1_g2",
+        "documentation": {}
+    },
+    {
         "label": "CELL_SIZE",
         "kind": 5,
         "importPath": "home_tk_v1_g2",

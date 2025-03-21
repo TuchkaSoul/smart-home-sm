@@ -44,6 +44,23 @@ def initialize_matrices():
 
     return type_matrix, temp_matrix
 
+@lru_cache(maxsize=8000)
+def get_color_for_temp(temp):
+    """Возвращает цвет в зависимости от температуры."""
+    if temp < 0:
+        blue = 255
+        green = max(0, min(255, int(255 * (temp + 30) / 30)))
+        red = 0
+    elif 0 <= temp <= 35:
+        blue = max(0, min(255, int(255 * (1 - temp / 35))))
+        green = 255
+        red = 0
+    else:
+        blue = 0
+        green = max(0, min(255, int(255 * (1 - (temp - 35) / 35))))
+        red = 255
+    return f"#{red:02x}{green:02x}{blue:02x}"
+
 class SmartHomeApp:
     def __init__(self, root):
         self.root = root
@@ -100,6 +117,7 @@ class SmartHomeApp:
         self.root.after(int(1000/s) if s!=0 else 1 , self.simulation_step)
     
     
+
     def draw_grid(self):
         """Рисует сетку и температурное поле с плавным градиентом."""
         self.canvas.delete("all")
@@ -107,110 +125,92 @@ class SmartHomeApp:
         for y in range(GRID_ROWS):
             for x in range(GRID_COLS):
                 temp = self.temp_matrix[y, x]
+                cell_type = self.type_matrix[y, x]
 
-                if self.type_matrix[y, x] == WALL:
+                if cell_type == WALL:
                     color = "gray"
-                elif self.type_matrix[y, x] == DOOR:
+                elif cell_type == DOOR:
                     color = "orange"
-                elif self.type_matrix[y, x] == WINDOW:
+                elif cell_type == WINDOW:
                     color = "lightblue"
-                
                 else:
-                    # Определяем цвет по температуре
-                    if temp < 0:
-                        # Градиент от синего (#0000FF) к голубому (#00FFFF)
-                        blue = 255
-                        green = max(0, min(255, int(255 * (temp + 30) / 30)))  # От -30 до 0
-                        red = 0
-                    elif 0 <= temp <= 35:
-                        # Градиент от голубого (#00FFFF) к зелёному (#00FF00)
-                        blue = max(0, min(255, int(255 * (1 - temp / 35))))  # Чем теплее, тем меньше синего
-                        green = 255
-                        red = 0
-                    else:
-                        # Градиент от зелёного (#00FF00) к красному (#FF0000)
-                        blue = 0
-                        green = max(0, min(255, int(255 * (1 - (temp - 35) / 35))))  # Чем горячее, тем меньше зелёного
-                        red = 255
+                    color = get_color_for_temp(temp)
 
-                    # Создаём цвет в формате HEX
-                    color = f"#{red:02x}{green:02x}{blue:02x}"
-
-                # Координаты клетки
                 x1, y1 = x * CELL_SIZE, y * CELL_SIZE
                 x2, y2 = x1 + CELL_SIZE, y1 + CELL_SIZE
 
-                # Рисуем клетку
                 self.canvas.create_rectangle(x1, y1, x2, y2, fill=color, outline="black")
+    
+    
+    def get_flow_between_cells(self, y1, x1, y2, x2):
+        """
+        Возвращает коэффициент теплообмена между двумя клетками (y1, x1) и (y2, x2).
+        Учитывает тип клеток (стены, двери, окна) и базовый коэффициент теплообмена.
+        """
+        flow = AIR_FLOW  # Базовый коэффициент теплообмена
 
-    
-    
+        # Динамический коэффициент, зависящий от разницы температур
+        temp_diff = abs(self.temp_matrix[y2, x2] - self.temp_matrix[y1, x1])
+        flow *= (1 + 0.1 * temp_diff)  # Коэффициент k = 0.1
+
+        # Учитываем стены, двери и окна
+        if self.type_matrix[y1, x1] == DOOR or self.type_matrix[y2, x2] == DOOR:
+            flow *= OPEN_DOOR_FLOW
+        elif self.type_matrix[y1, x1] == WINDOW or self.type_matrix[y2, x2] == WINDOW:
+            flow *= WINDOW_FLOW
+        elif self.type_matrix[y1, x1] == WALL or self.type_matrix[y2, x2] == WALL:
+            flow *= WALL_RESISTANCE
+
+        return flow
+   
+    def calculate_temp_delta(self, y, x, current_temp):
+        """
+        Рассчитывает изменение температуры для клетки (y, x) на основе температуры соседей.
+        """
+        total_delta = 0
+        neighbor_count = 0
+
+        # Соседи клетки (вверх, вниз, влево, вправо)
+        neighbors = [(y-1, x), (y+1, x), (y, x-1), (y, x+1)]
+        
+        for ny, nx in neighbors:
+            if 0 <= ny < GRID_ROWS and 0 <= nx < GRID_COLS:
+                # Температура соседа
+                neighbor_temp = OUTSIDE_TEMP if self.type_matrix[ny, nx] == OUTSIDE else self.temp_matrix[ny, nx]
+                
+                # Коэффициент теплообмена между текущей клеткой и соседом
+                flow = self.get_flow_between_cells(y, x, ny, nx)
+                
+                # Изменение температуры
+                delta = (neighbor_temp - current_temp) * flow
+                total_delta += delta
+                neighbor_count += 1
+
+        # Возвращаем среднее изменение температуры
+        return total_delta / neighbor_count if neighbor_count > 0 else 0        
     def update_temperature(self):
         """Обновляет температуры в сетке, учитывая теплообмен между ячейками."""
         delta_matrix = np.zeros_like(self.temp_matrix, dtype=float)
         
-        # Базовые коэффициенты
-        base_flow = AIR_FLOW
-        k = 0.1  # Коэффициент, регулирующий влияние разницы температур
-
         for y in range(GRID_ROWS):
             for x in range(GRID_COLS):
-                # Если ячейка является улицей, её температура всегда равна OUTSIDE_TEMP
+                # Если клетка — улица, её температура фиксирована
                 if self.type_matrix[y, x] == OUTSIDE:
                     self.temp_matrix[y, x] = OUTSIDE_TEMP
                     continue
                 
-                # Если ячейка является батареей или кондиционером, её температура фиксирована
+                # Если клетка — батарея или кондиционер, её температура фиксирована
                 if self.type_matrix[y, x] in {HEATER, AC}:
                     continue
                 
+                # Текущая температура клетки
                 current_temp = self.temp_matrix[y, x]
-                total_delta = 0
-                neighbor_count = 0  # Количество соседей, участвующих в теплообмене
                 
-                neighbors = [(y-1, x), 
-                            (y+1, x), 
-                            (y, x-1), 
-                            (y, x+1)]
-                
-                for ny, nx in neighbors:
-                    if 0 <= ny < GRID_ROWS and 0 <= nx < GRID_COLS:
-                        # Если соседняя ячейка является улицей, её температура равна OUTSIDE_TEMP
-                        if self.type_matrix[ny, nx] == OUTSIDE:
-                            neighbor_temp = OUTSIDE_TEMP
-                        else:
-                            neighbor_temp = self.temp_matrix[ny, nx]
-                        
-                        # Определяем базовый коэффициент теплообмена
-                        flow = base_flow
-                        
-                        # Динамический коэффициент, зависящий от разницы температур
-                        temp_diff = abs(neighbor_temp - current_temp)
-                        flow *= (1 + k * temp_diff)
-                        
-                        # Учитываем стены, двери и окна
-                        if self.type_matrix[y, x] == DOOR or self.type_matrix[ny, nx] == DOOR:
-                            flow *= OPEN_DOOR_FLOW
-                        elif self.type_matrix[y, x] == WINDOW or self.type_matrix[ny, nx] == WINDOW:
-                            flow *= WINDOW_FLOW
-                        elif self.type_matrix[y, x] == WALL or self.type_matrix[ny, nx] == WALL:
-                            flow *= WALL_RESISTANCE
-                        
-                        # Рассчитываем изменение температуры
-                        delta = (neighbor_temp - current_temp) * flow
-                        total_delta += delta
-                        neighbor_count += 1.0  # Считаем активных соседей
-                
-                if neighbor_count > 0:
-                    total_delta /= neighbor_count  # Нормируем по количеству соседей
-                
-                # Применяем изменение температуры, если оно не приводит к температуре ниже -257.3
-                if (self.temp_matrix[y, x] + total_delta > -257.3):
-                    delta_matrix[y, x] += total_delta
-                else:
-                    delta_matrix[y, x] = -257.3
-        
-        # Обновляем температуры всех ячеек, кроме улиц, батарей и кондиционеров
+                # Рассчитываем изменение температуры
+                delta = self.calculate_temp_delta(y, x, current_temp)
+                delta_matrix[y, x] = delta
+
+        # Применяем изменения температуры
         for y in range(GRID_ROWS):
             for x in range(GRID_COLS):
                 if self.type_matrix[y, x] not in {OUTSIDE, HEATER, AC}:
@@ -218,8 +218,7 @@ class SmartHomeApp:
     
     def clear_cell(self, event):
         x, y = event.x // CELL_SIZE, event.y // CELL_SIZE
-        self.type_matrix[y, x] = EMPTY
-        self.temp_matrix[y, x] = INITIAL_ROOM_TEMP
+        self.type_matrix[y, x] = EMPTY        
         self.draw_grid()
         
     def curs(self, event):
@@ -260,16 +259,9 @@ class SmartHomeApp:
             # Удаляем label через 2 секунды
             self.info_label.after(2000, self.info_label.destroy)
         
-    def set_heater(self, event):
-        x, y = event.x // CELL_SIZE, event.y // CELL_SIZE
-        self.type_matrix[y, x] = HEATER
-        self.temp_matrix[y, x] = HEATER_TEMP
-        self.draw_grid()
     
-    def set_door(self, event):
-        x, y = event.x // CELL_SIZE, event.y // CELL_SIZE
-        self.type_matrix[y, x] = DOOR
-        self.draw_grid()
+    
+    
 
     def add_cell_panel(self,frame):        
         ttk.Label(frame, text="Выберите тип клетки:").grid(row=9, column=0, padx=10, pady=10, sticky="w")
