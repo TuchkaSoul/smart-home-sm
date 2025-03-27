@@ -18,48 +18,21 @@
         "documentation": {}
     },
     {
-        "label": "numpy",
-        "kind": 6,
-        "isExtraImport": true,
-        "importPath": "numpy",
-        "description": "numpy",
-        "detail": "numpy",
-        "documentation": {}
-    },
-    {
-        "label": "math",
-        "kind": 6,
-        "isExtraImport": true,
-        "importPath": "math",
-        "description": "math",
-        "detail": "math",
-        "documentation": {}
-    },
-    {
-        "label": "sympy",
-        "kind": 6,
-        "isExtraImport": true,
-        "importPath": "sympy",
-        "description": "sympy",
-        "detail": "sympy",
-        "documentation": {}
-    },
-    {
-        "label": "matplotlib.pyplot",
-        "kind": 6,
-        "isExtraImport": true,
-        "importPath": "matplotlib.pyplot",
-        "description": "matplotlib.pyplot",
-        "detail": "matplotlib.pyplot",
-        "documentation": {}
-    },
-    {
         "label": "pygame",
         "kind": 6,
         "isExtraImport": true,
         "importPath": "pygame",
         "description": "pygame",
         "detail": "pygame",
+        "documentation": {}
+    },
+    {
+        "label": "numpy",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "numpy",
+        "description": "numpy",
+        "detail": "numpy",
         "documentation": {}
     },
     {
@@ -73,6 +46,54 @@
     },
     {
         "label": "ttk",
+        "importPath": "tkinter",
+        "description": "tkinter",
+        "isExtraImport": true,
+        "detail": "tkinter",
+        "documentation": {}
+    },
+    {
+        "label": "ttk",
+        "importPath": "tkinter",
+        "description": "tkinter",
+        "isExtraImport": true,
+        "detail": "tkinter",
+        "documentation": {}
+    },
+    {
+        "label": "filedialog",
+        "importPath": "tkinter",
+        "description": "tkinter",
+        "isExtraImport": true,
+        "detail": "tkinter",
+        "documentation": {}
+    },
+    {
+        "label": "messagebox",
+        "importPath": "tkinter",
+        "description": "tkinter",
+        "isExtraImport": true,
+        "detail": "tkinter",
+        "documentation": {}
+    },
+    {
+        "label": "ttk",
+        "importPath": "tkinter",
+        "description": "tkinter",
+        "isExtraImport": true,
+        "detail": "tkinter",
+        "documentation": {}
+    },
+    {
+        "label": "filedialog",
+        "importPath": "tkinter",
+        "description": "tkinter",
+        "isExtraImport": true,
+        "detail": "tkinter",
+        "documentation": {}
+    },
+    {
+        "label": "messagebox",
         "importPath": "tkinter",
         "description": "tkinter",
         "isExtraImport": true,
@@ -130,6 +151,30 @@
         "documentation": {}
     },
     {
+        "label": "lru_cache",
+        "importPath": "functools",
+        "description": "functools",
+        "isExtraImport": true,
+        "detail": "functools",
+        "documentation": {}
+    },
+    {
+        "label": "lru_cache",
+        "importPath": "functools",
+        "description": "functools",
+        "isExtraImport": true,
+        "detail": "functools",
+        "documentation": {}
+    },
+    {
+        "label": "clean",
+        "importPath": "bleach",
+        "description": "bleach",
+        "isExtraImport": true,
+        "detail": "bleach",
+        "documentation": {}
+    },
+    {
         "label": "one",
         "kind": 2,
         "importPath": "com",
@@ -180,24 +225,6 @@
         "importPath": "com",
         "description": "com",
         "peekOfCode": "def romantic():\n    Np=[]\n    for i in range(0,100):\n        is_life=0\n        N=0\n        while(is_life<5):\n            r=random.randint(-1,1)\n            if r==0:\n                r=1\n            is_life+=r",
-        "detail": "com",
-        "documentation": {}
-    },
-    {
-        "label": "generator_gap",
-        "kind": 2,
-        "importPath": "com",
-        "description": "com",
-        "peekOfCode": "def generator_gap(x):\n    return (-1/x)*math.log(random.uniform(0,1))\ndef service(requests,number_queue):\n    table={\n        \"запросы\": requests,\n        \"канал 1\": [],\n        \"канал 2\": [],\n        \"обслуженно\": [],\n        \"отказ\": []\n    }",
-        "detail": "com",
-        "documentation": {}
-    },
-    {
-        "label": "service",
-        "kind": 2,
-        "importPath": "com",
-        "description": "com",
-        "peekOfCode": "def service(requests,number_queue):\n    table={\n        \"запросы\": requests,\n        \"канал 1\": [],\n        \"канал 2\": [],\n        \"обслуженно\": [],\n        \"отказ\": []\n    }\n    for i in range(number_queue):\n        table[f\"очередь {i+1}\"] = []",
         "detail": "com",
         "documentation": {}
     },
@@ -429,18 +456,171 @@
     {
         "label": "SmartHomeApp",
         "kind": 6,
-        "importPath": "home_tk_v1_g2",
-        "description": "home_tk_v1_g2",
+        "importPath": "home_tk_g3",
+        "description": "home_tk_g3",
         "peekOfCode": "class SmartHomeApp:\n    def __init__(self, root):\n        self.root = root\n        self.root.title(\"Умный дом — Симуляция и Управление\")\n        # Основной фрейм\n        main_frame = ttk.Frame(root)\n        main_frame.pack(fill=\"both\", expand=True)\n        # Левая часть (Симуляция)\n        sim_frame = ttk.Frame(main_frame)\n        sim_frame.grid(row=0, column=0, padx=10, pady=10)",
-        "detail": "home_tk_v1_g2",
+        "detail": "home_tk_g3",
         "documentation": {}
     },
     {
-        "label": "initialize_matrices",
+        "label": "get_color_for_temp",
         "kind": 2,
+        "importPath": "home_tk_g3",
+        "description": "home_tk_g3",
+        "peekOfCode": "def get_color_for_temp(temp):\n    \"\"\"\n    Возвращает цвет в формате HEX в зависимости от температуры.\n    Кэширует результаты для ускорения работы.\n    \"\"\"\n    if temp < -30:\n        return \"#0000FF\"\n    elif -30 <= temp < 0:\n        ratio = (temp + 30) / 30\n        blue = 255",
+        "detail": "home_tk_g3",
+        "documentation": {}
+    },
+    {
+        "label": "CELL_SIZE",
+        "kind": 5,
+        "importPath": "home_tk_g3",
+        "description": "home_tk_g3",
+        "peekOfCode": "CELL_SIZE = WIDTH // GRID_COLS  # Размер ячейки\n# Определение типов клеток\nEMPTY, WALL, DOOR, WINDOW, HEATER, AC, OUTSIDE = range(7)\n# Константы для ключей\nTEMPERATURES = \"temperatures\"\nCOEFFICIENTS = \"coefficients\"\nOUTSIDE_TEMP = \"OUTSIDE_TEMP\"\nHEATER_TEMP = \"HEATER_TEMP\"\nAC_TEMP = \"AC_TEMP\"\nINITIAL_ROOM_TEMP = \"INITIAL_ROOM_TEMP\"",
+        "detail": "home_tk_g3",
+        "documentation": {}
+    },
+    {
+        "label": "TEMPERATURES",
+        "kind": 5,
+        "importPath": "home_tk_g3",
+        "description": "home_tk_g3",
+        "peekOfCode": "TEMPERATURES = \"temperatures\"\nCOEFFICIENTS = \"coefficients\"\nOUTSIDE_TEMP = \"OUTSIDE_TEMP\"\nHEATER_TEMP = \"HEATER_TEMP\"\nAC_TEMP = \"AC_TEMP\"\nINITIAL_ROOM_TEMP = \"INITIAL_ROOM_TEMP\"\nWALL_RESISTANCE = \"WALL_RESISTANCE\"\nAIR_FLOW = \"AIR_FLOW\"\nOPEN_DOOR_FLOW = \"OPEN_DOOR_FLOW\"\nWINDOW_FLOW = \"WINDOW_FLOW\"",
+        "detail": "home_tk_g3",
+        "documentation": {}
+    },
+    {
+        "label": "COEFFICIENTS",
+        "kind": 5,
+        "importPath": "home_tk_g3",
+        "description": "home_tk_g3",
+        "peekOfCode": "COEFFICIENTS = \"coefficients\"\nOUTSIDE_TEMP = \"OUTSIDE_TEMP\"\nHEATER_TEMP = \"HEATER_TEMP\"\nAC_TEMP = \"AC_TEMP\"\nINITIAL_ROOM_TEMP = \"INITIAL_ROOM_TEMP\"\nWALL_RESISTANCE = \"WALL_RESISTANCE\"\nAIR_FLOW = \"AIR_FLOW\"\nOPEN_DOOR_FLOW = \"OPEN_DOOR_FLOW\"\nWINDOW_FLOW = \"WINDOW_FLOW\"\n@lru_cache(maxsize=1000)",
+        "detail": "home_tk_g3",
+        "documentation": {}
+    },
+    {
+        "label": "OUTSIDE_TEMP",
+        "kind": 5,
+        "importPath": "home_tk_g3",
+        "description": "home_tk_g3",
+        "peekOfCode": "OUTSIDE_TEMP = \"OUTSIDE_TEMP\"\nHEATER_TEMP = \"HEATER_TEMP\"\nAC_TEMP = \"AC_TEMP\"\nINITIAL_ROOM_TEMP = \"INITIAL_ROOM_TEMP\"\nWALL_RESISTANCE = \"WALL_RESISTANCE\"\nAIR_FLOW = \"AIR_FLOW\"\nOPEN_DOOR_FLOW = \"OPEN_DOOR_FLOW\"\nWINDOW_FLOW = \"WINDOW_FLOW\"\n@lru_cache(maxsize=1000)\ndef get_color_for_temp(temp):",
+        "detail": "home_tk_g3",
+        "documentation": {}
+    },
+    {
+        "label": "HEATER_TEMP",
+        "kind": 5,
+        "importPath": "home_tk_g3",
+        "description": "home_tk_g3",
+        "peekOfCode": "HEATER_TEMP = \"HEATER_TEMP\"\nAC_TEMP = \"AC_TEMP\"\nINITIAL_ROOM_TEMP = \"INITIAL_ROOM_TEMP\"\nWALL_RESISTANCE = \"WALL_RESISTANCE\"\nAIR_FLOW = \"AIR_FLOW\"\nOPEN_DOOR_FLOW = \"OPEN_DOOR_FLOW\"\nWINDOW_FLOW = \"WINDOW_FLOW\"\n@lru_cache(maxsize=1000)\ndef get_color_for_temp(temp):\n    \"\"\"",
+        "detail": "home_tk_g3",
+        "documentation": {}
+    },
+    {
+        "label": "AC_TEMP",
+        "kind": 5,
+        "importPath": "home_tk_g3",
+        "description": "home_tk_g3",
+        "peekOfCode": "AC_TEMP = \"AC_TEMP\"\nINITIAL_ROOM_TEMP = \"INITIAL_ROOM_TEMP\"\nWALL_RESISTANCE = \"WALL_RESISTANCE\"\nAIR_FLOW = \"AIR_FLOW\"\nOPEN_DOOR_FLOW = \"OPEN_DOOR_FLOW\"\nWINDOW_FLOW = \"WINDOW_FLOW\"\n@lru_cache(maxsize=1000)\ndef get_color_for_temp(temp):\n    \"\"\"\n    Возвращает цвет в формате HEX в зависимости от температуры.",
+        "detail": "home_tk_g3",
+        "documentation": {}
+    },
+    {
+        "label": "INITIAL_ROOM_TEMP",
+        "kind": 5,
+        "importPath": "home_tk_g3",
+        "description": "home_tk_g3",
+        "peekOfCode": "INITIAL_ROOM_TEMP = \"INITIAL_ROOM_TEMP\"\nWALL_RESISTANCE = \"WALL_RESISTANCE\"\nAIR_FLOW = \"AIR_FLOW\"\nOPEN_DOOR_FLOW = \"OPEN_DOOR_FLOW\"\nWINDOW_FLOW = \"WINDOW_FLOW\"\n@lru_cache(maxsize=1000)\ndef get_color_for_temp(temp):\n    \"\"\"\n    Возвращает цвет в формате HEX в зависимости от температуры.\n    Кэширует результаты для ускорения работы.",
+        "detail": "home_tk_g3",
+        "documentation": {}
+    },
+    {
+        "label": "WALL_RESISTANCE",
+        "kind": 5,
+        "importPath": "home_tk_g3",
+        "description": "home_tk_g3",
+        "peekOfCode": "WALL_RESISTANCE = \"WALL_RESISTANCE\"\nAIR_FLOW = \"AIR_FLOW\"\nOPEN_DOOR_FLOW = \"OPEN_DOOR_FLOW\"\nWINDOW_FLOW = \"WINDOW_FLOW\"\n@lru_cache(maxsize=1000)\ndef get_color_for_temp(temp):\n    \"\"\"\n    Возвращает цвет в формате HEX в зависимости от температуры.\n    Кэширует результаты для ускорения работы.\n    \"\"\"",
+        "detail": "home_tk_g3",
+        "documentation": {}
+    },
+    {
+        "label": "AIR_FLOW",
+        "kind": 5,
+        "importPath": "home_tk_g3",
+        "description": "home_tk_g3",
+        "peekOfCode": "AIR_FLOW = \"AIR_FLOW\"\nOPEN_DOOR_FLOW = \"OPEN_DOOR_FLOW\"\nWINDOW_FLOW = \"WINDOW_FLOW\"\n@lru_cache(maxsize=1000)\ndef get_color_for_temp(temp):\n    \"\"\"\n    Возвращает цвет в формате HEX в зависимости от температуры.\n    Кэширует результаты для ускорения работы.\n    \"\"\"\n    if temp < -30:",
+        "detail": "home_tk_g3",
+        "documentation": {}
+    },
+    {
+        "label": "OPEN_DOOR_FLOW",
+        "kind": 5,
+        "importPath": "home_tk_g3",
+        "description": "home_tk_g3",
+        "peekOfCode": "OPEN_DOOR_FLOW = \"OPEN_DOOR_FLOW\"\nWINDOW_FLOW = \"WINDOW_FLOW\"\n@lru_cache(maxsize=1000)\ndef get_color_for_temp(temp):\n    \"\"\"\n    Возвращает цвет в формате HEX в зависимости от температуры.\n    Кэширует результаты для ускорения работы.\n    \"\"\"\n    if temp < -30:\n        return \"#0000FF\"",
+        "detail": "home_tk_g3",
+        "documentation": {}
+    },
+    {
+        "label": "WINDOW_FLOW",
+        "kind": 5,
+        "importPath": "home_tk_g3",
+        "description": "home_tk_g3",
+        "peekOfCode": "WINDOW_FLOW = \"WINDOW_FLOW\"\n@lru_cache(maxsize=1000)\ndef get_color_for_temp(temp):\n    \"\"\"\n    Возвращает цвет в формате HEX в зависимости от температуры.\n    Кэширует результаты для ускорения работы.\n    \"\"\"\n    if temp < -30:\n        return \"#0000FF\"\n    elif -30 <= temp < 0:",
+        "detail": "home_tk_g3",
+        "documentation": {}
+    },
+    {
+        "label": "PIDController",
+        "kind": 6,
+        "importPath": "home_tk_g4",
+        "description": "home_tk_g4",
+        "peekOfCode": "class PIDController:\n    def __init__(self, Kp=1.0, Ki=0.1, Kd=0.01, setpoint=20):\n        self.Kp = Kp\n        self.Ki = Ki\n        self.Kd = Kd\n        self.setpoint = setpoint\n        self.last_error = 0\n        self.integral = 0\n    def update(self, current_value, dt=1):\n        error = self.setpoint - current_value",
+        "detail": "home_tk_g4",
+        "documentation": {}
+    },
+    {
+        "label": "PController",
+        "kind": 6,
+        "importPath": "home_tk_g4",
+        "description": "home_tk_g4",
+        "peekOfCode": "class PController:\n    def __init__(self, Kp=1.0, setpoint=20):\n        self.Kp = Kp\n        self.setpoint = setpoint\n    def update(self, current_value):\n        error = self.setpoint - current_value\n        return self.Kp * error\n@lru_cache(maxsize=8000)\ndef get_color_for_temp(temp):\n    \"\"\"Возвращает цвет в формате HEX в зависимости от температуры.\"\"\"",
+        "detail": "home_tk_g4",
+        "documentation": {}
+    },
+    {
+        "label": "SmartHomeApp",
+        "kind": 6,
+        "importPath": "home_tk_g4",
+        "description": "home_tk_g4",
+        "peekOfCode": "class SmartHomeApp:\n    def __init__(self, root):\n        self.root = root\n        self.root.title(\"Умный дом — Симуляция и Управление\")\n        # Инициализация регуляторов\n        self.pid_controller = PIDController()\n        self.p_controller = PController()\n        self.active_controller = None\n        self.control_target = None\n        # Основной фрейм",
+        "detail": "home_tk_g4",
+        "documentation": {}
+    },
+    {
+        "label": "get_color_for_temp",
+        "kind": 2,
+        "importPath": "home_tk_g4",
+        "description": "home_tk_g4",
+        "peekOfCode": "def get_color_for_temp(temp):\n    \"\"\"Возвращает цвет в формате HEX в зависимости от температуры.\"\"\"\n    if temp < -30:\n        return \"#0000FF\"\n    elif -30 <= temp < 0:\n        ratio = (temp + 30) / 30\n        blue = 255\n        green = int(255 * ratio)\n        red = 0\n    elif 0 <= temp <= 35:",
+        "detail": "home_tk_g4",
+        "documentation": {}
+    },
+    {
+        "label": "CELL_SIZE",
+        "kind": 5,
+        "importPath": "home_tk_g4",
+        "description": "home_tk_g4",
+        "peekOfCode": "CELL_SIZE = WIDTH // GRID_COLS  # Размер ячейки\n# Определение типов клеток\nEMPTY, WALL, DOOR, WINDOW, HEATER, AC, OUTSIDE, RELAY = range(8)\nclass PIDController:\n    def __init__(self, Kp=1.0, Ki=0.1, Kd=0.01, setpoint=20):\n        self.Kp = Kp\n        self.Ki = Ki\n        self.Kd = Kd\n        self.setpoint = setpoint\n        self.last_error = 0",
+        "detail": "home_tk_g4",
+        "documentation": {}
+    },
+    {
+        "label": "SmartHomeApp",
+        "kind": 6,
         "importPath": "home_tk_v1_g2",
         "description": "home_tk_v1_g2",
-        "peekOfCode": "def initialize_matrices():\n    \"\"\"Создает и инициализирует основные матрицы.\"\"\"\n    type_matrix = np.full((GRID_ROWS, GRID_COLS), OUTSIDE, dtype=int)  # Весь мир - улица\n    temp_matrix = np.full((GRID_ROWS, GRID_COLS), OUTSIDE_TEMP, dtype=float)  # Улица холодная\n    # Устанавливаем стены дома (на одну клетку меньше, чем границы системы)\n    type_matrix[1:-1, 1:-1] = EMPTY  # Внутри дома пустые клетки\n    type_matrix[2:-2, 2:-2] = EMPTY  # Гарантируем, что внутри дома пусто\n    # Стены дома\n    type_matrix[2, 2:-2] = WALL\n    type_matrix[-3, 2:-2] = WALL",
+        "peekOfCode": "class SmartHomeApp:\n    def __init__(self, root):\n        self.root = root\n        self.root.title(\"Умный дом — Симуляция и Управление\")\n        # Основной фрейм\n        main_frame = ttk.Frame(root)\n        main_frame.pack(fill=\"both\", expand=True)\n        # Левая часть (Симуляция)\n        sim_frame = ttk.Frame(main_frame)\n        sim_frame.grid(row=0, column=0, padx=10, pady=10)",
         "detail": "home_tk_v1_g2",
         "documentation": {}
     },
@@ -449,7 +629,7 @@
         "kind": 2,
         "importPath": "home_tk_v1_g2",
         "description": "home_tk_v1_g2",
-        "peekOfCode": "def get_color_for_temp(temp):\n    \"\"\"Возвращает цвет в зависимости от температуры.\"\"\"\n    if temp < 0:\n        blue = 255\n        green = max(0, min(255, int(255 * (temp + 30) / 30)))\n        red = 0\n    elif 0 <= temp <= 35:\n        blue = max(0, min(255, int(255 * (1 - temp / 35))))\n        green = 255\n        red = 0",
+        "peekOfCode": "def get_color_for_temp(temp):\n    \"\"\"\n    Возвращает цвет в формате HEX в зависимости от температуры.\n    Параметры:\n        temp (float): Температура в градусах Цельсия.\n    Возвращает:\n        str: HEX-код цвета.\n    \"\"\"\n    # Определяем диапазоны температур и соответствующие цвета\n    if temp < -30:",
         "detail": "home_tk_v1_g2",
         "documentation": {}
     },
@@ -458,79 +638,7 @@
         "kind": 5,
         "importPath": "home_tk_v1_g2",
         "description": "home_tk_v1_g2",
-        "peekOfCode": "CELL_SIZE = WIDTH // GRID_COLS  # Размер ячейки\n# Температурные параметры\nOUTSIDE_TEMP = -25    # Температура на улице\nHEATER_TEMP = 60      # Температура батарей\nAC_TEMP = 18          # Температура кондиционера\nINITIAL_ROOM_TEMP = -10  # Начальная температура в доме\n# Коэффициенты теплообмена\nWALL_RESISTANCE = 0.01  # Стены почти не пропускают тепло\nAIR_FLOW = 0.2\nOPEN_DOOR_FLOW = 0.8",
-        "detail": "home_tk_v1_g2",
-        "documentation": {}
-    },
-    {
-        "label": "OUTSIDE_TEMP",
-        "kind": 5,
-        "importPath": "home_tk_v1_g2",
-        "description": "home_tk_v1_g2",
-        "peekOfCode": "OUTSIDE_TEMP = -25    # Температура на улице\nHEATER_TEMP = 60      # Температура батарей\nAC_TEMP = 18          # Температура кондиционера\nINITIAL_ROOM_TEMP = -10  # Начальная температура в доме\n# Коэффициенты теплообмена\nWALL_RESISTANCE = 0.01  # Стены почти не пропускают тепло\nAIR_FLOW = 0.2\nOPEN_DOOR_FLOW = 0.8\nWINDOW_FLOW = 0.7\n# Определение типов клеток",
-        "detail": "home_tk_v1_g2",
-        "documentation": {}
-    },
-    {
-        "label": "HEATER_TEMP",
-        "kind": 5,
-        "importPath": "home_tk_v1_g2",
-        "description": "home_tk_v1_g2",
-        "peekOfCode": "HEATER_TEMP = 60      # Температура батарей\nAC_TEMP = 18          # Температура кондиционера\nINITIAL_ROOM_TEMP = -10  # Начальная температура в доме\n# Коэффициенты теплообмена\nWALL_RESISTANCE = 0.01  # Стены почти не пропускают тепло\nAIR_FLOW = 0.2\nOPEN_DOOR_FLOW = 0.8\nWINDOW_FLOW = 0.7\n# Определение типов клеток\nEMPTY, WALL, DOOR, WINDOW, HEATER, AC, OUTSIDE = range(7)",
-        "detail": "home_tk_v1_g2",
-        "documentation": {}
-    },
-    {
-        "label": "AC_TEMP",
-        "kind": 5,
-        "importPath": "home_tk_v1_g2",
-        "description": "home_tk_v1_g2",
-        "peekOfCode": "AC_TEMP = 18          # Температура кондиционера\nINITIAL_ROOM_TEMP = -10  # Начальная температура в доме\n# Коэффициенты теплообмена\nWALL_RESISTANCE = 0.01  # Стены почти не пропускают тепло\nAIR_FLOW = 0.2\nOPEN_DOOR_FLOW = 0.8\nWINDOW_FLOW = 0.7\n# Определение типов клеток\nEMPTY, WALL, DOOR, WINDOW, HEATER, AC, OUTSIDE = range(7)\ndef initialize_matrices():",
-        "detail": "home_tk_v1_g2",
-        "documentation": {}
-    },
-    {
-        "label": "INITIAL_ROOM_TEMP",
-        "kind": 5,
-        "importPath": "home_tk_v1_g2",
-        "description": "home_tk_v1_g2",
-        "peekOfCode": "INITIAL_ROOM_TEMP = -10  # Начальная температура в доме\n# Коэффициенты теплообмена\nWALL_RESISTANCE = 0.01  # Стены почти не пропускают тепло\nAIR_FLOW = 0.2\nOPEN_DOOR_FLOW = 0.8\nWINDOW_FLOW = 0.7\n# Определение типов клеток\nEMPTY, WALL, DOOR, WINDOW, HEATER, AC, OUTSIDE = range(7)\ndef initialize_matrices():\n    \"\"\"Создает и инициализирует основные матрицы.\"\"\"",
-        "detail": "home_tk_v1_g2",
-        "documentation": {}
-    },
-    {
-        "label": "WALL_RESISTANCE",
-        "kind": 5,
-        "importPath": "home_tk_v1_g2",
-        "description": "home_tk_v1_g2",
-        "peekOfCode": "WALL_RESISTANCE = 0.01  # Стены почти не пропускают тепло\nAIR_FLOW = 0.2\nOPEN_DOOR_FLOW = 0.8\nWINDOW_FLOW = 0.7\n# Определение типов клеток\nEMPTY, WALL, DOOR, WINDOW, HEATER, AC, OUTSIDE = range(7)\ndef initialize_matrices():\n    \"\"\"Создает и инициализирует основные матрицы.\"\"\"\n    type_matrix = np.full((GRID_ROWS, GRID_COLS), OUTSIDE, dtype=int)  # Весь мир - улица\n    temp_matrix = np.full((GRID_ROWS, GRID_COLS), OUTSIDE_TEMP, dtype=float)  # Улица холодная",
-        "detail": "home_tk_v1_g2",
-        "documentation": {}
-    },
-    {
-        "label": "AIR_FLOW",
-        "kind": 5,
-        "importPath": "home_tk_v1_g2",
-        "description": "home_tk_v1_g2",
-        "peekOfCode": "AIR_FLOW = 0.2\nOPEN_DOOR_FLOW = 0.8\nWINDOW_FLOW = 0.7\n# Определение типов клеток\nEMPTY, WALL, DOOR, WINDOW, HEATER, AC, OUTSIDE = range(7)\ndef initialize_matrices():\n    \"\"\"Создает и инициализирует основные матрицы.\"\"\"\n    type_matrix = np.full((GRID_ROWS, GRID_COLS), OUTSIDE, dtype=int)  # Весь мир - улица\n    temp_matrix = np.full((GRID_ROWS, GRID_COLS), OUTSIDE_TEMP, dtype=float)  # Улица холодная\n    # Устанавливаем стены дома (на одну клетку меньше, чем границы системы)",
-        "detail": "home_tk_v1_g2",
-        "documentation": {}
-    },
-    {
-        "label": "OPEN_DOOR_FLOW",
-        "kind": 5,
-        "importPath": "home_tk_v1_g2",
-        "description": "home_tk_v1_g2",
-        "peekOfCode": "OPEN_DOOR_FLOW = 0.8\nWINDOW_FLOW = 0.7\n# Определение типов клеток\nEMPTY, WALL, DOOR, WINDOW, HEATER, AC, OUTSIDE = range(7)\ndef initialize_matrices():\n    \"\"\"Создает и инициализирует основные матрицы.\"\"\"\n    type_matrix = np.full((GRID_ROWS, GRID_COLS), OUTSIDE, dtype=int)  # Весь мир - улица\n    temp_matrix = np.full((GRID_ROWS, GRID_COLS), OUTSIDE_TEMP, dtype=float)  # Улица холодная\n    # Устанавливаем стены дома (на одну клетку меньше, чем границы системы)\n    type_matrix[1:-1, 1:-1] = EMPTY  # Внутри дома пустые клетки",
-        "detail": "home_tk_v1_g2",
-        "documentation": {}
-    },
-    {
-        "label": "WINDOW_FLOW",
-        "kind": 5,
-        "importPath": "home_tk_v1_g2",
-        "description": "home_tk_v1_g2",
-        "peekOfCode": "WINDOW_FLOW = 0.7\n# Определение типов клеток\nEMPTY, WALL, DOOR, WINDOW, HEATER, AC, OUTSIDE = range(7)\ndef initialize_matrices():\n    \"\"\"Создает и инициализирует основные матрицы.\"\"\"\n    type_matrix = np.full((GRID_ROWS, GRID_COLS), OUTSIDE, dtype=int)  # Весь мир - улица\n    temp_matrix = np.full((GRID_ROWS, GRID_COLS), OUTSIDE_TEMP, dtype=float)  # Улица холодная\n    # Устанавливаем стены дома (на одну клетку меньше, чем границы системы)\n    type_matrix[1:-1, 1:-1] = EMPTY  # Внутри дома пустые клетки\n    type_matrix[2:-2, 2:-2] = EMPTY  # Гарантируем, что внутри дома пусто",
+        "peekOfCode": "CELL_SIZE = WIDTH // GRID_COLS  # Размер ячейки\n# Температурные параметры\n# Определение типов клеток\nEMPTY, WALL, DOOR, WINDOW, HEATER, AC, OUTSIDE = range(7)\n@lru_cache(maxsize=8000)\ndef get_color_for_temp(temp):\n    \"\"\"\n    Возвращает цвет в формате HEX в зависимости от температуры.\n    Параметры:\n        temp (float): Температура в градусах Цельсия.",
         "detail": "home_tk_v1_g2",
         "documentation": {}
     }

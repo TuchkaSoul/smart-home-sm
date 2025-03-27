@@ -56,97 +56,97 @@ def romantic():
 
     print(sum(Np)/len(Np))
 
-# try:    
-#     train(200,100,300,20,10,30)
-# except:
-#     print("Кончились вагоны")
+try:    
+    train(200,100,300,20,10,30)
+except:
+    print("Кончились вагоны")
 
 
-import numpy as np
-import math
-import random
-import sympy
-import matplotlib.pyplot as plt
+# import numpy as np
+# import math
+# import random
+# import sympy
+# import matplotlib.pyplot as plt
 
-def generator_gap(x):
-    return (-1/x)*math.log(random.uniform(0,1))
-
-
+# def generator_gap(x):
+#     return (-1/x)*math.log(random.uniform(0,1))
 
 
-def service(requests,number_queue):
-    table={
-        "запросы": requests,
-        "канал 1": [],
-        "канал 2": [],
-        "обслуженно": [],
-        "отказ": []
-    }
-    for i in range(number_queue):
-        table[f"очередь {i+1}"] = []
 
-    choice_col=list(table.keys())[2:0:-1]
 
-    choice_queue=list(table.keys())[5:]
-    choice_queue
-    print(choice_queue)
-    for req in requests:
-        is_suself=False
-        for kanal in choice_col:            
-            if not table[kanal]:
-                table[kanal].append(round(generator_gap(kanal_mu[kanal]),3))
-                table['обслуженно'].append((table[kanal][-1],table["запросы"].index(req)))
-                is_suself=True
-                break
-            elif table[kanal][-1]<=req:
-                table[kanal].append(round(table[kanal][-1]+generator_gap(kanal_mu[kanal]),3))
-                table['обслуженно'].append((table[kanal][-1],table["запросы"].index(req)))
-                is_suself=True
-                break
+# def service(requests,number_queue):
+#     table={
+#         "запросы": requests,
+#         "канал 1": [],
+#         "канал 2": [],
+#         "обслуженно": [],
+#         "отказ": []
+#     }
+#     for i in range(number_queue):
+#         table[f"очередь {i+1}"] = []
+
+#     choice_col=list(table.keys())[2:0:-1]
+
+#     choice_queue=list(table.keys())[5:]
+#     choice_queue
+#     print(choice_queue)
+#     for req in requests:
+#         is_suself=False
+#         for kanal in choice_col:            
+#             if not table[kanal]:
+#                 table[kanal].append(round(generator_gap(kanal_mu[kanal]),3))
+#                 table['обслуженно'].append((table[kanal][-1],table["запросы"].index(req)))
+#                 is_suself=True
+#                 break
+#             elif table[kanal][-1]<=req:
+#                 table[kanal].append(round(table[kanal][-1]+generator_gap(kanal_mu[kanal]),3))
+#                 table['обслуженно'].append((table[kanal][-1],table["запросы"].index(req)))
+#                 is_suself=True
+#                 break
 
                 
-        if is_suself:
-            continue
-        near_time=min(table["канал 1"][-1],table["канал 2"][-1])
-        near_kanal="канал 2" if table["канал 2"][-1]==near_time else "канал 1"
+#         if is_suself:
+#             continue
+#         near_time=min(table["канал 1"][-1],table["канал 2"][-1])
+#         near_kanal="канал 2" if table["канал 2"][-1]==near_time else "канал 1"
         
-        if table[f"очередь {number_queue}"]:
-            if table[f"очередь {number_queue}"][-1]>=req:
-                table['отказ'].append((req,table["запросы"].index(req)))
-                is_suself=True
-                continue
+#         if table[f"очередь {number_queue}"]:
+#             if table[f"очередь {number_queue}"][-1]>=req:
+#                 table['отказ'].append((req,table["запросы"].index(req)))
+#                 is_suself=True
+#                 continue
         
-        near_queue=number_queue
-        for i in range(number_queue-1,-1,-1):
-            if table[f"очередь {i+1}"]:
-                if table[f"очередь {i+1}"][-1]<=req:
-                    near_queue=i
-                else:
-                    break
-            else:
-                near_queue=i+1
+#         near_queue=number_queue
+#         for i in range(number_queue-1,-1,-1):
+#             if table[f"очередь {i+1}"]:
+#                 if table[f"очередь {i+1}"][-1]<=req:
+#                     near_queue=i
+#                 else:
+#                     break
+#             else:
+#                 near_queue=i+1
                          
-        enum=[near_kanal]+choice_queue[:near_queue]
-        enum.reverse()
-        for i in range(1,len(enum)):
-            if not table[enum[i-1]]:
-                table[enum[i-1]].append(req)
-                table[enum[i-1]].append(table[enum[i]][-1])
-            elif table[enum[i-1]][-1]>req:
-                table[enum[i-1]].append(req)
-                table[enum[i-1]].append(table[enum[i]][-1])
+#         enum=[near_kanal]+choice_queue[:near_queue]
+#         enum.reverse()
+#         for i in range(1,len(enum)):
+#             if not table[enum[i-1]]:
+#                 table[enum[i-1]].append(req)
+#                 table[enum[i-1]].append(table[enum[i]][-1])
+#             elif table[enum[i-1]][-1]>req:
+#                 table[enum[i-1]].append(req)
+#                 table[enum[i-1]].append(table[enum[i]][-1])
         
-        table[near_kanal].append(round(near_time+generator_gap(kanal_mu[near_kanal]),3))
-        table['обслуженно'].append((table[near_kanal][-1],table["запросы"].index(req)))
+#         table[near_kanal].append(round(near_time+generator_gap(kanal_mu[near_kanal]),3))
+#         table['обслуженно'].append((table[near_kanal][-1],table["запросы"].index(req)))
                     
 
-    return table   
+#     return table   
 
-lamd=10
-mu_1=2
-mu_2=8
-kanal_mu={
-    "канал 1": mu_1,
-    "канал 2": mu_2
-}
+# lamd=10
+# mu_1=2
+# mu_2=8
+# kanal_mu={
+#     "канал 1": mu_1,
+#     "канал 2": mu_2
+# }
 Сom(30)

@@ -1,0 +1,117 @@
+[
+    {
+        "label": "matplotlib.pyplot",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "matplotlib.pyplot",
+        "description": "matplotlib.pyplot",
+        "detail": "matplotlib.pyplot",
+        "documentation": {}
+    },
+    {
+        "label": "matplotlib.patches",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "matplotlib.patches",
+        "description": "matplotlib.patches",
+        "detail": "matplotlib.patches",
+        "documentation": {}
+    },
+    {
+        "label": "colors",
+        "importPath": "matplotlib",
+        "description": "matplotlib",
+        "isExtraImport": true,
+        "detail": "matplotlib",
+        "documentation": {}
+    },
+    {
+        "label": "numpy",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "numpy",
+        "description": "numpy",
+        "detail": "numpy",
+        "documentation": {}
+    },
+    {
+        "label": "math",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "math",
+        "description": "math",
+        "detail": "math",
+        "documentation": {}
+    },
+    {
+        "label": "random",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "random",
+        "description": "random",
+        "detail": "random",
+        "documentation": {}
+    },
+    {
+        "label": "sympy",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "sympy",
+        "description": "sympy",
+        "detail": "sympy",
+        "documentation": {}
+    },
+    {
+        "label": "MultipleLocator",
+        "importPath": "matplotlib.ticker",
+        "description": "matplotlib.ticker",
+        "isExtraImport": true,
+        "detail": "matplotlib.ticker",
+        "documentation": {}
+    },
+    {
+        "label": "RequestCar",
+        "kind": 6,
+        "importPath": "Заправка",
+        "description": "Заправка",
+        "peekOfCode": "class RequestCar:\n    def __init__(self, id, input_time):\n        self.id = id  # Уникальный идентификатор заявки\n        self.input_time = input_time  # Время поступления заявки\n        self.start_service_time = None  # Время начала обслуживания\n        self.served_in = []  # Каналы обслуживания, через которые прошла заявка\n        self.rejected = False  # Флаг отказа в обслуживании\n        self.output_time = None  # Время завершения обслуживания\n        self.queue_time = 0  # Общее время ожидания в очереди\n        self.service_time = 0  # Общее время обслуживания",
+        "detail": "Заправка",
+        "documentation": {}
+    },
+    {
+        "label": "generator_gap",
+        "kind": 2,
+        "importPath": "Заправка",
+        "description": "Заправка",
+        "peekOfCode": "def generator_gap(x):\n    return (-1/x)*math.log(random.uniform(0,1))\nrequests=[round(generator_gap(lamd),3)]\nfor i in range(0,N,1):\n    requests.append(round(requests[-1]+generator_gap(lamd),3))\nprint(requests)\ndef service_class(requests, number_queue):\n    kanal_mu = {\"канал 1\": 3, \"канал 2\": 7}  # Интенсивность обслуживания\n    request_objects = [RequestCar(idx,requests[idx]) for idx in range(len(requests))]\n    table = {",
+        "detail": "Заправка",
+        "documentation": {}
+    },
+    {
+        "label": "service_class",
+        "kind": 2,
+        "importPath": "Заправка",
+        "description": "Заправка",
+        "peekOfCode": "def service_class(requests, number_queue):\n    kanal_mu = {\"канал 1\": 3, \"канал 2\": 7}  # Интенсивность обслуживания\n    request_objects = [RequestCar(idx,requests[idx]) for idx in range(len(requests))]\n    table = {\n        \"запросы\": requests,\n        \"канал 1\": [],\n        \"канал 2\": [],\n        \"обслуженно\": [],\n        \"отказ\": [],\n    }",
+        "detail": "Заправка",
+        "documentation": {}
+    },
+    {
+        "label": "visualize_service_system",
+        "kind": 2,
+        "importPath": "Заправка",
+        "description": "Заправка",
+        "peekOfCode": "def visualize_service_system(table, num_queues=3):\n    fig, ax = plt.subplots(figsize=(100, 6))\n    # Настройки внешнего вида\n    colors = {\n        'запросы': 'lightgray',\n        'канал 1': 'lightblue',\n        'канал 2': 'lightgreen',\n        'очередь 1': 'mistyrose',\n        'очередь 2': 'peachpuff',\n        'очередь 3': 'lavender',",
+        "detail": "Заправка",
+        "documentation": {}
+    },
+    {
+        "label": "filter_table_by_time_range",
+        "kind": 2,
+        "importPath": "Заправка",
+        "description": "Заправка",
+        "peekOfCode": "def filter_table_by_time_range(table, start_time, end_time):\n    \"\"\"\n    Фильтрует данные в таблице, оставляя только те, которые попадают в указанный временной диапазон.\n    Параметры:\n        table (dict): Исходная таблица с данными\n        start_time (float): Начальное время диапазона\n        end_time (float): Конечное время диапазона\n    Возвращает:\n        dict: Отфильтрованная таблица\n    \"\"\"",
+        "detail": "Заправка",
+        "documentation": {}
+    }
+]
