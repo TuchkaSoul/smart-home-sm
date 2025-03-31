@@ -183,12 +183,28 @@
         "documentation": {}
     },
     {
+        "label": "deque",
+        "importPath": "collections",
+        "description": "collections",
+        "isExtraImport": true,
+        "detail": "collections",
+        "documentation": {}
+    },
+    {
         "label": "matplotlib.pyplot",
         "kind": 6,
         "isExtraImport": true,
         "importPath": "matplotlib.pyplot",
         "description": "matplotlib.pyplot",
         "detail": "matplotlib.pyplot",
+        "documentation": {}
+    },
+    {
+        "label": "FigureCanvasTkAgg",
+        "importPath": "matplotlib.backends.backend_tkagg",
+        "description": "matplotlib.backends.backend_tkagg",
+        "isExtraImport": true,
+        "detail": "matplotlib.backends.backend_tkagg",
         "documentation": {}
     },
     {
@@ -518,7 +534,7 @@
         "kind": 5,
         "importPath": "home_tk_g3",
         "description": "home_tk_g3",
-        "peekOfCode": "CELL_SIZE = WIDTH // GRID_COLS  # Размер ячейки\n# Определение типов клеток\nEMPTY, WALL, DOOR, WINDOW, HEATER, AC, OUTSIDE = range(7)\n# Константы для ключей\nTEMPERATURES = \"temperatures\"\nCOEFFICIENTS = \"coefficients\"\nOUTSIDE_TEMP = \"OUTSIDE_TEMP\"\nHEATER_TEMP = \"HEATER_TEMP\"\nAC_TEMP = \"AC_TEMP\"\nINITIAL_ROOM_TEMP = \"INITIAL_ROOM_TEMP\"",
+        "peekOfCode": "CELL_SIZE = WIDTH // GRID_COLS  # Размер ячейки\n# Определение типов клеток\nEMPTY, WALL, DOOR, WINDOW, HEATER, AC, OUTSIDE, SENSOR = range(8)\n# Константы для ключей\nTEMPERATURES = \"temperatures\"\nCOEFFICIENTS = \"coefficients\"\nOUTSIDE_TEMP = \"OUTSIDE_TEMP\"\nHEATER_TEMP = \"HEATER_TEMP\"\nAC_TEMP = \"AC_TEMP\"\nINITIAL_ROOM_TEMP = \"INITIAL_ROOM_TEMP\"",
         "detail": "home_tk_g3",
         "documentation": {}
     },
@@ -536,7 +552,7 @@
         "kind": 5,
         "importPath": "home_tk_g3",
         "description": "home_tk_g3",
-        "peekOfCode": "COEFFICIENTS = \"coefficients\"\nOUTSIDE_TEMP = \"OUTSIDE_TEMP\"\nHEATER_TEMP = \"HEATER_TEMP\"\nAC_TEMP = \"AC_TEMP\"\nINITIAL_ROOM_TEMP = \"INITIAL_ROOM_TEMP\"\nWALL_RESISTANCE = \"WALL_RESISTANCE\"\nAIR_FLOW = \"AIR_FLOW\"\nOPEN_DOOR_FLOW = \"OPEN_DOOR_FLOW\"\nWINDOW_FLOW = \"WINDOW_FLOW\"\n@lru_cache(maxsize=1000)",
+        "peekOfCode": "COEFFICIENTS = \"coefficients\"\nOUTSIDE_TEMP = \"OUTSIDE_TEMP\"\nHEATER_TEMP = \"HEATER_TEMP\"\nAC_TEMP = \"AC_TEMP\"\nINITIAL_ROOM_TEMP = \"INITIAL_ROOM_TEMP\"\nWALL_RESISTANCE = \"WALL_RESISTANCE\"\nAIR_FLOW = \"AIR_FLOW\"\nOPEN_DOOR_FLOW = \"OPEN_DOOR_FLOW\"\nWINDOW_FLOW = \"WINDOW_FLOW\"\nTARGET_TEMP = \"TARGET_TEMP\"",
         "detail": "home_tk_g3",
         "documentation": {}
     },
@@ -545,7 +561,7 @@
         "kind": 5,
         "importPath": "home_tk_g3",
         "description": "home_tk_g3",
-        "peekOfCode": "OUTSIDE_TEMP = \"OUTSIDE_TEMP\"\nHEATER_TEMP = \"HEATER_TEMP\"\nAC_TEMP = \"AC_TEMP\"\nINITIAL_ROOM_TEMP = \"INITIAL_ROOM_TEMP\"\nWALL_RESISTANCE = \"WALL_RESISTANCE\"\nAIR_FLOW = \"AIR_FLOW\"\nOPEN_DOOR_FLOW = \"OPEN_DOOR_FLOW\"\nWINDOW_FLOW = \"WINDOW_FLOW\"\n@lru_cache(maxsize=1000)\ndef get_color_for_temp(temp):",
+        "peekOfCode": "OUTSIDE_TEMP = \"OUTSIDE_TEMP\"\nHEATER_TEMP = \"HEATER_TEMP\"\nAC_TEMP = \"AC_TEMP\"\nINITIAL_ROOM_TEMP = \"INITIAL_ROOM_TEMP\"\nWALL_RESISTANCE = \"WALL_RESISTANCE\"\nAIR_FLOW = \"AIR_FLOW\"\nOPEN_DOOR_FLOW = \"OPEN_DOOR_FLOW\"\nWINDOW_FLOW = \"WINDOW_FLOW\"\nTARGET_TEMP = \"TARGET_TEMP\"\nWINDOW_OPENNESS= \"WINDOW_OPENNESS\"",
         "detail": "home_tk_g3",
         "documentation": {}
     },
@@ -554,7 +570,7 @@
         "kind": 5,
         "importPath": "home_tk_g3",
         "description": "home_tk_g3",
-        "peekOfCode": "HEATER_TEMP = \"HEATER_TEMP\"\nAC_TEMP = \"AC_TEMP\"\nINITIAL_ROOM_TEMP = \"INITIAL_ROOM_TEMP\"\nWALL_RESISTANCE = \"WALL_RESISTANCE\"\nAIR_FLOW = \"AIR_FLOW\"\nOPEN_DOOR_FLOW = \"OPEN_DOOR_FLOW\"\nWINDOW_FLOW = \"WINDOW_FLOW\"\n@lru_cache(maxsize=1000)\ndef get_color_for_temp(temp):\n    \"\"\"",
+        "peekOfCode": "HEATER_TEMP = \"HEATER_TEMP\"\nAC_TEMP = \"AC_TEMP\"\nINITIAL_ROOM_TEMP = \"INITIAL_ROOM_TEMP\"\nWALL_RESISTANCE = \"WALL_RESISTANCE\"\nAIR_FLOW = \"AIR_FLOW\"\nOPEN_DOOR_FLOW = \"OPEN_DOOR_FLOW\"\nWINDOW_FLOW = \"WINDOW_FLOW\"\nTARGET_TEMP = \"TARGET_TEMP\"\nWINDOW_OPENNESS= \"WINDOW_OPENNESS\"\n@lru_cache(maxsize=1000)",
         "detail": "home_tk_g3",
         "documentation": {}
     },
@@ -563,7 +579,7 @@
         "kind": 5,
         "importPath": "home_tk_g3",
         "description": "home_tk_g3",
-        "peekOfCode": "AC_TEMP = \"AC_TEMP\"\nINITIAL_ROOM_TEMP = \"INITIAL_ROOM_TEMP\"\nWALL_RESISTANCE = \"WALL_RESISTANCE\"\nAIR_FLOW = \"AIR_FLOW\"\nOPEN_DOOR_FLOW = \"OPEN_DOOR_FLOW\"\nWINDOW_FLOW = \"WINDOW_FLOW\"\n@lru_cache(maxsize=1000)\ndef get_color_for_temp(temp):\n    \"\"\"\n    Возвращает цвет в формате HEX в зависимости от температуры.",
+        "peekOfCode": "AC_TEMP = \"AC_TEMP\"\nINITIAL_ROOM_TEMP = \"INITIAL_ROOM_TEMP\"\nWALL_RESISTANCE = \"WALL_RESISTANCE\"\nAIR_FLOW = \"AIR_FLOW\"\nOPEN_DOOR_FLOW = \"OPEN_DOOR_FLOW\"\nWINDOW_FLOW = \"WINDOW_FLOW\"\nTARGET_TEMP = \"TARGET_TEMP\"\nWINDOW_OPENNESS= \"WINDOW_OPENNESS\"\n@lru_cache(maxsize=1000)\ndef get_color_for_temp(temp):",
         "detail": "home_tk_g3",
         "documentation": {}
     },
@@ -572,7 +588,7 @@
         "kind": 5,
         "importPath": "home_tk_g3",
         "description": "home_tk_g3",
-        "peekOfCode": "INITIAL_ROOM_TEMP = \"INITIAL_ROOM_TEMP\"\nWALL_RESISTANCE = \"WALL_RESISTANCE\"\nAIR_FLOW = \"AIR_FLOW\"\nOPEN_DOOR_FLOW = \"OPEN_DOOR_FLOW\"\nWINDOW_FLOW = \"WINDOW_FLOW\"\n@lru_cache(maxsize=1000)\ndef get_color_for_temp(temp):\n    \"\"\"\n    Возвращает цвет в формате HEX в зависимости от температуры.\n    Кэширует результаты для ускорения работы.",
+        "peekOfCode": "INITIAL_ROOM_TEMP = \"INITIAL_ROOM_TEMP\"\nWALL_RESISTANCE = \"WALL_RESISTANCE\"\nAIR_FLOW = \"AIR_FLOW\"\nOPEN_DOOR_FLOW = \"OPEN_DOOR_FLOW\"\nWINDOW_FLOW = \"WINDOW_FLOW\"\nTARGET_TEMP = \"TARGET_TEMP\"\nWINDOW_OPENNESS= \"WINDOW_OPENNESS\"\n@lru_cache(maxsize=1000)\ndef get_color_for_temp(temp):\n    \"\"\"",
         "detail": "home_tk_g3",
         "documentation": {}
     },
@@ -581,7 +597,7 @@
         "kind": 5,
         "importPath": "home_tk_g3",
         "description": "home_tk_g3",
-        "peekOfCode": "WALL_RESISTANCE = \"WALL_RESISTANCE\"\nAIR_FLOW = \"AIR_FLOW\"\nOPEN_DOOR_FLOW = \"OPEN_DOOR_FLOW\"\nWINDOW_FLOW = \"WINDOW_FLOW\"\n@lru_cache(maxsize=1000)\ndef get_color_for_temp(temp):\n    \"\"\"\n    Возвращает цвет в формате HEX в зависимости от температуры.\n    Кэширует результаты для ускорения работы.\n    \"\"\"",
+        "peekOfCode": "WALL_RESISTANCE = \"WALL_RESISTANCE\"\nAIR_FLOW = \"AIR_FLOW\"\nOPEN_DOOR_FLOW = \"OPEN_DOOR_FLOW\"\nWINDOW_FLOW = \"WINDOW_FLOW\"\nTARGET_TEMP = \"TARGET_TEMP\"\nWINDOW_OPENNESS= \"WINDOW_OPENNESS\"\n@lru_cache(maxsize=1000)\ndef get_color_for_temp(temp):\n    \"\"\"\n    Возвращает цвет в формате HEX в зависимости от температуры.",
         "detail": "home_tk_g3",
         "documentation": {}
     },
@@ -590,7 +606,7 @@
         "kind": 5,
         "importPath": "home_tk_g3",
         "description": "home_tk_g3",
-        "peekOfCode": "AIR_FLOW = \"AIR_FLOW\"\nOPEN_DOOR_FLOW = \"OPEN_DOOR_FLOW\"\nWINDOW_FLOW = \"WINDOW_FLOW\"\n@lru_cache(maxsize=1000)\ndef get_color_for_temp(temp):\n    \"\"\"\n    Возвращает цвет в формате HEX в зависимости от температуры.\n    Кэширует результаты для ускорения работы.\n    \"\"\"\n    if temp < -30:",
+        "peekOfCode": "AIR_FLOW = \"AIR_FLOW\"\nOPEN_DOOR_FLOW = \"OPEN_DOOR_FLOW\"\nWINDOW_FLOW = \"WINDOW_FLOW\"\nTARGET_TEMP = \"TARGET_TEMP\"\nWINDOW_OPENNESS= \"WINDOW_OPENNESS\"\n@lru_cache(maxsize=1000)\ndef get_color_for_temp(temp):\n    \"\"\"\n    Возвращает цвет в формате HEX в зависимости от температуры.\n    Кэширует результаты для ускорения работы.",
         "detail": "home_tk_g3",
         "documentation": {}
     },
@@ -599,7 +615,7 @@
         "kind": 5,
         "importPath": "home_tk_g3",
         "description": "home_tk_g3",
-        "peekOfCode": "OPEN_DOOR_FLOW = \"OPEN_DOOR_FLOW\"\nWINDOW_FLOW = \"WINDOW_FLOW\"\n@lru_cache(maxsize=1000)\ndef get_color_for_temp(temp):\n    \"\"\"\n    Возвращает цвет в формате HEX в зависимости от температуры.\n    Кэширует результаты для ускорения работы.\n    \"\"\"\n    if temp < -30:\n        return \"#0000FF\"",
+        "peekOfCode": "OPEN_DOOR_FLOW = \"OPEN_DOOR_FLOW\"\nWINDOW_FLOW = \"WINDOW_FLOW\"\nTARGET_TEMP = \"TARGET_TEMP\"\nWINDOW_OPENNESS= \"WINDOW_OPENNESS\"\n@lru_cache(maxsize=1000)\ndef get_color_for_temp(temp):\n    \"\"\"\n    Возвращает цвет в формате HEX в зависимости от температуры.\n    Кэширует результаты для ускорения работы.\n    \"\"\"",
         "detail": "home_tk_g3",
         "documentation": {}
     },
@@ -608,7 +624,16 @@
         "kind": 5,
         "importPath": "home_tk_g3",
         "description": "home_tk_g3",
-        "peekOfCode": "WINDOW_FLOW = \"WINDOW_FLOW\"\n@lru_cache(maxsize=1000)\ndef get_color_for_temp(temp):\n    \"\"\"\n    Возвращает цвет в формате HEX в зависимости от температуры.\n    Кэширует результаты для ускорения работы.\n    \"\"\"\n    if temp < -30:\n        return \"#0000FF\"\n    elif -30 <= temp < 0:",
+        "peekOfCode": "WINDOW_FLOW = \"WINDOW_FLOW\"\nTARGET_TEMP = \"TARGET_TEMP\"\nWINDOW_OPENNESS= \"WINDOW_OPENNESS\"\n@lru_cache(maxsize=1000)\ndef get_color_for_temp(temp):\n    \"\"\"\n    Возвращает цвет в формате HEX в зависимости от температуры.\n    Кэширует результаты для ускорения работы.\n    \"\"\"\n    if temp < -30:",
+        "detail": "home_tk_g3",
+        "documentation": {}
+    },
+    {
+        "label": "TARGET_TEMP",
+        "kind": 5,
+        "importPath": "home_tk_g3",
+        "description": "home_tk_g3",
+        "peekOfCode": "TARGET_TEMP = \"TARGET_TEMP\"\nWINDOW_OPENNESS= \"WINDOW_OPENNESS\"\n@lru_cache(maxsize=1000)\ndef get_color_for_temp(temp):\n    \"\"\"\n    Возвращает цвет в формате HEX в зависимости от температуры.\n    Кэширует результаты для ускорения работы.\n    \"\"\"\n    if temp < -30:\n        return \"#0000FF\"",
         "detail": "home_tk_g3",
         "documentation": {}
     },

@@ -8,6 +8,7 @@ from collections import deque
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import math  # Для нелинейных функций
+
 # Константы
 WIDTH, HEIGHT = 600, 600  # Размеры окна для симуляции
 GRID_ROWS, GRID_COLS = 30, 30  # Размер сетки
@@ -257,7 +258,7 @@ class SmartHomeApp:
 
         # Рисуем сетку и запускаем симуляцию
         self.draw_grid()
-        self.root.after(1000, self.simulation_step)
+        self.root.after(2000, self.simulation_step)
 
         # Обработчики кликов
         self.canvas.bind("<Button-1>", self.set_cell)
@@ -300,11 +301,10 @@ class SmartHomeApp:
                 elif cell_type == DOOR:
                     color = "orange"
                 elif cell_type == WINDOW:
-                    color = "lightblue"
-                elif cell_type == HEATER:
-                    color = "red"
+                    color = "lightgray"
+                
                 elif cell_type == AC:
-                    color = "blue"
+                    color = "lightblue"
                 elif cell_type == SENSOR:
                     color = "green"
                 else:
@@ -320,113 +320,88 @@ class SmartHomeApp:
         """Возвращает коэффициент теплообмена между двумя клетками."""
         cell1_type = self.type_matrix[y1, x1]
         cell2_type = self.type_matrix[y2, x2]
-
-        # Если одна из клеток - окно или дверь, ищем две клетки воздуха по прямой
-        if cell1_type in {DOOR, WINDOW} or cell2_type in {DOOR, WINDOW}:
-            if cell1_type in {DOOR, WINDOW}:
-                air_cell1, air_cell2 = self.find_air_cell(y1, x1)
-            else:
-                air_cell1, air_cell2 = self.find_air_cell(y2, x2)
-
-            if air_cell1 is None or air_cell2 is None:
-                return 0
-
-            temp1 = self.temp_matrix[air_cell1]
-            temp2 = self.temp_matrix[air_cell2]
-
-            if cell1_type == DOOR or cell2_type == DOOR:
-                flow = self.initial_data[COEFFICIENTS][OPEN_DOOR_FLOW]
-            else:
-                flow = self.initial_data[COEFFICIENTS][WINDOW_FLOW]
-
-            return (temp2 - temp1) * flow
-
-        # Обычный теплообмен между клетками
+        
+        # Базовый коэффициент теплообмена
         flow = self.initial_data[COEFFICIENTS][AIR_FLOW]
-        temp_diff = abs(self.temp_matrix[y2, x2] - self.temp_matrix[y1, x1])
-        flow *= (1 + 0.1 * temp_diff)
-
-        if cell1_type == WALL or cell2_type == WALL:
+        
+        # Динамический коэффициент, зависящий от разницы температур
+        temp_diff = self.temp_matrix[y2, x2] - self.temp_matrix[y1, x1]
+        flow *= (1 + 0.1 * abs(temp_diff)) * (1 if temp_diff >= 0 else -1)
+        
+        # Учитываем тип клеток
+        if cell1_type == DOOR or cell2_type == DOOR:
+            flow *= 2*self.initial_data[COEFFICIENTS][OPEN_DOOR_FLOW]
+        elif cell1_type == WINDOW or cell2_type == WINDOW:
+            flow *= 2*self.initial_data[COEFFICIENTS][WINDOW_FLOW]
+        elif cell1_type == WALL or cell2_type == WALL:
             flow *= self.initial_data[COEFFICIENTS][WALL_RESISTANCE]
-
-        return flow
-
-    def find_air_cell(self, y, x):
-        """Находит две соседние клетки воздуха по прямой через окно/дверь."""
-        # Проверяем все 4 направления (вверх, вниз, влево, вправо)
-        directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
         
-        for dy, dx in directions:
-            # Ищем первую клетку воздуха в этом направлении
-            ny1, nx1 = y + dy, x + dx
-            if 0 <= ny1 < GRID_ROWS and 0 <= nx1 < GRID_COLS and self.type_matrix[ny1, nx1] not in {WALL, DOOR, WINDOW}:
-                # Ищем вторую клетку воздуха в противоположном направлении
-                ny2, nx2 = y - dy, x - dx
-                if 0 <= ny2 < GRID_ROWS and 0 <= nx2 < GRID_COLS and self.type_matrix[ny2, nx2] not in {WALL, DOOR, WINDOW}:
-                    return (ny1, nx1), (ny2, nx2)
-        
-        # Если не нашли подходящие клетки (например, окно в углу)
-        return None, None
+        # Ограничиваем максимальный поток
+        return max(min(flow, 5.0), -5.0)
 
     def calculate_temp_delta(self, y, x, current_temp):
         """Рассчитывает изменение температуры для клетки (y, x)."""
         total_delta = 0
         neighbor_count = 0
-
+        
         neighbors = [(y-1, x), (y+1, x), (y, x-1), (y, x+1)]
         for ny, nx in neighbors:
             if 0 <= ny < GRID_ROWS and 0 <= nx < GRID_COLS:
-                if self.type_matrix[ny, nx] in {DOOR, WINDOW}:
-                    delta = self.get_flow_between_cells(y, x, ny, nx)
+                # Получаем температуру соседа
+                if self.type_matrix[ny, nx] == OUTSIDE:
+                    neighbor_temp = self.initial_data[TEMPERATURES][OUTSIDE_TEMP]
                 else:
                     neighbor_temp = self.temp_matrix[ny, nx]
-                    delta = (neighbor_temp - current_temp) * self.get_flow_between_cells(y, x, ny, nx)
+                
+                # Рассчитываем поток
+                flow = self.get_flow_between_cells(y, x, ny, nx)
+                delta = (neighbor_temp - current_temp) * flow
                 total_delta += delta
                 neighbor_count += 1
-
-        return total_delta if total_delta <= 400 else 400 / neighbor_count if neighbor_count > 0 else 0
+        
+        # Возвращаем среднее изменение
+        return total_delta / neighbor_count if neighbor_count > 0 else 0
 
     def update_temperature(self):
-        """Обновляет температуры в сетке."""
+        """Обновляет температуры в сетке с учетом регуляторов."""
         delta_matrix = np.zeros_like(self.temp_matrix, dtype=float)
-
-        # Получаем среднюю температуру в доме (исключая стены, двери, окна и улицу)
-        indoor_cells = (self.type_matrix != WALL) & (self.type_matrix != DOOR) & \
-                      (self.type_matrix != WINDOW) & (self.type_matrix != OUTSIDE) & \
-                      (self.type_matrix != HEATER) & (self.type_matrix != AC) & \
-                      (self.type_matrix != SENSOR)
-        avg_temp = np.mean(self.temp_matrix[indoor_cells]) if np.any(indoor_cells) else self.initial_data[TEMPERATURES][INITIAL_ROOM_TEMP]
         
-        # Обновляем регулятор
-        action = self.controller.update(avg_temp)
+        # Собираем показания с сенсоров для регулятора
+        # sensor_temps = []
+        # for sensor in self.sensors:
+        #     sensor_temps.append(self.temp_matrix[sensor.y, sensor.x])
+        #     sensor.update(self.temp_matrix[sensor.y, sensor.x])
         
-        # Управление обогревателем и кондиционером
+        # # Усредняем показания сенсоров
+        # avg_temp = np.mean(sensor_temps) if sensor_temps else self.initial_data[TEMPERATURES][INITIAL_ROOM_TEMP]
+        
+        # # Обновляем состояние регулятора
+        # action = self.controller.update(avg_temp)
+        
+        # # Управляем обогревателем и кондиционером
+        # for y in range(GRID_ROWS):
+        #     for x in range(GRID_COLS):
+        #         if self.type_matrix[y, x] == HEATER:
+        #             self.temp_matrix[y, x] = self.initial_data[TEMPERATURES][HEATER_TEMP] if self.controller.heater_on else self.temp_matrix[y, x]
+        #         elif self.type_matrix[y, x] == AC:
+        #             self.temp_matrix[y, x] = self.initial_data[TEMPERATURES][AC_TEMP] if self.controller.ac_on else self.temp_matrix[y, x]
+        #         elif self.type_matrix[y, x] == OUTSIDE:
+        #             self.temp_matrix[y, x] = self.initial_data[TEMPERATURES][OUTSIDE_TEMP]
+        
+        # Вычисляем изменения температуры
         for y in range(GRID_ROWS):
             for x in range(GRID_COLS):
-                if self.type_matrix[y, x] == HEATER:
-                    self.temp_matrix[y, x] = self.initial_data[TEMPERATURES][HEATER_TEMP] if self.controller.heater_on else self.initial_data[TEMPERATURES][INITIAL_ROOM_TEMP]
-                elif self.type_matrix[y, x] == AC:
-                    self.temp_matrix[y, x] = self.initial_data[TEMPERATURES][AC_TEMP] if self.controller.ac_on else self.initial_data[TEMPERATURES][INITIAL_ROOM_TEMP]
-                elif self.type_matrix[y, x] == SENSOR:
-                    # Обновляем данные датчика
-                    for sensor in self.sensors:
-                        if sensor.y == y and sensor.x == x:
-                            sensor.update(self.temp_matrix[y, x])
-                            break
-
+                if self.type_matrix[y, x] not in {OUTSIDE, HEATER, AC, SENSOR}:
+                    current_temp = self.temp_matrix[y, x]
+                    delta = self.calculate_temp_delta(y, x, current_temp)
+                    delta_matrix[y, x] = delta
+        
+        # Применяем изменения с ограничениями
         for y in range(GRID_ROWS):
             for x in range(GRID_COLS):
-                if self.type_matrix[y, x] in {OUTSIDE, HEATER, AC, SENSOR}:
-                    continue
-                
-                current_temp = self.temp_matrix[y, x]
-                delta = self.calculate_temp_delta(y, x, current_temp)
-                delta_matrix[y, x] = delta
-
-        for y in range(GRID_ROWS):
-            for x in range(GRID_COLS):
-                if self.type_matrix[y, x] not in {OUTSIDE, HEATER, AC, DOOR, WINDOW, SENSOR}:
-                    self.temp_matrix[y, x] += delta_matrix[y, x]
+                if self.type_matrix[y, x] not in {OUTSIDE, HEATER, AC, SENSOR}:
+                    new_temp = self.temp_matrix[y, x] + delta_matrix[y, x]
+                    self.temp_matrix[y, x] = max(min(new_temp, 200.0), -100.0)
 
     def simulation_step(self):
         """Один шаг симуляции."""

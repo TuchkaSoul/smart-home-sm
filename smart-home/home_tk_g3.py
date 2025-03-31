@@ -4,6 +4,10 @@ import numpy as np
 import json
 import xml.etree.ElementTree as ET
 from functools import lru_cache
+from collections import deque
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+import math  # Для нелинейных функций
 
 # Константы
 WIDTH, HEIGHT = 600, 600  # Размеры окна для симуляции
@@ -11,7 +15,7 @@ GRID_ROWS, GRID_COLS = 30, 30  # Размер сетки
 CELL_SIZE = WIDTH // GRID_COLS  # Размер ячейки
 
 # Определение типов клеток
-EMPTY, WALL, DOOR, WINDOW, HEATER, AC, OUTSIDE = range(7)
+EMPTY, WALL, DOOR, WINDOW, HEATER, AC, OUTSIDE, SENSOR = range(8)
 
 # Константы для ключей
 TEMPERATURES = "temperatures"
@@ -24,6 +28,8 @@ WALL_RESISTANCE = "WALL_RESISTANCE"
 AIR_FLOW = "AIR_FLOW"
 OPEN_DOOR_FLOW = "OPEN_DOOR_FLOW"
 WINDOW_FLOW = "WINDOW_FLOW"
+TARGET_TEMP = "TARGET_TEMP"
+WINDOW_OPENNESS= "WINDOW_OPENNESS"
 
 
 @lru_cache(maxsize=1000)
@@ -160,110 +166,94 @@ class SmartHomeApp:
 
     def get_flow_between_cells(self, y1, x1, y2, x2):
         """
+        Улучшенная версия с защитой от переполнений и плавным теплообменом.
         Возвращает коэффициент теплообмена между двумя клетками.
-        Если одна из клеток — дверь или окно, тепло передается напрямую между соседними клетками воздуха.
         """
-        if self.type_matrix[y1, x1] in {DOOR, WINDOW} or self.type_matrix[y2, x2] in {DOOR, WINDOW}:
-            if self.type_matrix[y1, x1] in {DOOR, WINDOW}:
-                air_cell1, air_cell2 = self.find_air_cell(y1, x1)
-            else:
-                air_cell1, air_cell2 = self.find_air_cell(y2, x2)
-                
-            
+        # Защита от выхода за границы массива
+        if not (0 <= y1 < GRID_ROWS and 0 <= x1 < GRID_COLS and 
+                0 <= y2 < GRID_ROWS and 0 <= x2 < GRID_COLS):
+            return 0
 
-            if air_cell1 is None or air_cell2 is None:
-                return 0
-
-            temp1 = self.temp_matrix[air_cell1]
-            temp2 = self.temp_matrix[air_cell2]
-
-            if self.type_matrix[y1, x1] == DOOR or self.type_matrix[y2, x2] == DOOR:
-                flow = self.initial_data[COEFFICIENTS][OPEN_DOOR_FLOW]
-            else:
-                flow = self.initial_data[COEFFICIENTS][WINDOW_FLOW]
-
-            return (temp2 - temp1) * flow
-
+        # Базовый коэффициент теплообмена
         flow = self.initial_data[COEFFICIENTS][AIR_FLOW]
-        # temp_diff = abs(self.temp_matrix[y2, x2] - self.temp_matrix[y1, x1])
-        # flow *= (1 + 0.1 * temp_diff)
 
-        if self.type_matrix[y1, x1] == WALL or self.type_matrix[y2, x2] == WALL:
-            flow *= self.initial_data[COEFFICIENTS][WALL_RESISTANCE]
+        # Безопасный расчет разницы температур
+        temp_diff = self.temp_matrix[y2, x2] - self.temp_matrix[y1, x1]
         
-        return flow if flow<=2 else 2
+        # Плавная зависимость от разницы температур (используем atan для насыщения)
+        flow *= math.atan(abs(temp_diff)/10) * 2  # Ограничиваем влияние больших перепадов
 
-    def find_air_cell(self, y, x):
-        """
-        Улучшенный поиск воздушных клеток для окон/дверей.
-        Возвращает пару клеток воздуха, соединенных через данную клетку.
-        """
-        # Все возможные направления (вверх, вниз, влево, вправо)
-        directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
-        air_cells = []
-        
-        # Проверяем все 4 направления
-        for dy, dx in directions:
-            ny, nx = y + dy, x + dx
-            # Если клетка в пределах границ и это не стена/дверь/окно
-            if (0 <= ny < GRID_ROWS and 0 <= nx < GRID_COLS and 
-                self.type_matrix[ny, nx] not in {WALL, DOOR, WINDOW}):
-                air_cells.append((ny, nx))
-        
-        # Для окна/двери нужно ровно 2 воздушные клетки
-        if len(air_cells) == 2:
-            y1, x1 = air_cells[0]
-            y2, x2 = air_cells[1]
-            # Проверяем, что клетки на одной линии с окном
-            if not (y1 == y2 == y or x1 == x2 == x):
-                return None, None
-            return air_cells[0], air_cells[1]
-        
-        # Особый случай: угловое окно с одним соседом
-        elif len(air_cells) == 1:
-            # Возвращаем найденную клетку и None (можно вернуть саму клетку дважды)
-            return air_cells[0], None
-        
-        # Если воздушных клеток нет (окно в стене)
-        return None, None
+        # Учитываем тип клеток с защитой от деления на ноль
+        if self.type_matrix[y1, x1] == DOOR or self.type_matrix[y2, x2] == DOOR:
+            flow = 2*self.initial_data[COEFFICIENTS][OPEN_DOOR_FLOW]
+        elif self.type_matrix[y1, x1] == WINDOW or self.type_matrix[y2, x2] == WINDOW:
+            flow = 2*self.initial_data[COEFFICIENTS][WINDOW_FLOW]
+        elif self.type_matrix[y1, x1] == WALL or self.type_matrix[y2, x2] == WALL:
+            flow *= max(self.initial_data[COEFFICIENTS][WALL_RESISTANCE], 0.001)  # Защита от нуля
+
+        # Жесткое ограничение потока
+        return max(min(flow, 5.0), -5.0)
 
     def calculate_temp_delta(self, y, x, current_temp):
-        """Рассчитывает изменение температуры для клетки (y, x)."""
+        """
+        Улучшенный расчет изменения температуры с защитой от аномалий.
+        """
         total_delta = 0
-        neighbor_count = 0
+        valid_neighbors = 0
 
         neighbors = [(y-1, x), (y+1, x), (y, x-1), (y, x+1)]
+        
         for ny, nx in neighbors:
             if 0 <= ny < GRID_ROWS and 0 <= nx < GRID_COLS:
-                if self.type_matrix[ny, nx] in {DOOR, WINDOW}:
-                    delta = self.get_flow_between_cells(y, x, ny, nx)
+                # Безопасное получение температуры соседа
+                if self.type_matrix[ny, nx] == OUTSIDE:
+                    neighbor_temp = self.initial_data[TEMPERATURES][OUTSIDE_TEMP]
                 else:
                     neighbor_temp = self.temp_matrix[ny, nx]
-                    delta = (neighbor_temp - current_temp) * self.get_flow_between_cells(y, x, ny, nx)
-                total_delta += delta
-                neighbor_count += 1
 
-        return total_delta / neighbor_count if neighbor_count > 0 else 0
+                # Безопасный расчет потока
+                flow = self.get_flow_between_cells(y, x, ny, nx)
+                
+                # Накопление изменений
+                delta = (neighbor_temp - current_temp) * flow
+                total_delta += delta
+                valid_neighbors += 1
+
+        # Защита от деления на ноль
+        if valid_neighbors == 0:
+            return 0
+            
+        # Возвращаем среднее изменение
+        avg_delta = total_delta / valid_neighbors
+        
+        # Дополнительное ограничение скорости изменения
+        return max(min(avg_delta, 2.0), -2.0)
 
     def update_temperature(self):
-        """Обновляет температуры в сетке."""
+        """Обновление температур с защитой от переполнений."""
         delta_matrix = np.zeros_like(self.temp_matrix, dtype=float)
-
+        
+        # Сначала вычисляем все изменения
         for y in range(GRID_ROWS):
             for x in range(GRID_COLS):
-                if self.type_matrix[y, x] in {OUTSIDE, HEATER, AC}:
+                if self.type_matrix[y, x] == OUTSIDE:
+                    self.temp_matrix[y, x] = self.initial_data[TEMPERATURES][OUTSIDE_TEMP]
                     continue
                 
+                if self.type_matrix[y, x] in {HEATER, AC}:
+                    continue
+                    
                 current_temp = self.temp_matrix[y, x]
                 delta = self.calculate_temp_delta(y, x, current_temp)
                 delta_matrix[y, x] = delta
 
+        # Затем применяем изменения с ограничениями
         for y in range(GRID_ROWS):
             for x in range(GRID_COLS):
-                if self.type_matrix[y, x] not in {OUTSIDE, HEATER, AC, DOOR, WINDOW}:
-                    self.temp_matrix[y, x] += delta_matrix[y, x]
-
-    
+                if self.type_matrix[y, x] not in {OUTSIDE, HEATER, AC}:
+                    new_temp = self.temp_matrix[y, x] + delta_matrix[y, x]
+                    # Жесткое ограничение температуры
+                    self.temp_matrix[y, x] = max(min(new_temp, 200.0), -100.0)    
         
 
     def simulation_step(self):
