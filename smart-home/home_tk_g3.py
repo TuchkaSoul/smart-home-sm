@@ -185,25 +185,47 @@ class SmartHomeApp:
             return (temp2 - temp1) * flow
 
         flow = self.initial_data[COEFFICIENTS][AIR_FLOW]
-        temp_diff = abs(self.temp_matrix[y2, x2] - self.temp_matrix[y1, x1])
-        flow *= (1 + 0.1 * temp_diff)
+        # temp_diff = abs(self.temp_matrix[y2, x2] - self.temp_matrix[y1, x1])
+        # flow *= (1 + 0.1 * temp_diff)
 
         if self.type_matrix[y1, x1] == WALL or self.type_matrix[y2, x2] == WALL:
             flow *= self.initial_data[COEFFICIENTS][WALL_RESISTANCE]
-
-        return flow
+        
+        return flow if flow<=2 else 2
 
     def find_air_cell(self, y, x):
-        """Находит соседнюю клетку воздуха для двери или окна."""
-        neighbors = [(y-1, x), (y+1, x), (y, x-1), (y, x+1)]
-        if y>=GRID_ROWS//2 and x>=GRID_COLS//2:
-            neighbors.reverse()
-        type_trup=(WALL,DOOR,WINDOW)
-        if self.type_matrix[neighbors[0]] in type_trup and self.type_matrix[neighbors[1]] in type_trup:
-            return neighbors[2],neighbors[3]
-        elif self.type_matrix[neighbors[2]] in type_trup and self.type_matrix[neighbors[3]] in type_trup:
-            return neighbors[0],neighbors[1]
-        return None
+        """
+        Улучшенный поиск воздушных клеток для окон/дверей.
+        Возвращает пару клеток воздуха, соединенных через данную клетку.
+        """
+        # Все возможные направления (вверх, вниз, влево, вправо)
+        directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+        air_cells = []
+        
+        # Проверяем все 4 направления
+        for dy, dx in directions:
+            ny, nx = y + dy, x + dx
+            # Если клетка в пределах границ и это не стена/дверь/окно
+            if (0 <= ny < GRID_ROWS and 0 <= nx < GRID_COLS and 
+                self.type_matrix[ny, nx] not in {WALL, DOOR, WINDOW}):
+                air_cells.append((ny, nx))
+        
+        # Для окна/двери нужно ровно 2 воздушные клетки
+        if len(air_cells) == 2:
+            y1, x1 = air_cells[0]
+            y2, x2 = air_cells[1]
+            # Проверяем, что клетки на одной линии с окном
+            if not (y1 == y2 == y or x1 == x2 == x):
+                return None, None
+            return air_cells[0], air_cells[1]
+        
+        # Особый случай: угловое окно с одним соседом
+        elif len(air_cells) == 1:
+            # Возвращаем найденную клетку и None (можно вернуть саму клетку дважды)
+            return air_cells[0], None
+        
+        # Если воздушных клеток нет (окно в стене)
+        return None, None
 
     def calculate_temp_delta(self, y, x, current_temp):
         """Рассчитывает изменение температуры для клетки (y, x)."""
