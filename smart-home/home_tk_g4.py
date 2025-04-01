@@ -8,7 +8,6 @@ from collections import deque
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import math  # Для нелинейных функций
-
 # Константы
 WIDTH, HEIGHT = 600, 600  # Размеры окна для симуляции
 GRID_ROWS, GRID_COLS = 30, 30  # Размер сетки
@@ -231,7 +230,7 @@ class SmartHomeApp:
                 TARGET_TEMP: 22
             },
             COEFFICIENTS: {
-                WALL_RESISTANCE: 0.005,
+                WALL_RESISTANCE: 0.01,
                 AIR_FLOW: 0.2,
                 OPEN_DOOR_FLOW: 0.8,
                 WINDOW_FLOW: 0.6,
@@ -258,7 +257,7 @@ class SmartHomeApp:
 
         # Рисуем сетку и запускаем симуляцию
         self.draw_grid()
-        self.root.after(2000, self.simulation_step)
+        self.root.after(1000, self.simulation_step)
 
         # Обработчики кликов
         self.canvas.bind("<Button-1>", self.set_cell)
@@ -304,7 +303,7 @@ class SmartHomeApp:
                     color = "lightgray"
                 
                 elif cell_type == AC:
-                    color = "lightblue"
+                    color = "blue"
                 elif cell_type == SENSOR:
                     color = "green"
                 else:
@@ -326,7 +325,7 @@ class SmartHomeApp:
         
         # Динамический коэффициент, зависящий от разницы температур
         temp_diff = self.temp_matrix[y2, x2] - self.temp_matrix[y1, x1]
-        flow *= (1 + 0.1 * abs(temp_diff)) * (1 if temp_diff >= 0 else -1)
+        flow *= math.atan(abs(temp_diff)/10) * 2
         
         # Учитываем тип клеток
         if cell1_type == DOOR or cell2_type == DOOR:
@@ -367,26 +366,26 @@ class SmartHomeApp:
         delta_matrix = np.zeros_like(self.temp_matrix, dtype=float)
         
         # Собираем показания с сенсоров для регулятора
-        # sensor_temps = []
-        # for sensor in self.sensors:
-        #     sensor_temps.append(self.temp_matrix[sensor.y, sensor.x])
-        #     sensor.update(self.temp_matrix[sensor.y, sensor.x])
+        sensor_temps = []
+        for sensor in self.sensors:
+            sensor_temps.append(self.temp_matrix[sensor.y, sensor.x])
+            sensor.update(self.temp_matrix[sensor.y, sensor.x])
         
-        # # Усредняем показания сенсоров
-        # avg_temp = np.mean(sensor_temps) if sensor_temps else self.initial_data[TEMPERATURES][INITIAL_ROOM_TEMP]
+        # Усредняем показания сенсоров
+        avg_temp = np.mean(sensor_temps) if sensor_temps else self.initial_data[TEMPERATURES][INITIAL_ROOM_TEMP]
         
-        # # Обновляем состояние регулятора
-        # action = self.controller.update(avg_temp)
+        # Обновляем состояние регулятора
+        action = self.controller.update(avg_temp)
         
-        # # Управляем обогревателем и кондиционером
-        # for y in range(GRID_ROWS):
-        #     for x in range(GRID_COLS):
-        #         if self.type_matrix[y, x] == HEATER:
-        #             self.temp_matrix[y, x] = self.initial_data[TEMPERATURES][HEATER_TEMP] if self.controller.heater_on else self.temp_matrix[y, x]
-        #         elif self.type_matrix[y, x] == AC:
-        #             self.temp_matrix[y, x] = self.initial_data[TEMPERATURES][AC_TEMP] if self.controller.ac_on else self.temp_matrix[y, x]
-        #         elif self.type_matrix[y, x] == OUTSIDE:
-        #             self.temp_matrix[y, x] = self.initial_data[TEMPERATURES][OUTSIDE_TEMP]
+        # Управляем обогревателем и кондиционером
+        for y in range(GRID_ROWS):
+            for x in range(GRID_COLS):
+                if self.type_matrix[y, x] == HEATER:
+                    self.temp_matrix[y, x] = self.initial_data[TEMPERATURES][HEATER_TEMP] if self.controller.heater_on else self.temp_matrix[y, x]
+                elif self.type_matrix[y, x] == AC:
+                    self.temp_matrix[y, x] = self.initial_data[TEMPERATURES][AC_TEMP] if self.controller.ac_on else self.temp_matrix[y, x]
+                elif self.type_matrix[y, x] == OUTSIDE:
+                    self.temp_matrix[y, x] = self.initial_data[TEMPERATURES][OUTSIDE_TEMP]
         
         # Вычисляем изменения температуры
         for y in range(GRID_ROWS):

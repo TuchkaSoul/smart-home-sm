@@ -31,13 +31,14 @@ WINDOW_FLOW = "WINDOW_FLOW"
 TARGET_TEMP = "TARGET_TEMP"
 WINDOW_OPENNESS= "WINDOW_OPENNESS"
 
+# Константы регуляторов
+RELAY = 0
+PI = 1
+PID = 2
 
 @lru_cache(maxsize=1000)
 def get_color_for_temp(temp):
-    """
-    Возвращает цвет в формате HEX в зависимости от температуры.
-    Кэширует результаты для ускорения работы.
-    """
+    """Возвращает цвет в формате HEX в зависимости от температуры."""
     if temp < -30:
         return "#0000FF"
     elif -30 <= temp < 0:
@@ -63,7 +64,143 @@ def get_color_for_temp(temp):
     blue = max(0, min(255, blue))
     return f"#{red:02x}{green:02x}{blue:02x}"
 
+class TemperatureController:
+    """Класс для управления температурой с разными регуляторами."""
+    def __init__(self, target_temp=22):
+        self.target_temp = target_temp
+        self.controller_type = RELAY
+        self.integral = 0
+        self.prev_error = 0
+        self.heater_on = False
+        self.ac_on = False
+        
+        # Параметры PI регулятора
+        self.Kp = 0.5
+        self.Ki = 0.1
+        
+        # Параметры PID регулятора
+        self.Kd = 0.2
+        
+        # История для графика
+        self.temp_history = deque(maxlen=600)
+        self.time_history = deque(maxlen=600)
+        self.action_history = deque(maxlen=600)
+        
+    def set_target_temp(self, temp):
+        self.target_temp = temp
+        
+    def set_controller_type(self, c_type):
+        self.controller_type = c_type
+        self.reset()
+        
+    def reset(self):
+        """Сброс состояния регулятора"""
+        self.integral = 0
+        self.prev_error = 0
+        self.heater_on = False
+        self.ac_on = False
+        
+    def update(self, current_temp):
+        """Обновляет состояние регулятора и возвращает действие"""
+        error = self.target_temp - current_temp
+        self.temp_history.append(current_temp)
+        self.time_history.append(len(self.time_history))
+        
+        if self.controller_type == RELAY:
+            # Релейный регулятор
+            if current_temp < self.target_temp - 1:
+                self.heater_on = True
+                self.ac_on = False
+                action = 1
+            elif current_temp > self.target_temp + 1:
+                self.heater_on = False
+                self.ac_on = True
+                action = -1
+            else:
+                self.heater_on = False
+                self.ac_on = False
+                action = 0
+                
+        elif self.controller_type == PI:
+            # PI регулятор
+            self.integral += error
+            output = self.Kp * error + self.Ki * self.integral
+            
+            if output > 1:
+                action = 1
+                self.heater_on = True
+                self.ac_on = False
+            elif output < -1:
+                action = -1
+                self.heater_on = False
+                self.ac_on = True
+            else:
+                action = 0
+                self.heater_on = False
+                self.ac_on = False
+                
+        elif self.controller_type == PID:
+            # PID регулятор
+            self.integral += error
+            derivative = error - self.prev_error
+            self.prev_error = error
+            
+            output = self.Kp * error + self.Ki * self.integral + self.Kd * derivative
+            
+            if output > 1:
+                action = 1
+                self.heater_on = True
+                self.ac_on = False
+            elif output < -1:
+                action = -1
+                self.heater_on = False
+                self.ac_on = True
+            else:
+                action = 0
+                self.heater_on = False
+                self.ac_on = False
+                
+        self.action_history.append(action)
+        return action
 
+class Sensor:
+    """Класс датчика температуры с графиком"""
+    def __init__(self, y, x):
+        self.y = y
+        self.x = x
+        self.temp_history = deque(maxlen=600)
+        self.time_history = deque(maxlen=600)
+        self.figure = None
+        self.canvas = None
+        
+    def update(self, temp):
+        """Обновляет историю температур"""
+        self.temp_history.append(temp)
+        self.time_history.append(len(self.time_history))
+        
+    def show_graph(self, parent):
+        """Показывает график температуры"""
+        if self.figure is None:
+            self.figure = plt.Figure(figsize=(5, 3), dpi=100)
+            self.ax = self.figure.add_subplot(111)
+            self.line, = self.ax.plot([], [], 'r-')
+            self.ax.set_xlim(0, 600)
+            self.ax.set_ylim(min(self.temp_history) - 5 if self.temp_history else 0, 
+                            max(self.temp_history) + 5 if self.temp_history else 40)
+            self.ax.set_title(f"Температура в точке ({self.y}, {self.x})")
+            self.ax.set_xlabel("Время (тики)")
+            self.ax.set_ylabel("Температура (°C)")
+            
+            self.canvas = FigureCanvasTkAgg(self.figure, master=parent)
+            self.canvas.draw()
+            self.canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=True)
+            
+        # Обновляем данные графика
+        self.line.set_data(self.time_history, self.temp_history)
+        self.ax.relim()
+        self.ax.autoscale_view()
+        self.canvas.draw()
+        
 class SmartHomeApp:
     def __init__(self, root):
         self.root = root
@@ -91,12 +228,14 @@ class SmartHomeApp:
                 HEATER_TEMP: 60,
                 AC_TEMP: 18,
                 INITIAL_ROOM_TEMP: -10,
+                TARGET_TEMP: 22
             },
             COEFFICIENTS: {
                 WALL_RESISTANCE: 0.005,
                 AIR_FLOW: 0.2,
                 OPEN_DOOR_FLOW: 0.8,
                 WINDOW_FLOW: 0.6,
+                WINDOW_OPENNESS: 0.5
             }
         }
 
@@ -152,9 +291,12 @@ class SmartHomeApp:
                 elif cell_type == DOOR:
                     color = "orange"
                 elif cell_type == WINDOW:
+                    color = "lightgray"
+                
+                elif cell_type == AC:
                     color = "lightblue"
-                elif cell_type in {HEATER, AC}:
-                    color = "red" if cell_type == HEATER else "blue"
+                elif cell_type == SENSOR:
+                    color = "green"
                 else:
                     temp = self.temp_matrix[y, x]
                     color = get_color_for_temp(temp)

@@ -512,6 +512,24 @@
         "documentation": {}
     },
     {
+        "label": "TemperatureController",
+        "kind": 6,
+        "importPath": "home_tk_g3",
+        "description": "home_tk_g3",
+        "peekOfCode": "class TemperatureController:\n    \"\"\"Класс для управления температурой с разными регуляторами.\"\"\"\n    def __init__(self, target_temp=22):\n        self.target_temp = target_temp\n        self.controller_type = RELAY\n        self.integral = 0\n        self.prev_error = 0\n        self.heater_on = False\n        self.ac_on = False\n        # Параметры PI регулятора",
+        "detail": "home_tk_g3",
+        "documentation": {}
+    },
+    {
+        "label": "Sensor",
+        "kind": 6,
+        "importPath": "home_tk_g3",
+        "description": "home_tk_g3",
+        "peekOfCode": "class Sensor:\n    \"\"\"Класс датчика температуры с графиком\"\"\"\n    def __init__(self, y, x):\n        self.y = y\n        self.x = x\n        self.temp_history = deque(maxlen=600)\n        self.time_history = deque(maxlen=600)\n        self.figure = None\n        self.canvas = None\n    def update(self, temp):",
+        "detail": "home_tk_g3",
+        "documentation": {}
+    },
+    {
         "label": "SmartHomeApp",
         "kind": 6,
         "importPath": "home_tk_g3",
@@ -525,7 +543,7 @@
         "kind": 2,
         "importPath": "home_tk_g3",
         "description": "home_tk_g3",
-        "peekOfCode": "def get_color_for_temp(temp):\n    \"\"\"\n    Возвращает цвет в формате HEX в зависимости от температуры.\n    Кэширует результаты для ускорения работы.\n    \"\"\"\n    if temp < -30:\n        return \"#0000FF\"\n    elif -30 <= temp < 0:\n        ratio = (temp + 30) / 30\n        blue = 255",
+        "peekOfCode": "def get_color_for_temp(temp):\n    \"\"\"Возвращает цвет в формате HEX в зависимости от температуры.\"\"\"\n    if temp < -30:\n        return \"#0000FF\"\n    elif -30 <= temp < 0:\n        ratio = (temp + 30) / 30\n        blue = 255\n        green = int(255 * ratio)\n        red = 0\n    elif 0 <= temp <= 35:",
         "detail": "home_tk_g3",
         "documentation": {}
     },
@@ -570,7 +588,7 @@
         "kind": 5,
         "importPath": "home_tk_g3",
         "description": "home_tk_g3",
-        "peekOfCode": "HEATER_TEMP = \"HEATER_TEMP\"\nAC_TEMP = \"AC_TEMP\"\nINITIAL_ROOM_TEMP = \"INITIAL_ROOM_TEMP\"\nWALL_RESISTANCE = \"WALL_RESISTANCE\"\nAIR_FLOW = \"AIR_FLOW\"\nOPEN_DOOR_FLOW = \"OPEN_DOOR_FLOW\"\nWINDOW_FLOW = \"WINDOW_FLOW\"\nTARGET_TEMP = \"TARGET_TEMP\"\nWINDOW_OPENNESS= \"WINDOW_OPENNESS\"\n@lru_cache(maxsize=1000)",
+        "peekOfCode": "HEATER_TEMP = \"HEATER_TEMP\"\nAC_TEMP = \"AC_TEMP\"\nINITIAL_ROOM_TEMP = \"INITIAL_ROOM_TEMP\"\nWALL_RESISTANCE = \"WALL_RESISTANCE\"\nAIR_FLOW = \"AIR_FLOW\"\nOPEN_DOOR_FLOW = \"OPEN_DOOR_FLOW\"\nWINDOW_FLOW = \"WINDOW_FLOW\"\nTARGET_TEMP = \"TARGET_TEMP\"\nWINDOW_OPENNESS= \"WINDOW_OPENNESS\"\n# Константы регуляторов",
         "detail": "home_tk_g3",
         "documentation": {}
     },
@@ -579,7 +597,7 @@
         "kind": 5,
         "importPath": "home_tk_g3",
         "description": "home_tk_g3",
-        "peekOfCode": "AC_TEMP = \"AC_TEMP\"\nINITIAL_ROOM_TEMP = \"INITIAL_ROOM_TEMP\"\nWALL_RESISTANCE = \"WALL_RESISTANCE\"\nAIR_FLOW = \"AIR_FLOW\"\nOPEN_DOOR_FLOW = \"OPEN_DOOR_FLOW\"\nWINDOW_FLOW = \"WINDOW_FLOW\"\nTARGET_TEMP = \"TARGET_TEMP\"\nWINDOW_OPENNESS= \"WINDOW_OPENNESS\"\n@lru_cache(maxsize=1000)\ndef get_color_for_temp(temp):",
+        "peekOfCode": "AC_TEMP = \"AC_TEMP\"\nINITIAL_ROOM_TEMP = \"INITIAL_ROOM_TEMP\"\nWALL_RESISTANCE = \"WALL_RESISTANCE\"\nAIR_FLOW = \"AIR_FLOW\"\nOPEN_DOOR_FLOW = \"OPEN_DOOR_FLOW\"\nWINDOW_FLOW = \"WINDOW_FLOW\"\nTARGET_TEMP = \"TARGET_TEMP\"\nWINDOW_OPENNESS= \"WINDOW_OPENNESS\"\n# Константы регуляторов\nRELAY = 0",
         "detail": "home_tk_g3",
         "documentation": {}
     },
@@ -588,7 +606,7 @@
         "kind": 5,
         "importPath": "home_tk_g3",
         "description": "home_tk_g3",
-        "peekOfCode": "INITIAL_ROOM_TEMP = \"INITIAL_ROOM_TEMP\"\nWALL_RESISTANCE = \"WALL_RESISTANCE\"\nAIR_FLOW = \"AIR_FLOW\"\nOPEN_DOOR_FLOW = \"OPEN_DOOR_FLOW\"\nWINDOW_FLOW = \"WINDOW_FLOW\"\nTARGET_TEMP = \"TARGET_TEMP\"\nWINDOW_OPENNESS= \"WINDOW_OPENNESS\"\n@lru_cache(maxsize=1000)\ndef get_color_for_temp(temp):\n    \"\"\"",
+        "peekOfCode": "INITIAL_ROOM_TEMP = \"INITIAL_ROOM_TEMP\"\nWALL_RESISTANCE = \"WALL_RESISTANCE\"\nAIR_FLOW = \"AIR_FLOW\"\nOPEN_DOOR_FLOW = \"OPEN_DOOR_FLOW\"\nWINDOW_FLOW = \"WINDOW_FLOW\"\nTARGET_TEMP = \"TARGET_TEMP\"\nWINDOW_OPENNESS= \"WINDOW_OPENNESS\"\n# Константы регуляторов\nRELAY = 0\nPI = 1",
         "detail": "home_tk_g3",
         "documentation": {}
     },
@@ -597,7 +615,7 @@
         "kind": 5,
         "importPath": "home_tk_g3",
         "description": "home_tk_g3",
-        "peekOfCode": "WALL_RESISTANCE = \"WALL_RESISTANCE\"\nAIR_FLOW = \"AIR_FLOW\"\nOPEN_DOOR_FLOW = \"OPEN_DOOR_FLOW\"\nWINDOW_FLOW = \"WINDOW_FLOW\"\nTARGET_TEMP = \"TARGET_TEMP\"\nWINDOW_OPENNESS= \"WINDOW_OPENNESS\"\n@lru_cache(maxsize=1000)\ndef get_color_for_temp(temp):\n    \"\"\"\n    Возвращает цвет в формате HEX в зависимости от температуры.",
+        "peekOfCode": "WALL_RESISTANCE = \"WALL_RESISTANCE\"\nAIR_FLOW = \"AIR_FLOW\"\nOPEN_DOOR_FLOW = \"OPEN_DOOR_FLOW\"\nWINDOW_FLOW = \"WINDOW_FLOW\"\nTARGET_TEMP = \"TARGET_TEMP\"\nWINDOW_OPENNESS= \"WINDOW_OPENNESS\"\n# Константы регуляторов\nRELAY = 0\nPI = 1\nPID = 2",
         "detail": "home_tk_g3",
         "documentation": {}
     },
@@ -606,7 +624,7 @@
         "kind": 5,
         "importPath": "home_tk_g3",
         "description": "home_tk_g3",
-        "peekOfCode": "AIR_FLOW = \"AIR_FLOW\"\nOPEN_DOOR_FLOW = \"OPEN_DOOR_FLOW\"\nWINDOW_FLOW = \"WINDOW_FLOW\"\nTARGET_TEMP = \"TARGET_TEMP\"\nWINDOW_OPENNESS= \"WINDOW_OPENNESS\"\n@lru_cache(maxsize=1000)\ndef get_color_for_temp(temp):\n    \"\"\"\n    Возвращает цвет в формате HEX в зависимости от температуры.\n    Кэширует результаты для ускорения работы.",
+        "peekOfCode": "AIR_FLOW = \"AIR_FLOW\"\nOPEN_DOOR_FLOW = \"OPEN_DOOR_FLOW\"\nWINDOW_FLOW = \"WINDOW_FLOW\"\nTARGET_TEMP = \"TARGET_TEMP\"\nWINDOW_OPENNESS= \"WINDOW_OPENNESS\"\n# Константы регуляторов\nRELAY = 0\nPI = 1\nPID = 2\n@lru_cache(maxsize=1000)",
         "detail": "home_tk_g3",
         "documentation": {}
     },
@@ -615,7 +633,7 @@
         "kind": 5,
         "importPath": "home_tk_g3",
         "description": "home_tk_g3",
-        "peekOfCode": "OPEN_DOOR_FLOW = \"OPEN_DOOR_FLOW\"\nWINDOW_FLOW = \"WINDOW_FLOW\"\nTARGET_TEMP = \"TARGET_TEMP\"\nWINDOW_OPENNESS= \"WINDOW_OPENNESS\"\n@lru_cache(maxsize=1000)\ndef get_color_for_temp(temp):\n    \"\"\"\n    Возвращает цвет в формате HEX в зависимости от температуры.\n    Кэширует результаты для ускорения работы.\n    \"\"\"",
+        "peekOfCode": "OPEN_DOOR_FLOW = \"OPEN_DOOR_FLOW\"\nWINDOW_FLOW = \"WINDOW_FLOW\"\nTARGET_TEMP = \"TARGET_TEMP\"\nWINDOW_OPENNESS= \"WINDOW_OPENNESS\"\n# Константы регуляторов\nRELAY = 0\nPI = 1\nPID = 2\n@lru_cache(maxsize=1000)\ndef get_color_for_temp(temp):",
         "detail": "home_tk_g3",
         "documentation": {}
     },
@@ -624,7 +642,7 @@
         "kind": 5,
         "importPath": "home_tk_g3",
         "description": "home_tk_g3",
-        "peekOfCode": "WINDOW_FLOW = \"WINDOW_FLOW\"\nTARGET_TEMP = \"TARGET_TEMP\"\nWINDOW_OPENNESS= \"WINDOW_OPENNESS\"\n@lru_cache(maxsize=1000)\ndef get_color_for_temp(temp):\n    \"\"\"\n    Возвращает цвет в формате HEX в зависимости от температуры.\n    Кэширует результаты для ускорения работы.\n    \"\"\"\n    if temp < -30:",
+        "peekOfCode": "WINDOW_FLOW = \"WINDOW_FLOW\"\nTARGET_TEMP = \"TARGET_TEMP\"\nWINDOW_OPENNESS= \"WINDOW_OPENNESS\"\n# Константы регуляторов\nRELAY = 0\nPI = 1\nPID = 2\n@lru_cache(maxsize=1000)\ndef get_color_for_temp(temp):\n    \"\"\"Возвращает цвет в формате HEX в зависимости от температуры.\"\"\"",
         "detail": "home_tk_g3",
         "documentation": {}
     },
@@ -633,7 +651,34 @@
         "kind": 5,
         "importPath": "home_tk_g3",
         "description": "home_tk_g3",
-        "peekOfCode": "TARGET_TEMP = \"TARGET_TEMP\"\nWINDOW_OPENNESS= \"WINDOW_OPENNESS\"\n@lru_cache(maxsize=1000)\ndef get_color_for_temp(temp):\n    \"\"\"\n    Возвращает цвет в формате HEX в зависимости от температуры.\n    Кэширует результаты для ускорения работы.\n    \"\"\"\n    if temp < -30:\n        return \"#0000FF\"",
+        "peekOfCode": "TARGET_TEMP = \"TARGET_TEMP\"\nWINDOW_OPENNESS= \"WINDOW_OPENNESS\"\n# Константы регуляторов\nRELAY = 0\nPI = 1\nPID = 2\n@lru_cache(maxsize=1000)\ndef get_color_for_temp(temp):\n    \"\"\"Возвращает цвет в формате HEX в зависимости от температуры.\"\"\"\n    if temp < -30:",
+        "detail": "home_tk_g3",
+        "documentation": {}
+    },
+    {
+        "label": "RELAY",
+        "kind": 5,
+        "importPath": "home_tk_g3",
+        "description": "home_tk_g3",
+        "peekOfCode": "RELAY = 0\nPI = 1\nPID = 2\n@lru_cache(maxsize=1000)\ndef get_color_for_temp(temp):\n    \"\"\"Возвращает цвет в формате HEX в зависимости от температуры.\"\"\"\n    if temp < -30:\n        return \"#0000FF\"\n    elif -30 <= temp < 0:\n        ratio = (temp + 30) / 30",
+        "detail": "home_tk_g3",
+        "documentation": {}
+    },
+    {
+        "label": "PI",
+        "kind": 5,
+        "importPath": "home_tk_g3",
+        "description": "home_tk_g3",
+        "peekOfCode": "PI = 1\nPID = 2\n@lru_cache(maxsize=1000)\ndef get_color_for_temp(temp):\n    \"\"\"Возвращает цвет в формате HEX в зависимости от температуры.\"\"\"\n    if temp < -30:\n        return \"#0000FF\"\n    elif -30 <= temp < 0:\n        ratio = (temp + 30) / 30\n        blue = 255",
+        "detail": "home_tk_g3",
+        "documentation": {}
+    },
+    {
+        "label": "PID",
+        "kind": 5,
+        "importPath": "home_tk_g3",
+        "description": "home_tk_g3",
+        "peekOfCode": "PID = 2\n@lru_cache(maxsize=1000)\ndef get_color_for_temp(temp):\n    \"\"\"Возвращает цвет в формате HEX в зависимости от температуры.\"\"\"\n    if temp < -30:\n        return \"#0000FF\"\n    elif -30 <= temp < 0:\n        ratio = (temp + 30) / 30\n        blue = 255\n        green = int(255 * ratio)",
         "detail": "home_tk_g3",
         "documentation": {}
     },
