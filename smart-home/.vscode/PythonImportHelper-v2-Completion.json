@@ -1,5 +1,110 @@
 [
     {
+        "label": "product",
+        "importPath": "itertools",
+        "description": "itertools",
+        "isExtraImport": true,
+        "detail": "itertools",
+        "documentation": {}
+    },
+    {
+        "label": "bisect",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "bisect",
+        "description": "bisect",
+        "detail": "bisect",
+        "documentation": {}
+    },
+    {
+        "label": "defaultdict",
+        "importPath": "collections",
+        "description": "collections",
+        "isExtraImport": true,
+        "detail": "collections",
+        "documentation": {}
+    },
+    {
+        "label": "deque",
+        "importPath": "collections",
+        "description": "collections",
+        "isExtraImport": true,
+        "detail": "collections",
+        "documentation": {}
+    },
+    {
+        "label": "deque",
+        "importPath": "collections",
+        "description": "collections",
+        "isExtraImport": true,
+        "detail": "collections",
+        "documentation": {}
+    },
+    {
+        "label": "deque",
+        "importPath": "collections",
+        "description": "collections",
+        "isExtraImport": true,
+        "detail": "collections",
+        "documentation": {}
+    },
+    {
+        "label": "deque",
+        "importPath": "collections",
+        "description": "collections",
+        "isExtraImport": true,
+        "detail": "collections",
+        "documentation": {}
+    },
+    {
+        "label": "deque",
+        "importPath": "collections",
+        "description": "collections",
+        "isExtraImport": true,
+        "detail": "collections",
+        "documentation": {}
+    },
+    {
+        "label": "deque",
+        "importPath": "collections",
+        "description": "collections",
+        "isExtraImport": true,
+        "detail": "collections",
+        "documentation": {}
+    },
+    {
+        "label": "deque",
+        "importPath": "collections",
+        "description": "collections",
+        "isExtraImport": true,
+        "detail": "collections",
+        "documentation": {}
+    },
+    {
+        "label": "deque",
+        "importPath": "collections",
+        "description": "collections",
+        "isExtraImport": true,
+        "detail": "collections",
+        "documentation": {}
+    },
+    {
+        "label": "deque",
+        "importPath": "collections",
+        "description": "collections",
+        "isExtraImport": true,
+        "detail": "collections",
+        "documentation": {}
+    },
+    {
+        "label": "deque",
+        "importPath": "collections",
+        "description": "collections",
+        "isExtraImport": true,
+        "detail": "collections",
+        "documentation": {}
+    },
+    {
         "label": "time",
         "kind": 6,
         "isExtraImport": true,
@@ -125,6 +230,54 @@
         "documentation": {}
     },
     {
+        "label": "ttk",
+        "importPath": "tkinter",
+        "description": "tkinter",
+        "isExtraImport": true,
+        "detail": "tkinter",
+        "documentation": {}
+    },
+    {
+        "label": "filedialog",
+        "importPath": "tkinter",
+        "description": "tkinter",
+        "isExtraImport": true,
+        "detail": "tkinter",
+        "documentation": {}
+    },
+    {
+        "label": "messagebox",
+        "importPath": "tkinter",
+        "description": "tkinter",
+        "isExtraImport": true,
+        "detail": "tkinter",
+        "documentation": {}
+    },
+    {
+        "label": "ttk",
+        "importPath": "tkinter",
+        "description": "tkinter",
+        "isExtraImport": true,
+        "detail": "tkinter",
+        "documentation": {}
+    },
+    {
+        "label": "filedialog",
+        "importPath": "tkinter",
+        "description": "tkinter",
+        "isExtraImport": true,
+        "detail": "tkinter",
+        "documentation": {}
+    },
+    {
+        "label": "messagebox",
+        "importPath": "tkinter",
+        "description": "tkinter",
+        "isExtraImport": true,
+        "detail": "tkinter",
+        "documentation": {}
+    },
+    {
         "label": "json",
         "kind": 6,
         "isExtraImport": true,
@@ -167,27 +320,19 @@
         "documentation": {}
     },
     {
-        "label": "deque",
-        "importPath": "collections",
-        "description": "collections",
+        "label": "lru_cache",
+        "importPath": "functools",
+        "description": "functools",
         "isExtraImport": true,
-        "detail": "collections",
+        "detail": "functools",
         "documentation": {}
     },
     {
-        "label": "deque",
-        "importPath": "collections",
-        "description": "collections",
+        "label": "lru_cache",
+        "importPath": "functools",
+        "description": "functools",
         "isExtraImport": true,
-        "detail": "collections",
-        "documentation": {}
-    },
-    {
-        "label": "deque",
-        "importPath": "collections",
-        "description": "collections",
-        "isExtraImport": true,
-        "detail": "collections",
+        "detail": "functools",
         "documentation": {}
     },
     {
@@ -224,12 +369,127 @@
         "documentation": {}
     },
     {
+        "label": "FigureCanvasTkAgg",
+        "importPath": "matplotlib.backends.backend_tkagg",
+        "description": "matplotlib.backends.backend_tkagg",
+        "isExtraImport": true,
+        "detail": "matplotlib.backends.backend_tkagg",
+        "documentation": {}
+    },
+    {
+        "label": "FigureCanvasTkAgg",
+        "importPath": "matplotlib.backends.backend_tkagg",
+        "description": "matplotlib.backends.backend_tkagg",
+        "isExtraImport": true,
+        "detail": "matplotlib.backends.backend_tkagg",
+        "documentation": {}
+    },
+    {
         "label": "math",
         "kind": 6,
         "isExtraImport": true,
         "importPath": "math",
         "description": "math",
         "detail": "math",
+        "documentation": {}
+    },
+    {
+        "label": "parse_subset",
+        "kind": 2,
+        "importPath": "contest.a",
+        "description": "contest.a",
+        "peekOfCode": "def parse_subset(subset_str):\n    rank_part = set()\n    suit_part = set()\n    for c in subset_str:\n        if c in ranks:\n            rank_part.add(c)\n        elif c in suits:\n            suit_part.add(c)\n    if not rank_part and not suit_part:\n        return full_deck",
+        "detail": "contest.a",
+        "documentation": {}
+    },
+    {
+        "label": "compute_probability",
+        "kind": 2,
+        "importPath": "contest.a",
+        "description": "contest.a",
+        "peekOfCode": "def compute_probability(r, s, subsets):\n    removed = set()\n    for i in range(r):\n        removed.update(subsets[i])\n    remaining = full_deck - removed\n    if not remaining:\n        return 0.0  \n    # вероятность — это сколько из оставшихся попадает хотя бы в одно winning-множество\n    winning_cards = set()\n    for i in range(r, r + s):",
+        "detail": "contest.a",
+        "documentation": {}
+    },
+    {
+        "label": "read_input",
+        "kind": 2,
+        "importPath": "contest.a",
+        "description": "contest.a",
+        "peekOfCode": "def read_input():\n    r1, s1, r2, s2 = map(int, input().split())\n    subsets = [input().strip() for _ in range(r1 + s1 + r2 + s2)]\n    goose1_subsets = [parse_subset(x) for x in subsets[:r1 + s1]]\n    goose2_subsets = [parse_subset(x) for x in subsets[r1 + s1:]]\n    return r1, s1, goose1_subsets, r2, s2, goose2_subsets\ndef main():\n    r1, s1, g1, r2, s2, g2 = read_input()\n    prob1 = compute_probability(r1, s1, g1)\n    prob2 = compute_probability(r2, s2, g2)",
+        "detail": "contest.a",
+        "documentation": {}
+    },
+    {
+        "label": "main",
+        "kind": 2,
+        "importPath": "contest.a",
+        "description": "contest.a",
+        "peekOfCode": "def main():\n    r1, s1, g1, r2, s2, g2 = read_input()\n    prob1 = compute_probability(r1, s1, g1)\n    prob2 = compute_probability(r2, s2, g2)\n    print(f\"{max(prob1, prob2):.6f}\")\nif __name__ == \"__main__\":\n    main()",
+        "detail": "contest.a",
+        "documentation": {}
+    },
+    {
+        "label": "suits",
+        "kind": 5,
+        "importPath": "contest.a",
+        "description": "contest.a",
+        "peekOfCode": "suits = set(\"CDHS\")\nranks = set(\"23456789TJQKA\")\nfull_deck = set(product(ranks, suits))\ndef parse_subset(subset_str):\n    rank_part = set()\n    suit_part = set()\n    for c in subset_str:\n        if c in ranks:\n            rank_part.add(c)\n        elif c in suits:",
+        "detail": "contest.a",
+        "documentation": {}
+    },
+    {
+        "label": "ranks",
+        "kind": 5,
+        "importPath": "contest.a",
+        "description": "contest.a",
+        "peekOfCode": "ranks = set(\"23456789TJQKA\")\nfull_deck = set(product(ranks, suits))\ndef parse_subset(subset_str):\n    rank_part = set()\n    suit_part = set()\n    for c in subset_str:\n        if c in ranks:\n            rank_part.add(c)\n        elif c in suits:\n            suit_part.add(c)",
+        "detail": "contest.a",
+        "documentation": {}
+    },
+    {
+        "label": "full_deck",
+        "kind": 5,
+        "importPath": "contest.a",
+        "description": "contest.a",
+        "peekOfCode": "full_deck = set(product(ranks, suits))\ndef parse_subset(subset_str):\n    rank_part = set()\n    suit_part = set()\n    for c in subset_str:\n        if c in ranks:\n            rank_part.add(c)\n        elif c in suits:\n            suit_part.add(c)\n    if not rank_part and not suit_part:",
+        "detail": "contest.a",
+        "documentation": {}
+    },
+    {
+        "label": "minimal_r",
+        "kind": 2,
+        "importPath": "contest.b copy",
+        "description": "contest.b copy",
+        "peekOfCode": "def minimal_r(list_houses, list_heaters):\n    list_houses.sort()\n    list_heaters.sort()\n    max_r = 0\n    for house in list_houses:\n        pos = bisect.bisect_left(list_heaters, house)\n        min_dist = float('inf')\n        if pos > 0:\n            min_dist = house - list_heaters[pos - 1]\n        if pos < len(list_heaters):",
+        "detail": "contest.b copy",
+        "documentation": {}
+    },
+    {
+        "label": "main",
+        "kind": 2,
+        "importPath": "contest.b",
+        "description": "contest.b",
+        "peekOfCode": "def main():\n    N, M = map(int, input().split())\n    s = list(map(int, input().split()))\n    first_occurrence = {}\n    last_occurrence = {}\n    for idx, color in enumerate(s):\n        if color not in first_occurrence:\n            first_occurrence[color] = idx\n        last_occurrence[color] = idx\n    operations = []",
+        "detail": "contest.b",
+        "documentation": {}
+    },
+    {
+        "label": "main",
+        "kind": 2,
+        "importPath": "contest.c",
+        "description": "contest.c",
+        "peekOfCode": "def main():\n    n, m = map(int, input().split())\n    s = list(map(int, input().split()))\n    first_occurrence = {}\n    last_occurrence = {}\n    for idx, color in enumerate(s):\n        if color not in first_occurrence:\n            first_occurrence[color] = idx\n        last_occurrence[color] = idx\n    colors = sorted(last_occurrence.keys(), key=lambda c: (first_occurrence[c], last_occurrence[c]))",
+        "detail": "contest.c",
+        "documentation": {}
+    },
+    {
+        "label": "main",
+        "kind": 2,
+        "importPath": "contest.d",
+        "description": "contest.d",
+        "peekOfCode": "def main():\n    N, M, K = map(int, input().split())\n    edges = []\n    max_s = 0\n    for _ in range(M):\n        u, v, s = map(int, input().split())\n        edges.append((u-1, v-1, s))\n        max_s = max(max_s, s)\n    def is_possible(limit):\n        graph = defaultdict(list)",
+        "detail": "contest.d",
         "documentation": {}
     },
     {
@@ -804,7 +1064,7 @@
         "kind": 6,
         "importPath": "home_tk_g4",
         "description": "home_tk_g4",
-        "peekOfCode": "class TemperatureController:\n    \"\"\"Класс для управления температурой с разными регуляторами.\"\"\"\n    def __init__(self, target_temp=22):\n        self.target_temp = target_temp\n        self.controller_type = RELAY\n        self.integral = 0\n        self.prev_error = 0\n        self.heater_on = False\n        self.ac_on = False\n        # Параметры PI регулятора",
+        "peekOfCode": "class TemperatureController:\n    \"\"\"Усовершенствованный класс регуляторов температуры с правильными PID параметрами\"\"\"\n    def __init__(self, target_temp=22):\n        self.target_temp = target_temp\n        self.controller_type = RELAY\n        self.last_time = time.time()\n        # Состояние устройств\n        self.heater_on = False\n        self.ac_on = False\n        # Параметры PI регулятора (правильные коэффициенты)",
         "detail": "home_tk_g4",
         "documentation": {}
     },
@@ -813,7 +1073,7 @@
         "kind": 6,
         "importPath": "home_tk_g4",
         "description": "home_tk_g4",
-        "peekOfCode": "class Sensor:\n    \"\"\"Класс датчика температуры с графиком\"\"\"\n    def __init__(self, y, x):\n        self.y = y\n        self.x = x\n        self.temp_history = deque(maxlen=600)\n        self.time_history = deque(maxlen=600)\n        self.figure = None\n        self.canvas = None\n    def update(self, temp):",
+        "peekOfCode": "class Sensor:\n    \"\"\"Класс датчика температуры с графиком\"\"\"\n    def __init__(self, y, x):\n        self.y = y\n        self.x = x\n        self.temp_history = []\n        self.time_history = []\n        self.figure = None\n        self.canvas = None\n    def update(self, temp,time):",
         "detail": "home_tk_g4",
         "documentation": {}
     },
@@ -968,6 +1228,348 @@
         "description": "home_tk_g4",
         "peekOfCode": "PID = 2\n@lru_cache(maxsize=1000)\ndef get_color_for_temp(temp):\n    \"\"\"Возвращает цвет в формате HEX в зависимости от температуры.\"\"\"\n    if temp < -30:\n        return \"#0000FF\"\n    elif -30 <= temp < 0:\n        ratio = (temp + 30) / 30\n        blue = 255\n        green = int(255 * ratio)",
         "detail": "home_tk_g4",
+        "documentation": {}
+    },
+    {
+        "label": "TemperatureController",
+        "kind": 6,
+        "importPath": "home_tk_g5",
+        "description": "home_tk_g5",
+        "peekOfCode": "class TemperatureController:\n    \"\"\"Усовершенствованный регулятор температуры с плавными переходами\"\"\"\n    def __init__(self, target_temp=22):\n        self.target_temp = target_temp\n        self.controller_type = RELAY\n        # Состояние устройств\n        self.heater_on = False\n        self.ac_on = False\n        self.heater_temp = 60.0    # Начальная температура нагревателя\n        self.ac_temp = 18.0        # Начальная температура кондиционера",
+        "detail": "home_tk_g5",
+        "documentation": {}
+    },
+    {
+        "label": "Sensor",
+        "kind": 6,
+        "importPath": "home_tk_g5",
+        "description": "home_tk_g5",
+        "peekOfCode": "class Sensor:\n    \"\"\"Класс датчика температуры с графиком\"\"\"\n    def __init__(self, y, x):\n        self.y = y\n        self.x = x\n        self.temp_history = []\n        self.time_history = []\n        self.figure = None\n        self.canvas = None\n    def update(self, temp,time):",
+        "detail": "home_tk_g5",
+        "documentation": {}
+    },
+    {
+        "label": "SmartHomeApp",
+        "kind": 6,
+        "importPath": "home_tk_g5",
+        "description": "home_tk_g5",
+        "peekOfCode": "class SmartHomeApp:\n    def __init__(self, root):\n        self.root = root\n        self.root.title(\"Умный дом — Симуляция и Управление\")\n        # Основной фрейм\n        main_frame = ttk.Frame(root)\n        main_frame.pack(fill=\"both\", expand=True)\n        # Левая часть (Симуляция)\n        sim_frame = ttk.Frame(main_frame)\n        sim_frame.grid(row=0, column=0, padx=10, pady=10)",
+        "detail": "home_tk_g5",
+        "documentation": {}
+    },
+    {
+        "label": "get_color_for_temp",
+        "kind": 2,
+        "importPath": "home_tk_g5",
+        "description": "home_tk_g5",
+        "peekOfCode": "def get_color_for_temp(temp):\n    \"\"\"Возвращает цвет в формате HEX в зависимости от температуры.\"\"\"\n    if temp < -30:\n        return \"#0000FF\"\n    elif -30 <= temp < 0:\n        ratio = (temp + 30) / 30\n        blue = 255\n        green = int(255 * ratio)\n        red = 0\n    elif 0 <= temp <= 35:",
+        "detail": "home_tk_g5",
+        "documentation": {}
+    },
+    {
+        "label": "CELL_SIZE",
+        "kind": 5,
+        "importPath": "home_tk_g5",
+        "description": "home_tk_g5",
+        "peekOfCode": "CELL_SIZE = WIDTH // GRID_COLS  # Размер ячейки\n# Определение типов клеток\nEMPTY, WALL, DOOR, WINDOW, HEATER, AC, OUTSIDE, SENSOR = range(8)\n# Константы для ключей\nTEMPERATURES = \"temperatures\"\nCOEFFICIENTS = \"coefficients\"\nOUTSIDE_TEMP = \"OUTSIDE_TEMP\"\nHEATER_TEMP = \"HEATER_TEMP\"\nAC_TEMP = \"AC_TEMP\"\nINITIAL_ROOM_TEMP = \"INITIAL_ROOM_TEMP\"",
+        "detail": "home_tk_g5",
+        "documentation": {}
+    },
+    {
+        "label": "TEMPERATURES",
+        "kind": 5,
+        "importPath": "home_tk_g5",
+        "description": "home_tk_g5",
+        "peekOfCode": "TEMPERATURES = \"temperatures\"\nCOEFFICIENTS = \"coefficients\"\nOUTSIDE_TEMP = \"OUTSIDE_TEMP\"\nHEATER_TEMP = \"HEATER_TEMP\"\nAC_TEMP = \"AC_TEMP\"\nINITIAL_ROOM_TEMP = \"INITIAL_ROOM_TEMP\"\nWALL_RESISTANCE = \"WALL_RESISTANCE\"\nAIR_FLOW = \"AIR_FLOW\"\nOPEN_DOOR_FLOW = \"OPEN_DOOR_FLOW\"\nWINDOW_FLOW = \"WINDOW_FLOW\"",
+        "detail": "home_tk_g5",
+        "documentation": {}
+    },
+    {
+        "label": "COEFFICIENTS",
+        "kind": 5,
+        "importPath": "home_tk_g5",
+        "description": "home_tk_g5",
+        "peekOfCode": "COEFFICIENTS = \"coefficients\"\nOUTSIDE_TEMP = \"OUTSIDE_TEMP\"\nHEATER_TEMP = \"HEATER_TEMP\"\nAC_TEMP = \"AC_TEMP\"\nINITIAL_ROOM_TEMP = \"INITIAL_ROOM_TEMP\"\nWALL_RESISTANCE = \"WALL_RESISTANCE\"\nAIR_FLOW = \"AIR_FLOW\"\nOPEN_DOOR_FLOW = \"OPEN_DOOR_FLOW\"\nWINDOW_FLOW = \"WINDOW_FLOW\"\nTARGET_TEMP = \"TARGET_TEMP\"",
+        "detail": "home_tk_g5",
+        "documentation": {}
+    },
+    {
+        "label": "OUTSIDE_TEMP",
+        "kind": 5,
+        "importPath": "home_tk_g5",
+        "description": "home_tk_g5",
+        "peekOfCode": "OUTSIDE_TEMP = \"OUTSIDE_TEMP\"\nHEATER_TEMP = \"HEATER_TEMP\"\nAC_TEMP = \"AC_TEMP\"\nINITIAL_ROOM_TEMP = \"INITIAL_ROOM_TEMP\"\nWALL_RESISTANCE = \"WALL_RESISTANCE\"\nAIR_FLOW = \"AIR_FLOW\"\nOPEN_DOOR_FLOW = \"OPEN_DOOR_FLOW\"\nWINDOW_FLOW = \"WINDOW_FLOW\"\nTARGET_TEMP = \"TARGET_TEMP\"\nWINDOW_OPENNESS= \"WINDOW_OPENNESS\"",
+        "detail": "home_tk_g5",
+        "documentation": {}
+    },
+    {
+        "label": "HEATER_TEMP",
+        "kind": 5,
+        "importPath": "home_tk_g5",
+        "description": "home_tk_g5",
+        "peekOfCode": "HEATER_TEMP = \"HEATER_TEMP\"\nAC_TEMP = \"AC_TEMP\"\nINITIAL_ROOM_TEMP = \"INITIAL_ROOM_TEMP\"\nWALL_RESISTANCE = \"WALL_RESISTANCE\"\nAIR_FLOW = \"AIR_FLOW\"\nOPEN_DOOR_FLOW = \"OPEN_DOOR_FLOW\"\nWINDOW_FLOW = \"WINDOW_FLOW\"\nTARGET_TEMP = \"TARGET_TEMP\"\nWINDOW_OPENNESS= \"WINDOW_OPENNESS\"\n# Константы регуляторов",
+        "detail": "home_tk_g5",
+        "documentation": {}
+    },
+    {
+        "label": "AC_TEMP",
+        "kind": 5,
+        "importPath": "home_tk_g5",
+        "description": "home_tk_g5",
+        "peekOfCode": "AC_TEMP = \"AC_TEMP\"\nINITIAL_ROOM_TEMP = \"INITIAL_ROOM_TEMP\"\nWALL_RESISTANCE = \"WALL_RESISTANCE\"\nAIR_FLOW = \"AIR_FLOW\"\nOPEN_DOOR_FLOW = \"OPEN_DOOR_FLOW\"\nWINDOW_FLOW = \"WINDOW_FLOW\"\nTARGET_TEMP = \"TARGET_TEMP\"\nWINDOW_OPENNESS= \"WINDOW_OPENNESS\"\n# Константы регуляторов\nRELAY = 0",
+        "detail": "home_tk_g5",
+        "documentation": {}
+    },
+    {
+        "label": "INITIAL_ROOM_TEMP",
+        "kind": 5,
+        "importPath": "home_tk_g5",
+        "description": "home_tk_g5",
+        "peekOfCode": "INITIAL_ROOM_TEMP = \"INITIAL_ROOM_TEMP\"\nWALL_RESISTANCE = \"WALL_RESISTANCE\"\nAIR_FLOW = \"AIR_FLOW\"\nOPEN_DOOR_FLOW = \"OPEN_DOOR_FLOW\"\nWINDOW_FLOW = \"WINDOW_FLOW\"\nTARGET_TEMP = \"TARGET_TEMP\"\nWINDOW_OPENNESS= \"WINDOW_OPENNESS\"\n# Константы регуляторов\nRELAY = 0\nPI = 1",
+        "detail": "home_tk_g5",
+        "documentation": {}
+    },
+    {
+        "label": "WALL_RESISTANCE",
+        "kind": 5,
+        "importPath": "home_tk_g5",
+        "description": "home_tk_g5",
+        "peekOfCode": "WALL_RESISTANCE = \"WALL_RESISTANCE\"\nAIR_FLOW = \"AIR_FLOW\"\nOPEN_DOOR_FLOW = \"OPEN_DOOR_FLOW\"\nWINDOW_FLOW = \"WINDOW_FLOW\"\nTARGET_TEMP = \"TARGET_TEMP\"\nWINDOW_OPENNESS= \"WINDOW_OPENNESS\"\n# Константы регуляторов\nRELAY = 0\nPI = 1\nPID = 2",
+        "detail": "home_tk_g5",
+        "documentation": {}
+    },
+    {
+        "label": "AIR_FLOW",
+        "kind": 5,
+        "importPath": "home_tk_g5",
+        "description": "home_tk_g5",
+        "peekOfCode": "AIR_FLOW = \"AIR_FLOW\"\nOPEN_DOOR_FLOW = \"OPEN_DOOR_FLOW\"\nWINDOW_FLOW = \"WINDOW_FLOW\"\nTARGET_TEMP = \"TARGET_TEMP\"\nWINDOW_OPENNESS= \"WINDOW_OPENNESS\"\n# Константы регуляторов\nRELAY = 0\nPI = 1\nPID = 2\n@lru_cache(maxsize=1000)",
+        "detail": "home_tk_g5",
+        "documentation": {}
+    },
+    {
+        "label": "OPEN_DOOR_FLOW",
+        "kind": 5,
+        "importPath": "home_tk_g5",
+        "description": "home_tk_g5",
+        "peekOfCode": "OPEN_DOOR_FLOW = \"OPEN_DOOR_FLOW\"\nWINDOW_FLOW = \"WINDOW_FLOW\"\nTARGET_TEMP = \"TARGET_TEMP\"\nWINDOW_OPENNESS= \"WINDOW_OPENNESS\"\n# Константы регуляторов\nRELAY = 0\nPI = 1\nPID = 2\n@lru_cache(maxsize=1000)\ndef get_color_for_temp(temp):",
+        "detail": "home_tk_g5",
+        "documentation": {}
+    },
+    {
+        "label": "WINDOW_FLOW",
+        "kind": 5,
+        "importPath": "home_tk_g5",
+        "description": "home_tk_g5",
+        "peekOfCode": "WINDOW_FLOW = \"WINDOW_FLOW\"\nTARGET_TEMP = \"TARGET_TEMP\"\nWINDOW_OPENNESS= \"WINDOW_OPENNESS\"\n# Константы регуляторов\nRELAY = 0\nPI = 1\nPID = 2\n@lru_cache(maxsize=1000)\ndef get_color_for_temp(temp):\n    \"\"\"Возвращает цвет в формате HEX в зависимости от температуры.\"\"\"",
+        "detail": "home_tk_g5",
+        "documentation": {}
+    },
+    {
+        "label": "TARGET_TEMP",
+        "kind": 5,
+        "importPath": "home_tk_g5",
+        "description": "home_tk_g5",
+        "peekOfCode": "TARGET_TEMP = \"TARGET_TEMP\"\nWINDOW_OPENNESS= \"WINDOW_OPENNESS\"\n# Константы регуляторов\nRELAY = 0\nPI = 1\nPID = 2\n@lru_cache(maxsize=1000)\ndef get_color_for_temp(temp):\n    \"\"\"Возвращает цвет в формате HEX в зависимости от температуры.\"\"\"\n    if temp < -30:",
+        "detail": "home_tk_g5",
+        "documentation": {}
+    },
+    {
+        "label": "RELAY",
+        "kind": 5,
+        "importPath": "home_tk_g5",
+        "description": "home_tk_g5",
+        "peekOfCode": "RELAY = 0\nPI = 1\nPID = 2\n@lru_cache(maxsize=1000)\ndef get_color_for_temp(temp):\n    \"\"\"Возвращает цвет в формате HEX в зависимости от температуры.\"\"\"\n    if temp < -30:\n        return \"#0000FF\"\n    elif -30 <= temp < 0:\n        ratio = (temp + 30) / 30",
+        "detail": "home_tk_g5",
+        "documentation": {}
+    },
+    {
+        "label": "PI",
+        "kind": 5,
+        "importPath": "home_tk_g5",
+        "description": "home_tk_g5",
+        "peekOfCode": "PI = 1\nPID = 2\n@lru_cache(maxsize=1000)\ndef get_color_for_temp(temp):\n    \"\"\"Возвращает цвет в формате HEX в зависимости от температуры.\"\"\"\n    if temp < -30:\n        return \"#0000FF\"\n    elif -30 <= temp < 0:\n        ratio = (temp + 30) / 30\n        blue = 255",
+        "detail": "home_tk_g5",
+        "documentation": {}
+    },
+    {
+        "label": "PID",
+        "kind": 5,
+        "importPath": "home_tk_g5",
+        "description": "home_tk_g5",
+        "peekOfCode": "PID = 2\n@lru_cache(maxsize=1000)\ndef get_color_for_temp(temp):\n    \"\"\"Возвращает цвет в формате HEX в зависимости от температуры.\"\"\"\n    if temp < -30:\n        return \"#0000FF\"\n    elif -30 <= temp < 0:\n        ratio = (temp + 30) / 30\n        blue = 255\n        green = int(255 * ratio)",
+        "detail": "home_tk_g5",
+        "documentation": {}
+    },
+    {
+        "label": "TemperatureController",
+        "kind": 6,
+        "importPath": "home_tk_g6",
+        "description": "home_tk_g6",
+        "peekOfCode": "class TemperatureController:\n    \"\"\"Усовершенствованный регулятор температуры с плавными переходами\"\"\"\n    def __init__(self, target_temp=22):\n        self.target_temp = target_temp\n        self.controller_type = RELAY\n        # Состояние устройств\n        self.heater_on = True\n        self.ac_on = True\n        self.heater_temp = 60.0    # Начальная температура нагревателя\n        self.ac_temp = 18.0        # Начальная температура кондиционера",
+        "detail": "home_tk_g6",
+        "documentation": {}
+    },
+    {
+        "label": "Sensor",
+        "kind": 6,
+        "importPath": "home_tk_g6",
+        "description": "home_tk_g6",
+        "peekOfCode": "class Sensor:\n    \"\"\"Класс датчика температуры с графиком\"\"\"\n    def __init__(self, y, x):\n        self.y = y\n        self.x = x\n        self.temp_history = []\n        self.time_history = []\n        self.figure = None\n        self.canvas = None\n    def update(self, temp,time):",
+        "detail": "home_tk_g6",
+        "documentation": {}
+    },
+    {
+        "label": "SmartHomeApp",
+        "kind": 6,
+        "importPath": "home_tk_g6",
+        "description": "home_tk_g6",
+        "peekOfCode": "class SmartHomeApp:\n    def __init__(self, root):\n        self.root = root\n        self.root.title(\"Умный дом — Симуляция и Управление\")\n        self.time_tick = 0\n        self.regulator_enabled = False  # Флаг активности регулятора\n        # Основные фреймы\n        main_frame = ttk.Frame(root)\n        main_frame.pack(fill=\"both\", expand=True)\n        # Левая часть (Симуляция)",
+        "detail": "home_tk_g6",
+        "documentation": {}
+    },
+    {
+        "label": "get_color_for_temp",
+        "kind": 2,
+        "importPath": "home_tk_g6",
+        "description": "home_tk_g6",
+        "peekOfCode": "def get_color_for_temp(temp):\n    \"\"\"Возвращает цвет в формате HEX в зависимости от температуры.\"\"\"\n    if temp < -30:\n        return \"#0000FF\"\n    elif -30 <= temp < 0:\n        ratio = (temp + 30) / 30\n        blue = 255\n        green = int(255 * ratio)\n        red = 0\n    elif 0 <= temp <= 32:",
+        "detail": "home_tk_g6",
+        "documentation": {}
+    },
+    {
+        "label": "CELL_SIZE",
+        "kind": 5,
+        "importPath": "home_tk_g6",
+        "description": "home_tk_g6",
+        "peekOfCode": "CELL_SIZE = WIDTH // GRID_COLS  # Размер ячейки\n# Определение типов клеток\nEMPTY, WALL, DOOR, WINDOW, HEATER, AC, OUTSIDE, SENSOR = range(8)\n# Константы для ключей\nTEMPERATURES = \"temperatures\"\nCOEFFICIENTS = \"coefficients\"\nOUTSIDE_TEMP = \"OUTSIDE_TEMP\"\nHEATER_TEMP = \"HEATER_TEMP\"\nAC_TEMP = \"AC_TEMP\"\nINITIAL_ROOM_TEMP = \"INITIAL_ROOM_TEMP\"",
+        "detail": "home_tk_g6",
+        "documentation": {}
+    },
+    {
+        "label": "TEMPERATURES",
+        "kind": 5,
+        "importPath": "home_tk_g6",
+        "description": "home_tk_g6",
+        "peekOfCode": "TEMPERATURES = \"temperatures\"\nCOEFFICIENTS = \"coefficients\"\nOUTSIDE_TEMP = \"OUTSIDE_TEMP\"\nHEATER_TEMP = \"HEATER_TEMP\"\nAC_TEMP = \"AC_TEMP\"\nINITIAL_ROOM_TEMP = \"INITIAL_ROOM_TEMP\"\nWALL_RESISTANCE = \"WALL_RESISTANCE\"\nAIR_FLOW = \"AIR_FLOW\"\nOPEN_DOOR_FLOW = \"OPEN_DOOR_FLOW\"\nWINDOW_FLOW = \"WINDOW_FLOW\"",
+        "detail": "home_tk_g6",
+        "documentation": {}
+    },
+    {
+        "label": "COEFFICIENTS",
+        "kind": 5,
+        "importPath": "home_tk_g6",
+        "description": "home_tk_g6",
+        "peekOfCode": "COEFFICIENTS = \"coefficients\"\nOUTSIDE_TEMP = \"OUTSIDE_TEMP\"\nHEATER_TEMP = \"HEATER_TEMP\"\nAC_TEMP = \"AC_TEMP\"\nINITIAL_ROOM_TEMP = \"INITIAL_ROOM_TEMP\"\nWALL_RESISTANCE = \"WALL_RESISTANCE\"\nAIR_FLOW = \"AIR_FLOW\"\nOPEN_DOOR_FLOW = \"OPEN_DOOR_FLOW\"\nWINDOW_FLOW = \"WINDOW_FLOW\"\nTARGET_TEMP = \"TARGET_TEMP\"",
+        "detail": "home_tk_g6",
+        "documentation": {}
+    },
+    {
+        "label": "OUTSIDE_TEMP",
+        "kind": 5,
+        "importPath": "home_tk_g6",
+        "description": "home_tk_g6",
+        "peekOfCode": "OUTSIDE_TEMP = \"OUTSIDE_TEMP\"\nHEATER_TEMP = \"HEATER_TEMP\"\nAC_TEMP = \"AC_TEMP\"\nINITIAL_ROOM_TEMP = \"INITIAL_ROOM_TEMP\"\nWALL_RESISTANCE = \"WALL_RESISTANCE\"\nAIR_FLOW = \"AIR_FLOW\"\nOPEN_DOOR_FLOW = \"OPEN_DOOR_FLOW\"\nWINDOW_FLOW = \"WINDOW_FLOW\"\nTARGET_TEMP = \"TARGET_TEMP\"\nWINDOW_OPENNESS= \"WINDOW_OPENNESS\"",
+        "detail": "home_tk_g6",
+        "documentation": {}
+    },
+    {
+        "label": "HEATER_TEMP",
+        "kind": 5,
+        "importPath": "home_tk_g6",
+        "description": "home_tk_g6",
+        "peekOfCode": "HEATER_TEMP = \"HEATER_TEMP\"\nAC_TEMP = \"AC_TEMP\"\nINITIAL_ROOM_TEMP = \"INITIAL_ROOM_TEMP\"\nWALL_RESISTANCE = \"WALL_RESISTANCE\"\nAIR_FLOW = \"AIR_FLOW\"\nOPEN_DOOR_FLOW = \"OPEN_DOOR_FLOW\"\nWINDOW_FLOW = \"WINDOW_FLOW\"\nTARGET_TEMP = \"TARGET_TEMP\"\nWINDOW_OPENNESS= \"WINDOW_OPENNESS\"\nKP=\"KP\"  # Пропорциональный коэффициент",
+        "detail": "home_tk_g6",
+        "documentation": {}
+    },
+    {
+        "label": "AC_TEMP",
+        "kind": 5,
+        "importPath": "home_tk_g6",
+        "description": "home_tk_g6",
+        "peekOfCode": "AC_TEMP = \"AC_TEMP\"\nINITIAL_ROOM_TEMP = \"INITIAL_ROOM_TEMP\"\nWALL_RESISTANCE = \"WALL_RESISTANCE\"\nAIR_FLOW = \"AIR_FLOW\"\nOPEN_DOOR_FLOW = \"OPEN_DOOR_FLOW\"\nWINDOW_FLOW = \"WINDOW_FLOW\"\nTARGET_TEMP = \"TARGET_TEMP\"\nWINDOW_OPENNESS= \"WINDOW_OPENNESS\"\nKP=\"KP\"  # Пропорциональный коэффициент\nKI=\"KI\"  # Интегральный коэффициент",
+        "detail": "home_tk_g6",
+        "documentation": {}
+    },
+    {
+        "label": "INITIAL_ROOM_TEMP",
+        "kind": 5,
+        "importPath": "home_tk_g6",
+        "description": "home_tk_g6",
+        "peekOfCode": "INITIAL_ROOM_TEMP = \"INITIAL_ROOM_TEMP\"\nWALL_RESISTANCE = \"WALL_RESISTANCE\"\nAIR_FLOW = \"AIR_FLOW\"\nOPEN_DOOR_FLOW = \"OPEN_DOOR_FLOW\"\nWINDOW_FLOW = \"WINDOW_FLOW\"\nTARGET_TEMP = \"TARGET_TEMP\"\nWINDOW_OPENNESS= \"WINDOW_OPENNESS\"\nKP=\"KP\"  # Пропорциональный коэффициент\nKI=\"KI\"  # Интегральный коэффициент\nKD=\"KD\"",
+        "detail": "home_tk_g6",
+        "documentation": {}
+    },
+    {
+        "label": "WALL_RESISTANCE",
+        "kind": 5,
+        "importPath": "home_tk_g6",
+        "description": "home_tk_g6",
+        "peekOfCode": "WALL_RESISTANCE = \"WALL_RESISTANCE\"\nAIR_FLOW = \"AIR_FLOW\"\nOPEN_DOOR_FLOW = \"OPEN_DOOR_FLOW\"\nWINDOW_FLOW = \"WINDOW_FLOW\"\nTARGET_TEMP = \"TARGET_TEMP\"\nWINDOW_OPENNESS= \"WINDOW_OPENNESS\"\nKP=\"KP\"  # Пропорциональный коэффициент\nKI=\"KI\"  # Интегральный коэффициент\nKD=\"KD\"\n# Константы регуляторов",
+        "detail": "home_tk_g6",
+        "documentation": {}
+    },
+    {
+        "label": "AIR_FLOW",
+        "kind": 5,
+        "importPath": "home_tk_g6",
+        "description": "home_tk_g6",
+        "peekOfCode": "AIR_FLOW = \"AIR_FLOW\"\nOPEN_DOOR_FLOW = \"OPEN_DOOR_FLOW\"\nWINDOW_FLOW = \"WINDOW_FLOW\"\nTARGET_TEMP = \"TARGET_TEMP\"\nWINDOW_OPENNESS= \"WINDOW_OPENNESS\"\nKP=\"KP\"  # Пропорциональный коэффициент\nKI=\"KI\"  # Интегральный коэффициент\nKD=\"KD\"\n# Константы регуляторов\nRELAY = 0",
+        "detail": "home_tk_g6",
+        "documentation": {}
+    },
+    {
+        "label": "OPEN_DOOR_FLOW",
+        "kind": 5,
+        "importPath": "home_tk_g6",
+        "description": "home_tk_g6",
+        "peekOfCode": "OPEN_DOOR_FLOW = \"OPEN_DOOR_FLOW\"\nWINDOW_FLOW = \"WINDOW_FLOW\"\nTARGET_TEMP = \"TARGET_TEMP\"\nWINDOW_OPENNESS= \"WINDOW_OPENNESS\"\nKP=\"KP\"  # Пропорциональный коэффициент\nKI=\"KI\"  # Интегральный коэффициент\nKD=\"KD\"\n# Константы регуляторов\nRELAY = 0\nPI = 1",
+        "detail": "home_tk_g6",
+        "documentation": {}
+    },
+    {
+        "label": "WINDOW_FLOW",
+        "kind": 5,
+        "importPath": "home_tk_g6",
+        "description": "home_tk_g6",
+        "peekOfCode": "WINDOW_FLOW = \"WINDOW_FLOW\"\nTARGET_TEMP = \"TARGET_TEMP\"\nWINDOW_OPENNESS= \"WINDOW_OPENNESS\"\nKP=\"KP\"  # Пропорциональный коэффициент\nKI=\"KI\"  # Интегральный коэффициент\nKD=\"KD\"\n# Константы регуляторов\nRELAY = 0\nPI = 1\nPID = 2",
+        "detail": "home_tk_g6",
+        "documentation": {}
+    },
+    {
+        "label": "TARGET_TEMP",
+        "kind": 5,
+        "importPath": "home_tk_g6",
+        "description": "home_tk_g6",
+        "peekOfCode": "TARGET_TEMP = \"TARGET_TEMP\"\nWINDOW_OPENNESS= \"WINDOW_OPENNESS\"\nKP=\"KP\"  # Пропорциональный коэффициент\nKI=\"KI\"  # Интегральный коэффициент\nKD=\"KD\"\n# Константы регуляторов\nRELAY = 0\nPI = 1\nPID = 2\n@lru_cache(maxsize=1000)",
+        "detail": "home_tk_g6",
+        "documentation": {}
+    },
+    {
+        "label": "RELAY",
+        "kind": 5,
+        "importPath": "home_tk_g6",
+        "description": "home_tk_g6",
+        "peekOfCode": "RELAY = 0\nPI = 1\nPID = 2\n@lru_cache(maxsize=1000)\ndef get_color_for_temp(temp):\n    \"\"\"Возвращает цвет в формате HEX в зависимости от температуры.\"\"\"\n    if temp < -30:\n        return \"#0000FF\"\n    elif -30 <= temp < 0:\n        ratio = (temp + 30) / 30",
+        "detail": "home_tk_g6",
+        "documentation": {}
+    },
+    {
+        "label": "PI",
+        "kind": 5,
+        "importPath": "home_tk_g6",
+        "description": "home_tk_g6",
+        "peekOfCode": "PI = 1\nPID = 2\n@lru_cache(maxsize=1000)\ndef get_color_for_temp(temp):\n    \"\"\"Возвращает цвет в формате HEX в зависимости от температуры.\"\"\"\n    if temp < -30:\n        return \"#0000FF\"\n    elif -30 <= temp < 0:\n        ratio = (temp + 30) / 30\n        blue = 255",
+        "detail": "home_tk_g6",
+        "documentation": {}
+    },
+    {
+        "label": "PID",
+        "kind": 5,
+        "importPath": "home_tk_g6",
+        "description": "home_tk_g6",
+        "peekOfCode": "PID = 2\n@lru_cache(maxsize=1000)\ndef get_color_for_temp(temp):\n    \"\"\"Возвращает цвет в формате HEX в зависимости от температуры.\"\"\"\n    if temp < -30:\n        return \"#0000FF\"\n    elif -30 <= temp < 0:\n        ratio = (temp + 30) / 30\n        blue = 255\n        green = int(255 * ratio)",
+        "detail": "home_tk_g6",
         "documentation": {}
     }
 ]

@@ -29,6 +29,9 @@ OPEN_DOOR_FLOW = "OPEN_DOOR_FLOW"
 WINDOW_FLOW = "WINDOW_FLOW"
 TARGET_TEMP = "TARGET_TEMP"
 WINDOW_OPENNESS= "WINDOW_OPENNESS"
+KP="KP"  # Пропорциональный коэффициент
+KI="KI"  # Интегральный коэффициент
+KD="KD"
 
 # Константы регуляторов
 RELAY = 0
@@ -45,13 +48,13 @@ def get_color_for_temp(temp):
         blue = 255
         green = int(255 * ratio)
         red = 0
-    elif 0 <= temp <= 35:
-        ratio = temp / 35
+    elif 0 <= temp <= 32:
+        ratio = temp / 32
         blue = int(255 * (1 - ratio))
         green = 255
         red = 0
-    elif 35 < temp <= 70:
-        ratio = (temp - 35) / 35
+    elif 32 < temp <= 70:
+        ratio = (temp - 32) / 32
         blue = 0
         green = int(255 * (1 - ratio))
         red = 255
@@ -66,160 +69,183 @@ def get_color_for_temp(temp):
 from collections import deque
 import time
 
+from collections import deque
+import time
+
 class TemperatureController:
-    """Усовершенствованный класс регуляторов температуры с правильными PID параметрами"""
+    """Усовершенствованный регулятор температуры с плавными переходами"""
     def __init__(self, target_temp=22):
         self.target_temp = target_temp
         self.controller_type = RELAY
-        self.last_time = time.time()
         
         # Состояние устройств
-        self.heater_on = False
-        self.ac_on = False
+        self.heater_on = True
+        self.ac_on = True
+        self.heater_temp = 60.0    # Начальная температура нагревателя
+        self.ac_temp = 18.0        # Начальная температура кондиционера
+        self.window_openness = 0.5 # Степень открытия окон (0-1)
         
-        # Параметры PI регулятора (правильные коэффициенты)
-        self.Kp = 1.5  # Увеличенный пропорциональный коэффициент
-        self.Ki = 0.1  # Уменьшенный интегральный коэффициент
-        self.integral = 0
-        self.integral_max = 100  # Ограничение интегральной составляющей
+        # Параметры регуляторов
+        self.Kp = 1.5    # Пропорциональный коэффициент
+        self.Ki = 0.1    # Интегральный коэффициент
+        self.Kd = 0.8    # Дифференциальный коэффициент
+        self.integral = 0.0
+        self.prev_error = 0.0
+        self.prev_time = 0
+        self.integral_max = 100.0
         
-        # Параметры PID регулятора
-        self.Kd = 0.8  # Добавлен дифференциальный коэффициент
-        self.prev_error = 0
-        self.prev_time = time.time()
+        # Параметры плавных переходов
+        self.transition_factor = 0.9  # Коэффициент плавности (0.8-0.95)
+        self.soft_start_steps = 10    # Шагов плавного старта
+        self.current_step = 0
         
         # История для анализа
         self.temp_history = deque(maxlen=600)
         self.time_history = deque(maxlen=600)
         self.output_history = deque(maxlen=600)
-        self.ac_temp = -10  # 22-16°C в зависимости от ошибки
-        self.window_openness = 0.5  # 0.5-1.0 открытости
-        self.heater_temp = 60
-        
-        
+        self.action_history = deque(maxlen=600)
+
     def set_target_temp(self, temp):
-        """Установка целевой температуры"""
+        """Установка целевой температуры с плавным переходом"""
         self.target_temp = temp
-        self.reset()
-        
+        self.reset(soft=True)
+
     def set_controller_type(self, c_type):
-        """Изменение типа регулятора"""
+        """Смена типа регулятора с плавным переходом"""
         self.controller_type = c_type
-        self.reset()
+        self.reset(soft=True)
+
+    def reset(self, soft=True):
+        """Плавный сброс состояния регулятора"""
+        if soft:
+            # Плавный сброс (сохраняем часть состояния)
+            self.integral *= 0.7
+            self.prev_error *= 0.5
+            self.current_step = 0
+            
+            # Плавное изменение температуры устройств
+            if self.heater_on:
+                self.heater_temp *= 0.8
+            if self.ac_on:
+                self.ac_temp = min(22, self.ac_temp * 1.2)
+        else:
+            # Полный сброс
+            self.integral = 0
+            self.prev_error = 0
+            self.current_step = 0
+            self.heater_temp = 60
+            self.ac_temp = 18
         
-    def reset(self):
-        """Сброс состояния регулятора"""
-        self.integral = 0
-        self.prev_error = 0
-        self.prev_time = time.time()
+        self.window_openness = 0.5
         self.heater_on = False
         self.ac_on = False
-        
-    def update(self, current_temp,time):
-        """Обновление состояния регулятора с правильными расчетами"""
-        current_time = time
-        dt = current_time - self.prev_time
+
+    def update(self, current_temp, current_time):
+        """Обновление состояния с плавными переходами"""
+        # Расчет временного шага
+        dt = max(1, current_time - self.prev_time)
         self.prev_time = current_time
         
         error = self.target_temp - current_temp
         self.temp_history.append(current_temp)
         self.time_history.append(current_time)
         
-        # Релейный регулятор (с гистерезисом 10%)
+        # Режим плавного старта после сброса
+        if self.current_step < self.soft_start_steps:
+            self.current_step += 1
+            smooth_factor = self.current_step / self.soft_start_steps
+        else:
+            smooth_factor = 1.0
+        
+        # Расчет выходного сигнала
         if self.controller_type == RELAY:
-            if current_temp < self.target_temp * 0.93:  # 5% гистерезис
-                self.heater_on = True
-                self.ac_on = False
-                output = 1.0
-            elif current_temp > self.target_temp * 1.07:
-                self.heater_on = False
-                self.ac_on = True
-                output = -1.0
-            else:
-                self.heater_on = False
-                self.ac_on = False
-                output = 0.0
-                
-        # PI регулятор (расширенная реализация)
+            output = self._relay_control(error)
         elif self.controller_type == PI:
-            self.integral += error * dt
-            # Анти-windup защита
-            self.integral = max(min(self.integral, self.integral_max), -self.integral_max)
-            
-            output = self.Kp * error + self.Ki * self.integral
-            
-            # Преобразование выхода в управляющие сигналы
-            if output > 0.1:  # Мертвая зона 10%
-                self.heater_on = True
-                self.ac_on = False
-                # Плавное увеличение температуры нагревателя (0-100%)
-                self.heater_temp = min(60, 30 + abs(output) * 30)  # 30-60°C в зависимости от ошибки
-                # Закрываем окна при сильном нагреве
-                self.window_openness = max(0, 0.5 - abs(output)/2)  # 0-0.5 открытости
-                
-            elif output < -0.1:
-                self.heater_on = False
-                self.ac_on = True
-                # Плавное уменьшение температуры кондиционера (0-100%)
-                self.ac_temp = max(16, 22 - abs(output) * 6)  # 22-16°C в зависимости от ошибки
-                # Приоткрываем окна при охлаждении
-                self.window_openness = min(1.0, 0.5 + abs(output)/2)  # 0.5-1.0 открытости
-                
-            else:
-                self.heater_on = False
-                self.ac_on = False
-                # Поддерживающий режим - окна наполовину открыты
-                self.window_openness = 0.5
-
-        # PID регулятор (расширенная реализация)
+            output = self._pi_control(error, dt, smooth_factor)
         elif self.controller_type == PID:
-            self.integral += error * dt
-            # Анти-windup защита
-            self.integral = max(min(self.integral, self.integral_max), -self.integral_max)
-            
-            derivative = (error - self.prev_error) / dt if dt > 0 else 0
-            self.prev_error = error
-            
-            output = self.Kp * error + self.Ki * self.integral + self.Kd * derivative
-            
-            # Преобразование выхода в управляющие сигналы
-            if output > 0.1:  # Мертвая зона 10%
-                self.heater_on = True
-                self.ac_on = False
-                # Динамическая температура нагревателя с учетом производной
-                base_temp = 30 + abs(error) * 5  # Базовый нагрев
-                derivative_effect = -derivative * 10  # Учет скорости изменения
-                self.heater_temp = min(70, max(30, base_temp + derivative_effect))
-                
-                # Адаптивное управление окнами
-                if error > 5:  # Большая ошибка - закрываем окна
-                    self.window_openness = 0.1
-                else:
-                    self.window_openness = 0.3 - error/20  # Плавное регулирование
-                    
-            elif output < -0.1:
-                self.heater_on = False
-                self.ac_on = True
-                # Динамическая температура кондиционера
-                cooling_power = min(10, abs(error)/2)  # Интенсивность охлаждения
-                self.ac_temp = max(12, 22 - cooling_power * 2)
-                
-                # Управление окнами при охлаждении
-                if error < -5:  # Сильное охлаждение - приоткрываем
-                    self.window_openness = 0.8
-                else:
-                    self.window_openness = 0.5 - error/20  # Плавное регулирование
-                    
-            else:
-                self.heater_on = False
-                self.ac_on = False
-                # Нейтральное положение - окна наполовину открыты
-                self.window_openness = 0.5
+            output = self._pid_control(error, dt, smooth_factor)
         
-        
+        # Применение выходного сигнала
+        self._apply_output(output, error, smooth_factor)
         
         self.output_history.append(output)
         return output
+
+    def _relay_control(self, error):
+        """Релейный регулятор с гистерезисом"""
+        if error > 2:    # +2° гистерезис
+            return 1.0
+        elif error < -0.6: 
+            return -1.0
+        return 0.0
+
+    def _pi_control(self, error, dt, smooth_factor):
+        """PI регулятор с плавными переходами"""
+        self.integral += error * dt * smooth_factor
+        self.integral = max(min(self.integral, self.integral_max), -self.integral_max)
+        return self.Kp * error + self.Ki * self.integral
+
+    def _pid_control(self, error, dt, smooth_factor):
+        """PID регулятор с плавными переходами"""
+        self.integral += error * dt * smooth_factor
+        self.integral = max(min(self.integral, self.integral_max), -self.integral_max)
+        
+        derivative = (error - self.prev_error) / dt if dt > 0 else 0
+        self.prev_error = error
+        
+        return (self.Kp * error + 
+                self.Ki * self.integral + 
+                self.Kd * derivative * smooth_factor)
+
+    def _apply_output(self, output, error, smooth_factor):
+        """Плавное применение управляющих воздействий"""
+        # Плавное управление нагревателем
+        if output > 0.1:
+            self.heater_on = True
+            self.ac_on = False
+            target_temp = 30 + min(30, abs(output) * 15)
+            self.heater_temp = self._smooth_transition(self.heater_temp, target_temp)
+            
+            # Плавное управление окнами
+            target_openness = max(0.1, 0.5 - abs(output)/3)
+            self.window_openness = self._smooth_transition(self.window_openness, target_openness)
+        
+        # Плавное управление кондиционером
+        elif output < -0.1:
+            self.heater_on = False
+            self.ac_on = True
+            target_temp = 22 - min(10, abs(output) * 5)
+            self.ac_temp = self._smooth_transition(self.ac_temp, target_temp)
+            
+            # Плавное управление окнами
+            target_openness = min(0.9, 0.5 + abs(output)/3)
+            self.window_openness = self._smooth_transition(self.window_openness, target_openness)
+        
+        # Нейтральный режим
+        else:
+            self.heater_on = False
+            self.ac_on = False
+            # Плавный возврат окон в нейтральное положение
+            self.window_openness = self._smooth_transition(self.window_openness, 0.5)
+            
+            # Плавный сброс температур устройств
+            if self.heater_temp > 30:
+                self.heater_temp = self._smooth_transition(self.heater_temp, 30)
+            if self.ac_temp < 22:
+                self.ac_temp = self._smooth_transition(self.ac_temp, 22)
+
+        # Дополнительная плавность при переходных процессах
+        self.heater_temp = self._apply_smoothness(self.heater_temp, smooth_factor)
+        self.ac_temp = self._apply_smoothness(self.ac_temp, smooth_factor)
+        self.window_openness = self._apply_smoothness(self.window_openness, smooth_factor)
+
+    def _smooth_transition(self, current, target):
+        """Плавный переход между значениями"""
+        return current * self.transition_factor + target * (1 - self.transition_factor)
+
+    def _apply_smoothness(self, value, factor):
+        """Применение коэффициента плавности"""
+        return value * factor + value * (1 - factor) * self.transition_factor
 
 class Sensor:
     """Класс датчика температуры с графиком"""
@@ -245,27 +271,28 @@ class SmartHomeApp:
     def __init__(self, root):
         self.root = root
         self.root.title("Умный дом — Симуляция и Управление")
+        self.time_tick = 0
+        self.regulator_enabled = False  # Флаг активности регулятора
 
-        # Основной фрейм
+        # Основные фреймы
         main_frame = ttk.Frame(root)
         main_frame.pack(fill="both", expand=True)
 
         # Левая часть (Симуляция)
         sim_frame = ttk.Frame(main_frame)
         sim_frame.grid(row=0, column=0, padx=10, pady=10)
-
         self.canvas = tk.Canvas(sim_frame, width=WIDTH, height=HEIGHT)
         self.canvas.pack()
-        self.time_tick=0
+
         # Правая часть (Панель управления)
         control_frame = ttk.Frame(main_frame)
         control_frame.grid(row=0, column=1, padx=10, pady=10, sticky="ns")
 
-        # Инициализация начальных данных
+        # Инициализация данных
         self.initial_data = {
             TEMPERATURES: {
                 OUTSIDE_TEMP: -25,
-                HEATER_TEMP: 60,
+                HEATER_TEMP: 45,
                 AC_TEMP: 18,
                 INITIAL_ROOM_TEMP: -10,
                 TARGET_TEMP: 22
@@ -275,38 +302,32 @@ class SmartHomeApp:
                 AIR_FLOW: 0.4,
                 OPEN_DOOR_FLOW: 0.7,
                 WINDOW_FLOW: 0.6,
-                WINDOW_OPENNESS: 0.5 
+                WINDOW_OPENNESS: 0.5,
+                KP: 1.5,  # Пропорциональный коэффициент
+                KI: 0.1,  # Интегральный коэффициент
+                KD: 0.8   # Дифференциальный коэффициент
             }
         }
 
+        # Инициализация регулятора
+        self.controller = TemperatureController(self.initial_data[TEMPERATURES][TARGET_TEMP])
         self.time_speed = tk.IntVar(value=10)
         self.selected_type = tk.IntVar(value=HEATER)
-        
-        # Контроллер температуры
-        self.controller = TemperatureController(self.initial_data[TEMPERATURES][TARGET_TEMP])
         self.controller_type = tk.IntVar(value=RELAY)
-        
-        # Список датчиков
         self.sensors = []
-        
-        # Окно для графиков
         self.graph_window = None
 
-        # Инициализация матриц
-        self.load_json("defult.json")
-        # self.type_matrix, self.temp_matrix = self.initialize_matrices()
-
-        # Рисуем сетку и запускаем симуляцию
+        # Загрузка и инициализация
+        self.load_json("default.json")
         self.draw_grid()
         self.root.after(1000, self.simulation_step)
-         
 
-        # Обработчики кликов
+        # Обработчики событий
         self.canvas.bind("<Button-1>", self.set_cell)
         self.canvas.bind("<Button-3>", self.clear_cell)
         self.canvas.bind("<Button-2>", self.curs)
 
-        # Панель управления
+        # Создание интерфейса
         self.create_control_panel(control_frame)
         self.add_cell_panel(control_frame)
 
@@ -407,20 +428,18 @@ class SmartHomeApp:
         """Обновляет температуры в сетке с учетом регуляторов."""
         delta_matrix = np.zeros_like(self.temp_matrix, dtype=float)
         
-        # Собираем показания с сенсоров для регулятора
-        sensor_temps = []
-        for sensor in self.sensors:
-            sensor_temps.append(self.temp_matrix[sensor.y, sensor.x])
-            sensor.update(self.temp_matrix[sensor.y, sensor.x],self.time_tick)
-        
-        # Усредняем показания сенсоров
-        avg_temp = np.mean(sensor_temps) if sensor_temps else self.initial_data[TEMPERATURES][INITIAL_ROOM_TEMP]
-        
-        # Обновляем состояние регулятора
-        action = self.controller.update(avg_temp,self.time_tick)
-        self.initial_data[TEMPERATURES][AC_TEMP]=self.controller.ac_temp
-        self.initial_data[TEMPERATURES][HEATER_TEMP]=self.controller.heater_temp
-        self.initial_data[COEFFICIENTS][WINDOW_OPENNESS]=self.controller.window_openness
+        if self.regulator_enabled:
+            # Сбор данных с датчиков
+            sensor_temps = [self.temp_matrix[s.y, s.x] for s in self.sensors]
+            avg_temp = np.mean(sensor_temps) if sensor_temps else self.initial_data[TEMPERATURES][INITIAL_ROOM_TEMP]
+            
+            # Обновление регулятора
+            self.controller.update(avg_temp, self.time_tick)
+            
+            # Применение управляющих воздействий
+            self.initial_data[TEMPERATURES][AC_TEMP] = self.controller.ac_temp
+            self.initial_data[TEMPERATURES][HEATER_TEMP] = self.controller.heater_temp
+            self.initial_data[COEFFICIENTS][WINDOW_OPENNESS] = self.controller.window_openness
         
         # Вычисляем изменения температуры
         for y in range(GRID_ROWS):
@@ -493,11 +512,11 @@ class SmartHomeApp:
 
     def add_cell_panel(self, frame):
         """Добавляет панель выбора типа клетки."""
-        ttk.Label(frame, text="Выберите тип клетки:").grid(row=9, column=0, padx=10, pady=10, sticky="w")
+        ttk.Label(frame, text="Выберите тип клетки:").grid(row=21, column=1, padx=10, pady=10, sticky="w")
         cell_types = ["Пустота", "Стена", "Дверь", "Окно", "Батарея", "Кондиционер", "Датчик"]
         values = [EMPTY, WALL, DOOR, WINDOW, HEATER, AC, SENSOR]
         dropdown = ttk.Combobox(frame, values=cell_types, state="readonly")
-        dropdown.grid(row=9, column=0, padx=10, pady=10, sticky="w")
+        dropdown.grid(row=21, column=2, padx=10, pady=10, sticky="w")
         dropdown.current(4)
 
         def update_type(event):
@@ -528,109 +547,61 @@ class SmartHomeApp:
         self.draw_grid()
 
     def create_control_panel(self, parent):
-        """Создает панель управления."""
-        outside_temp_var = tk.DoubleVar(value=self.initial_data[TEMPERATURES][OUTSIDE_TEMP])
-        heater_temp_var = tk.DoubleVar(value=self.initial_data[TEMPERATURES][HEATER_TEMP])
-        ac_temp_var = tk.DoubleVar(value=self.initial_data[TEMPERATURES][AC_TEMP])
-        initial_room_temp_var = tk.DoubleVar(value=self.initial_data[TEMPERATURES][INITIAL_ROOM_TEMP])
-        target_temp_var = tk.DoubleVar(value=self.initial_data[TEMPERATURES][TARGET_TEMP])
+        """Создает упорядоченную панель управления"""
+        # Группа температурных параметров
+        ttk.Label(parent, text="Температуры", font=('Arial', 10, 'bold')).grid(row=0, column=0, columnspan=3, pady=5)
+        self.add_slider(parent, "На улице", TEMPERATURES, OUTSIDE_TEMP, -50, 50, 1)
+        self.add_slider(parent, "Батарей", TEMPERATURES, HEATER_TEMP, 20, 90, 2)
+        self.add_slider(parent, "Кондиционера", TEMPERATURES, AC_TEMP, 10, 30, 3)
+        self.add_slider(parent, "Начальная", TEMPERATURES, INITIAL_ROOM_TEMP, -30, 40, 4)
+        self.add_slider(parent, "Целевая", TEMPERATURES, TARGET_TEMP, 10, 30, 5)
 
-        air_flow_var = tk.DoubleVar(value=self.initial_data[COEFFICIENTS][AIR_FLOW])
-        open_door_flow_var = tk.DoubleVar(value=self.initial_data[COEFFICIENTS][OPEN_DOOR_FLOW])
-        window_flow_var = tk.DoubleVar(value=self.initial_data[COEFFICIENTS][WINDOW_FLOW])
+        # Группа коэффициентов
+        ttk.Label(parent, text="Коэффициенты", font=('Arial', 10, 'bold')).grid(row=6, column=0, columnspan=3, pady=5)
+        self.add_slider(parent, "Стен", COEFFICIENTS, WALL_RESISTANCE, 0.001, 0.1, 7)
+        self.add_slider(parent, "Воздуха", COEFFICIENTS, AIR_FLOW, 0.1, 1.0, 8)
+        self.add_slider(parent, "Дверей", COEFFICIENTS, OPEN_DOOR_FLOW, 0.1, 1.0, 9)
+        self.add_slider(parent, "Окон", COEFFICIENTS, WINDOW_FLOW, 0.1, 1.0, 10)
+        self.add_slider(parent, "Открытие окон", COEFFICIENTS, WINDOW_OPENNESS, 0.0, 1.0, 11)
 
-        def create_slider(label, variable, from_, to, row):
-            ttk.Label(parent, text=label).grid(row=row, column=0, padx=10, pady=5, sticky='w')
-            slider = ttk.Scale(parent, from_=from_, to=to, variable=variable, orient='horizontal')
-            slider.grid(row=row, column=1, padx=10, pady=5, sticky='ew')
-            entry = ttk.Entry(parent, textvariable=variable, width=10)
-            entry.grid(row=row, column=2, padx=10, pady=5)
+        # Группа PID параметров
+        ttk.Label(parent, text="PID параметры", font=('Arial', 10, 'bold')).grid(row=12, column=0, columnspan=3, pady=5)
+        self.add_slider(parent, "Kp", COEFFICIENTS, KP, 0.1, 5.0, 13)
+        self.add_slider(parent, "Ki", COEFFICIENTS, KI, 0.01, 0.5, 14)
+        self.add_slider(parent, "Kd", COEFFICIENTS, KD, 0.0, 2.0, 15)
 
-        create_slider("Температура на улице", outside_temp_var, -100, 100, 0)
-        create_slider("Температура батарей", heater_temp_var, -20, 80, 1)
-        create_slider("Температура кондиционера", ac_temp_var, -10, 50, 2)
-        create_slider("Начальная температура в доме", initial_room_temp_var, -130, 130, 3)
-        create_slider("Целевая температура", target_temp_var, 0, 40, 4)
-        create_slider("Теплообмен (воздух)", air_flow_var, 0.01, 1.0, 5)
-        create_slider("Теплообмен (дверь)", open_door_flow_var, 0.01, 1.0, 6)
-        create_slider("Скорость времени", self.time_speed, 1, 100, 7)
+        # Управление системой
+        ttk.Label(parent, text="Управление", font=('Arial', 10, 'bold')).grid(row=16, column=0, columnspan=3, pady=5)
+        
+        # Кнопка включения/выключения регулятора
+        self.regulator_btn = ttk.Button(parent, text="Включить регулятор", 
+                                      command=self.toggle_regulator)
+        self.regulator_btn.grid(row=17, column=0, columnspan=3, pady=5)
 
         # Выбор типа регулятора
-        ttk.Label(parent, text="Тип регулятора:").grid(row=10, column=0, padx=10, pady=5, sticky='w')
+        ttk.Label(parent, text="Тип регулятора:").grid(row=18, column=0, sticky='w')
         controller_types = ["Релейный", "PI", "PID"]
         controller_dropdown = ttk.Combobox(parent, values=controller_types, state="readonly")
-        controller_dropdown.grid(row=10, column=1, padx=10, pady=5)
         controller_dropdown.current(0)
-        
-        # Новый слайдер для открытия окон
-        window_openness_var = tk.DoubleVar(value=self.initial_data[COEFFICIENTS][WINDOW_OPENNESS])
-        
-        ttk.Label(parent, text="Открытие окон (0-1):").grid(row=12, column=0, padx=10, pady=5, sticky='w')
-        slider = ttk.Scale(
-            parent,
-            from_=0.0,
-            to=1.0,
-            variable=window_openness_var,
-            orient='horizontal'
-        )
-        slider.grid(row=12, column=1, padx=10, pady=5, sticky='ew')
-        
-        entry = ttk.Entry(parent, textvariable=window_openness_var, width=10)
-        entry.grid(row=12, column=2, padx=10, pady=5)
-        
-        def update_controller_type(event):
-            self.controller_type.set(controller_dropdown.current())
-            self.controller.set_controller_type(controller_dropdown.current())
-            
-        controller_dropdown.bind("<<ComboboxSelected>>", update_controller_type)
+        controller_dropdown.grid(row=18, column=1, columnspan=2, sticky='ew')
+        controller_dropdown.bind("<<ComboboxSelected>>", 
+                               lambda e: self.controller.set_controller_type(controller_dropdown.current()))
 
-        def update_constants():
-            self.initial_data[TEMPERATURES][OUTSIDE_TEMP] = outside_temp_var.get()
-            self.initial_data[TEMPERATURES][HEATER_TEMP] = heater_temp_var.get()
-            self.initial_data[TEMPERATURES][AC_TEMP] = ac_temp_var.get()
-            self.initial_data[TEMPERATURES][INITIAL_ROOM_TEMP] = initial_room_temp_var.get()
-            self.initial_data[TEMPERATURES][TARGET_TEMP] = target_temp_var.get()
-            self.controller.set_target_temp(target_temp_var.get())
+        # Скорость симуляции
+        self.add_slider(parent, "Скорость", None, None, 1, 100, 19, var=self.time_speed)
 
-            self.initial_data[COEFFICIENTS][AIR_FLOW] = air_flow_var.get()
-            self.initial_data[COEFFICIENTS][OPEN_DOOR_FLOW] = open_door_flow_var.get()
-            self.initial_data[COEFFICIENTS][WINDOW_FLOW] = window_flow_var.get()
-            self.initial_data[COEFFICIENTS][WINDOW_OPENNESS] = window_openness_var.get()
-            # Обновляем температуры для HEATER, AC и OUTSIDE
-            buf = (
-                self.initial_data[TEMPERATURES][OUTSIDE_TEMP],
-                self.initial_data[TEMPERATURES][HEATER_TEMP],
-                self.initial_data[TEMPERATURES][AC_TEMP]
-            )
-            type_buf = (OUTSIDE, HEATER, AC)
-
-            for y in range(GRID_ROWS):
-                for x in range(GRID_COLS):
-                    if self.type_matrix[y, x] in type_buf:
-                        self.temp_matrix[y, x] = buf[type_buf.index(self.type_matrix[y, x])]
-
-        def reset_field():
-            """Сбрасывает поле к начальному состоянию."""
-            self.type_matrix, self.temp_matrix = self.initialize_matrices()
-            self.sensors = []
-            self.draw_grid()
-
-        
-
-        update_button = ttk.Button(parent, text="Применить", command=update_constants)
-        update_button.grid(row=8, column=0, columnspan=3, pady=10)
-        reset_button = ttk.Button(parent, text="Очистить поле", command=reset_field)
-        reset_button.grid(row=8, column=1, columnspan=3, pady=10)
-        # update_button = ttk.Button(parent, text="Применить", command=update_constants)
-        # update_button.grid(row=13, column=0, columnspan=3, pady=10)
-        # Кнопка для показа графиков
-        ttk.Button(parent, text="Показать графики", command=self.show_sensors_graph).grid(row=11, column=0, columnspan=3, pady=10)
-
-        ttk.Button(parent, text="Загрузить JSON", command=self.load_json).grid(row=15, column=0, pady=10)
-        ttk.Button(parent, text="Сохранить JSON", command=self.save_json).grid(row=15, column=1, pady=10)
-        ttk.Button(parent, text="Загрузить XML", command=self.load_xml).grid(row=16, column=0, pady=10)
-        ttk.Button(parent, text="Сохранить XML", command=self.save_xml).grid(row=16, column=1, pady=10)
-
+        # Основные кнопки управления
+        ttk.Button(parent, text="Применить", command=self.update_settings).grid(row=20, column=0, columnspan=3, pady=5)
+        ttk.Button(parent, text="Сбросить поле", command=self.reset_field).grid(row=21, column=0)
+        ttk.Button(parent, text="Графики", command=self.show_sensors_graph).grid(row=22, column=0, pady=10)
+        ttk.Button(parent, text="Сохранить", command=self.save_json).grid(row=22, column=1, pady=10)
+        ttk.Button(parent, text="Загрузить", command=self.load_json).grid(row=22, column=2, pady=10)
+    
+    def reset_field(self):
+        """Сбрасывает поле к начальному состоянию."""
+        self.type_matrix, self.temp_matrix = self.initialize_matrices()
+        self.sensors = []
+        self.draw_grid()
     def show_sensors_graph(self):
         """Показывает графики датчиков с обновлением в реальном времени"""
         if not self.sensors:
@@ -756,8 +727,57 @@ class SmartHomeApp:
             self.close_graphs_window()
             return
         
-       
+    def add_slider(self, parent, label, category, param, from_, to, row, var=None):
+        """Добавляет слайдер с меткой"""
+        ttk.Label(parent, text=label+":").grid(row=row, column=0, padx=5, pady=2, sticky='w')
         
+        if not var:
+            var = tk.DoubleVar(value=self.initial_data[category][param] if category else 0)
+            setattr(self, f"{param}_var", var)
+        
+        ttk.Scale(parent, from_=from_, to=to, variable=var, 
+                 orient='horizontal', length=150).grid(row=row, column=1, padx=5)
+        ttk.Entry(parent, textvariable=var, width=6).grid(row=row, column=2, padx=5)
+        
+    def toggle_regulator(self):
+        """Включает/выключает регулятор температуры"""
+        self.regulator_enabled = not self.regulator_enabled
+        if self.regulator_enabled:
+            self.regulator_btn.config(text="Выключить регулятор")
+            self.controller.reset(soft=True)
+        else:
+            self.regulator_btn.config(text="Включить регулятор")
+            # Отключаем все устройства при выключении регулятора
+            # self.controller.heater_on = False
+            # self.controller.ac_on = False
+    
+    def update_settings(self):
+        """Обновляет все параметры системы"""
+        # Обновление температур
+        for param in [OUTSIDE_TEMP, HEATER_TEMP, AC_TEMP, INITIAL_ROOM_TEMP, TARGET_TEMP]:
+            self.initial_data[TEMPERATURES][param] = getattr(self, f"{param}_var").get()
+        
+        # Обновление коэффициентов
+        for param in [WALL_RESISTANCE, AIR_FLOW, OPEN_DOOR_FLOW, WINDOW_FLOW, WINDOW_OPENNESS]:
+            self.initial_data[COEFFICIENTS][param] = getattr(self, f"{param}_var").get()
+        if self.regulator_enabled:
+            # Обновление PID параметров
+            for param in [KP, KI, KD]:
+                self.initial_data[COEFFICIENTS][param] = getattr(self, f"{param}_var").get()
+                setattr(self.controller, f"K{param[-1].lower()}", self.initial_data[COEFFICIENTS][param])
+        
+            # Применение целевой температуры
+            self.controller.set_target_temp(self.initial_data[TEMPERATURES][TARGET_TEMP])
+        
+        # Обновление температур на карте
+        for y in range(GRID_ROWS):
+            for x in range(GRID_COLS):
+                if self.type_matrix[y, x] == OUTSIDE:
+                    self.temp_matrix[y, x] = self.initial_data[TEMPERATURES][OUTSIDE_TEMP]
+                elif self.type_matrix[y, x] == HEATER:
+                    self.temp_matrix[y, x] = self.initial_data[TEMPERATURES][HEATER_TEMP]
+                elif self.type_matrix[y, x] == AC:
+                    self.temp_matrix[y, x] = self.initial_data[TEMPERATURES][AC_TEMP]  
     
     def load_json(self, file_path=None):
         """Загружает конфигурацию из JSON файла."""
@@ -803,58 +823,7 @@ class SmartHomeApp:
             except Exception as e:
                 messagebox.showerror("Ошибка", f"Не удалось сохранить файл: {e}")
 
-    def load_xml(self):
-        """Загружает конфигурацию из XML файла."""
-        file_path = filedialog.askopenfilename(filetypes=[("XML files", "*.xml")])
-        if file_path:
-            try:
-                tree = ET.parse(file_path)
-                root = tree.getroot()
-                type_matrix = []
-                temp_matrix = []
-                for row in root.find('type_matrix'):
-                    type_matrix.append([int(cell.text) for cell in row])
-                for row in root.find('temp_matrix'):
-                    temp_matrix.append([float(cell.text) for cell in row])
-                self.type_matrix = np.array(type_matrix)
-                self.temp_matrix = np.array(temp_matrix)
-                
-                # Восстанавливаем датчики
-                self.sensors = []
-                for y in range(GRID_ROWS):
-                    for x in range(GRID_COLS):
-                        if self.type_matrix[y, x] == SENSOR:
-                            self.sensors.append(Sensor(y, x))
-                
-                self.draw_grid()
-                messagebox.showinfo("Успех", "Конфигурация загружена из XML файла.")
-            except Exception as e:
-                messagebox.showerror("Ошибка", f"Не удалось загрузить файл: {e}")
-
-    def save_xml(self):
-        """Сохраняет конфигурацию в XML файл."""
-        file_path = filedialog.asksaveasfilename(defaultextension=".xml", filetypes=[("XML files", "*.xml")])
-        if file_path:
-            try:
-                root = ET.Element('config')
-                type_matrix_elem = ET.SubElement(root, 'type_matrix')
-                for row in self.type_matrix:
-                    row_elem = ET.SubElement(type_matrix_elem, 'row')
-                    for cell in row:
-                        cell_elem = ET.SubElement(row_elem, 'cell')
-                        cell_elem.text = str(cell)
-                temp_matrix_elem = ET.SubElement(root, 'temp_matrix')
-                for row in self.temp_matrix:
-                    row_elem = ET.SubElement(temp_matrix_elem, 'row')
-                    for cell in row:
-                        cell_elem = ET.SubElement(row_elem, 'cell')
-                        cell_elem.text = str(cell)
-                tree = ET.ElementTree(root)
-                tree.write(file_path)
-                messagebox.showinfo("Успех", "Конфигурация сохранена в XML файл.")
-            except Exception as e:
-                messagebox.showerror("Ошибка", f"Не удалось сохранить файл: {e}")
-
+    
 
 if __name__ == "__main__":
     root = tk.Tk()

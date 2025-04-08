@@ -66,160 +66,183 @@ def get_color_for_temp(temp):
 from collections import deque
 import time
 
+from collections import deque
+import time
+
 class TemperatureController:
-    """Усовершенствованный класс регуляторов температуры с правильными PID параметрами"""
+    """Усовершенствованный регулятор температуры с плавными переходами"""
     def __init__(self, target_temp=22):
         self.target_temp = target_temp
         self.controller_type = RELAY
-        self.last_time = time.time()
         
         # Состояние устройств
         self.heater_on = False
         self.ac_on = False
+        self.heater_temp = 60.0    # Начальная температура нагревателя
+        self.ac_temp = 18.0        # Начальная температура кондиционера
+        self.window_openness = 0.5 # Степень открытия окон (0-1)
         
-        # Параметры PI регулятора (правильные коэффициенты)
-        self.Kp = 1.5  # Увеличенный пропорциональный коэффициент
-        self.Ki = 0.1  # Уменьшенный интегральный коэффициент
-        self.integral = 0
-        self.integral_max = 100  # Ограничение интегральной составляющей
+        # Параметры регуляторов
+        self.Kp = 1.5    # Пропорциональный коэффициент
+        self.Ki = 0.1    # Интегральный коэффициент
+        self.Kd = 0.8    # Дифференциальный коэффициент
+        self.integral = 0.0
+        self.prev_error = 0.0
+        self.prev_time = 0
+        self.integral_max = 100.0
         
-        # Параметры PID регулятора
-        self.Kd = 0.8  # Добавлен дифференциальный коэффициент
-        self.prev_error = 0
-        self.prev_time = time.time()
+        # Параметры плавных переходов
+        self.transition_factor = 0.9  # Коэффициент плавности (0.8-0.95)
+        self.soft_start_steps = 10    # Шагов плавного старта
+        self.current_step = 0
         
         # История для анализа
         self.temp_history = deque(maxlen=600)
         self.time_history = deque(maxlen=600)
         self.output_history = deque(maxlen=600)
-        self.ac_temp = -10  # 22-16°C в зависимости от ошибки
-        self.window_openness = 0.5  # 0.5-1.0 открытости
-        self.heater_temp = 60
-        
-        
+        self.action_history = deque(maxlen=600)
+
     def set_target_temp(self, temp):
-        """Установка целевой температуры"""
+        """Установка целевой температуры с плавным переходом"""
         self.target_temp = temp
-        self.reset()
-        
+        self.reset(soft=True)
+
     def set_controller_type(self, c_type):
-        """Изменение типа регулятора"""
+        """Смена типа регулятора с плавным переходом"""
         self.controller_type = c_type
-        self.reset()
+        self.reset(soft=True)
+
+    def reset(self, soft=True):
+        """Плавный сброс состояния регулятора"""
+        if soft:
+            # Плавный сброс (сохраняем часть состояния)
+            self.integral *= 0.7
+            self.prev_error *= 0.5
+            self.current_step = 0
+            
+            # Плавное изменение температуры устройств
+            if self.heater_on:
+                self.heater_temp *= 0.8
+            if self.ac_on:
+                self.ac_temp = min(22, self.ac_temp * 1.2)
+        else:
+            # Полный сброс
+            self.integral = 0
+            self.prev_error = 0
+            self.current_step = 0
+            self.heater_temp = 60
+            self.ac_temp = 18
         
-    def reset(self):
-        """Сброс состояния регулятора"""
-        self.integral = 0
-        self.prev_error = 0
-        self.prev_time = time.time()
+        self.window_openness = 0.5
         self.heater_on = False
         self.ac_on = False
-        
-    def update(self, current_temp,time):
-        """Обновление состояния регулятора с правильными расчетами"""
-        current_time = time
-        dt = current_time - self.prev_time
+
+    def update(self, current_temp, current_time):
+        """Обновление состояния с плавными переходами"""
+        # Расчет временного шага
+        dt = max(1, current_time - self.prev_time)
         self.prev_time = current_time
         
         error = self.target_temp - current_temp
         self.temp_history.append(current_temp)
         self.time_history.append(current_time)
         
-        # Релейный регулятор (с гистерезисом 10%)
+        # Режим плавного старта после сброса
+        if self.current_step < self.soft_start_steps:
+            self.current_step += 1
+            smooth_factor = self.current_step / self.soft_start_steps
+        else:
+            smooth_factor = 1.0
+        
+        # Расчет выходного сигнала
         if self.controller_type == RELAY:
-            if current_temp < self.target_temp * 0.93:  # 5% гистерезис
-                self.heater_on = True
-                self.ac_on = False
-                output = 1.0
-            elif current_temp > self.target_temp * 1.07:
-                self.heater_on = False
-                self.ac_on = True
-                output = -1.0
-            else:
-                self.heater_on = False
-                self.ac_on = False
-                output = 0.0
-                
-        # PI регулятор (расширенная реализация)
+            output = self._relay_control(error)
         elif self.controller_type == PI:
-            self.integral += error * dt
-            # Анти-windup защита
-            self.integral = max(min(self.integral, self.integral_max), -self.integral_max)
-            
-            output = self.Kp * error + self.Ki * self.integral
-            
-            # Преобразование выхода в управляющие сигналы
-            if output > 0.1:  # Мертвая зона 10%
-                self.heater_on = True
-                self.ac_on = False
-                # Плавное увеличение температуры нагревателя (0-100%)
-                self.heater_temp = min(60, 30 + abs(output) * 30)  # 30-60°C в зависимости от ошибки
-                # Закрываем окна при сильном нагреве
-                self.window_openness = max(0, 0.5 - abs(output)/2)  # 0-0.5 открытости
-                
-            elif output < -0.1:
-                self.heater_on = False
-                self.ac_on = True
-                # Плавное уменьшение температуры кондиционера (0-100%)
-                self.ac_temp = max(16, 22 - abs(output) * 6)  # 22-16°C в зависимости от ошибки
-                # Приоткрываем окна при охлаждении
-                self.window_openness = min(1.0, 0.5 + abs(output)/2)  # 0.5-1.0 открытости
-                
-            else:
-                self.heater_on = False
-                self.ac_on = False
-                # Поддерживающий режим - окна наполовину открыты
-                self.window_openness = 0.5
-
-        # PID регулятор (расширенная реализация)
+            output = self._pi_control(error, dt, smooth_factor)
         elif self.controller_type == PID:
-            self.integral += error * dt
-            # Анти-windup защита
-            self.integral = max(min(self.integral, self.integral_max), -self.integral_max)
-            
-            derivative = (error - self.prev_error) / dt if dt > 0 else 0
-            self.prev_error = error
-            
-            output = self.Kp * error + self.Ki * self.integral + self.Kd * derivative
-            
-            # Преобразование выхода в управляющие сигналы
-            if output > 0.1:  # Мертвая зона 10%
-                self.heater_on = True
-                self.ac_on = False
-                # Динамическая температура нагревателя с учетом производной
-                base_temp = 30 + abs(error) * 5  # Базовый нагрев
-                derivative_effect = -derivative * 10  # Учет скорости изменения
-                self.heater_temp = min(70, max(30, base_temp + derivative_effect))
-                
-                # Адаптивное управление окнами
-                if error > 5:  # Большая ошибка - закрываем окна
-                    self.window_openness = 0.1
-                else:
-                    self.window_openness = 0.3 - error/20  # Плавное регулирование
-                    
-            elif output < -0.1:
-                self.heater_on = False
-                self.ac_on = True
-                # Динамическая температура кондиционера
-                cooling_power = min(10, abs(error)/2)  # Интенсивность охлаждения
-                self.ac_temp = max(12, 22 - cooling_power * 2)
-                
-                # Управление окнами при охлаждении
-                if error < -5:  # Сильное охлаждение - приоткрываем
-                    self.window_openness = 0.8
-                else:
-                    self.window_openness = 0.5 - error/20  # Плавное регулирование
-                    
-            else:
-                self.heater_on = False
-                self.ac_on = False
-                # Нейтральное положение - окна наполовину открыты
-                self.window_openness = 0.5
+            output = self._pid_control(error, dt, smooth_factor)
         
-        
+        # Применение выходного сигнала
+        self._apply_output(output, error, smooth_factor)
         
         self.output_history.append(output)
         return output
+
+    def _relay_control(self, error):
+        """Релейный регулятор с гистерезисом"""
+        if error > 1:    # +2° гистерезис
+            return 1.0
+        elif error < -1: # -2° гистерезис
+            return -1.0
+        return 0.0
+
+    def _pi_control(self, error, dt, smooth_factor):
+        """PI регулятор с плавными переходами"""
+        self.integral += error * dt * smooth_factor
+        self.integral = max(min(self.integral, self.integral_max), -self.integral_max)
+        return self.Kp * error + self.Ki * self.integral
+
+    def _pid_control(self, error, dt, smooth_factor):
+        """PID регулятор с плавными переходами"""
+        self.integral += error * dt * smooth_factor
+        self.integral = max(min(self.integral, self.integral_max), -self.integral_max)
+        
+        derivative = (error - self.prev_error) / dt if dt > 0 else 0
+        self.prev_error = error
+        
+        return (self.Kp * error + 
+                self.Ki * self.integral + 
+                self.Kd * derivative * smooth_factor)
+
+    def _apply_output(self, output, error, smooth_factor):
+        """Плавное применение управляющих воздействий"""
+        # Плавное управление нагревателем
+        if output > 0.1:
+            self.heater_on = True
+            self.ac_on = False
+            target_temp = 30 + min(30, abs(output) * 15)
+            self.heater_temp = self._smooth_transition(self.heater_temp, target_temp)
+            
+            # Плавное управление окнами
+            target_openness = max(0.1, 0.5 - abs(output)/3)
+            self.window_openness = self._smooth_transition(self.window_openness, target_openness)
+        
+        # Плавное управление кондиционером
+        elif output < -0.1:
+            self.heater_on = False
+            self.ac_on = True
+            target_temp = 22 - min(10, abs(output) * 5)
+            self.ac_temp = self._smooth_transition(self.ac_temp, target_temp)
+            
+            # Плавное управление окнами
+            target_openness = min(0.9, 0.5 + abs(output)/3)
+            self.window_openness = self._smooth_transition(self.window_openness, target_openness)
+        
+        # Нейтральный режим
+        else:
+            self.heater_on = False
+            self.ac_on = False
+            # Плавный возврат окон в нейтральное положение
+            self.window_openness = self._smooth_transition(self.window_openness, 0.5)
+            
+            # Плавный сброс температур устройств
+            if self.heater_temp > 30:
+                self.heater_temp = self._smooth_transition(self.heater_temp, 30)
+            if self.ac_temp < 22:
+                self.ac_temp = self._smooth_transition(self.ac_temp, 22)
+
+        # Дополнительная плавность при переходных процессах
+        self.heater_temp = self._apply_smoothness(self.heater_temp, smooth_factor)
+        self.ac_temp = self._apply_smoothness(self.ac_temp, smooth_factor)
+        self.window_openness = self._apply_smoothness(self.window_openness, smooth_factor)
+
+    def _smooth_transition(self, current, target):
+        """Плавный переход между значениями"""
+        return current * self.transition_factor + target * (1 - self.transition_factor)
+
+    def _apply_smoothness(self, value, factor):
+        """Применение коэффициента плавности"""
+        return value * factor + value * (1 - factor) * self.transition_factor
 
 class Sensor:
     """Класс датчика температуры с графиком"""
